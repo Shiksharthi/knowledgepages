@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GDPR & Data Quality — TPM Action Plan</title>
+<style>
+  :root {
+    --bg: #0c0e16;
+    --surface: #13151f;
+    --surface2: #1a1d2e;
+    --surface3: #20243a;
+    --border: #272b42;
+    --text: #e2e8f0;
+    --text-muted: #7c87a0;
+    --text-dim: #4e5874;
+
+    --p1: #6366f1; --p1-soft: rgba(99,102,241,0.12); --p1-border: rgba(99,102,241,0.3);
+    --p2: #0ea5e9; --p2-soft: rgba(14,165,233,0.12); --p2-border: rgba(14,165,233,0.3);
+    --p3: #f59e0b; --p3-soft: rgba(245,158,11,0.12); --p3-border: rgba(245,158,11,0.3);
+    --p4: #ef4444; --p4-soft: rgba(239,68,68,0.12);  --p4-border: rgba(239,68,68,0.3);
+    --p5: #10b981; --p5-soft: rgba(16,185,129,0.12); --p5-border: rgba(16,185,129,0.3);
+    --p6: #a855f7; --p6-soft: rgba(168,85,247,0.12); --p6-border: rgba(168,85,247,0.3);
+    --p7: #f43f5e; --p7-soft: rgba(244,63,94,0.12);  --p7-border: rgba(244,63,94,0.3);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 24px 20px 48px;
+  }
+
+  /* ── HEADER ── */
+  .page-header {
+    max-width: 960px;
+    margin: 0 auto 32px;
+    text-align: center;
+    padding: 36px 24px 28px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 0%, rgba(99,102,241,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 100%, rgba(239,68,68,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .role-tag {
+    display: inline-block;
+    padding: 4px 14px;
+    background: rgba(99,102,241,0.15);
+    border: 1px solid rgba(99,102,241,0.3);
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #818cf8;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .page-header h1 {
+    font-size: clamp(1.5rem, 3.5vw, 2.4rem);
+    font-weight: 800;
+    background: linear-gradient(135deg, #e2e8f0 30%, #818cf8 70%, #ef4444);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+
+  .page-header .subtitle {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    max-width: 640px;
+    margin: 0 auto 20px;
+  }
+
+  .context-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .chip {
+    padding: 5px 12px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+  .chip strong { color: var(--text); }
+
+  /* ── JOURNEY BAR ── */
+  .journey {
+    max-width: 960px;
+    margin: 0 auto 32px;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+  }
+
+  .journey-step {
+    text-align: center;
+    padding: 10px 6px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+  }
+  .journey-step:hover { border-color: var(--border); background: var(--surface2); }
+
+  .journey-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    margin: 0 auto 5px;
+  }
+
+  .journey-label {
+    font-size: 0.62rem;
+    color: var(--text-muted);
+    line-height: 1.3;
+    font-weight: 500;
+  }
+
+  /* ── PHASE CARD ── */
+  .phases { max-width: 960px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+
+  .phase-card {
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    background: var(--surface);
+  }
+
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .phase-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.07;
+  }
+
+  .phase-num {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    font-weight: 800;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .phase-title-block { flex: 1; position: relative; }
+  .phase-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .phase-subtitle { font-size: 0.78rem; color: var(--text-muted); }
+
+  .phase-duration {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    position: relative;
+  }
+
+  .phase-body { padding: 20px 22px; }
+
+  /* ── WHAT IS THIS? ── */
+  .phase-blurb {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    padding: 10px 14px;
+    background: var(--surface2);
+    border-radius: 8px;
+    margin-bottom: 16px;
+    border-left: 3px solid var(--border);
+    line-height: 1.55;
+  }
+  .phase-blurb strong { color: var(--text); }
+
+  /* ── STEPS ── */
+  .steps { display: flex; flex-direction: column; gap: 12px; }
+
+  .step {
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .step-num-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .step-circle {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .step-line {
+    width: 2px;
+    flex: 1;
+    min-height: 16px;
+    background: var(--border);
+    margin-top: 2px;
+  }
+
+  .step-content { padding-top: 6px; padding-bottom: 8px; }
+
+  .step-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--text);
+  }
+
+  .step-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+    margin-bottom: 8px;
+  }
+
+  /* ── DETAILS ── */
+  .step-details {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .detail-row {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    font-size: 0.77rem;
+  }
+
+  .detail-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 2px 7px;
+    border-radius: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .detail-val { color: var(--text-muted); line-height: 1.4; }
+  .detail-val strong { color: var(--text); }
+
+  /* ── TAGS ── */
+  .tag-row { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+  .tag {
+    font-size: 0.68rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--surface3);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+  }
+
+  /* ── CALLOUT BOXES ── */
+  .callout {
+    margin-top: 16px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 0.79rem;
+    line-height: 1.55;
+  }
+  .callout-title {
+    font-weight: 700;
+    font-size: 0.8rem;
+    margin-bottom: 4px;
+  }
+  .callout-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+  .callout-list li::before { content: '→ '; opacity: 0.6; }
+
+  /* ── OUTPUTS TABLE ── */
+  .outputs-box {
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: var(--surface2);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  .outputs-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+  .outputs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 6px;
+  }
+  .output-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.77rem;
+    color: var(--text-muted);
+  }
+  .output-item::before { content: '📄'; font-size: 0.8rem; flex-shrink: 0; }
+
+  /* ── PHASE-SPECIFIC COLORS ── */
+  .p1 .phase-header::before { background: var(--p1); }
+  .p1 .phase-num { background: var(--p1-soft); color: var(--p1); border: 1px solid var(--p1-border); }
+  .p1 .phase-title { color: var(--p1); }
+  .p1 .phase-duration { background: var(--p1-soft); color: var(--p1); }
+  .p1 .step-circle { background: var(--p1-soft); color: var(--p1); }
+  .p1 .step-title { color: #c7d2fe; }
+
+  .p2 .phase-header::before { background: var(--p2); }
+  .p2 .phase-num { background: var(--p2-soft); color: var(--p2); border: 1px solid var(--p2-border); }
+  .p2 .phase-title { color: var(--p2); }
+  .p2 .phase-duration { background: var(--p2-soft); color: var(--p2); }
+  .p2 .step-circle { background: var(--p2-soft); color: var(--p2); }
+  .p2 .step-title { color: #bae6fd; }
+
+  .p3 .phase-header::before { background: var(--p3); }
+  .p3 .phase-num { background: var(--p3-soft); color: var(--p3); border: 1px solid var(--p3-border); }
+  .p3 .phase-title { color: var(--p3); }
+  .p3 .phase-duration { background: var(--p3-soft); color: var(--p3); }
+  .p3 .step-circle { background: var(--p3-soft); color: var(--p3); }
+  .p3 .step-title { color: #fde68a; }
+
+  .p4 .phase-header::before { background: var(--p4); }
+  .p4 .phase-num { background: var(--p4-soft); color: var(--p4); border: 1px solid var(--p4-border); }
+  .p4 .phase-title { color: var(--p4); }
+  .p4 .phase-duration { background: var(--p4-soft); color: var(--p4); }
+  .p4 .step-circle { background: var(--p4-soft); color: var(--p4); }
+  .p4 .step-title { color: #fecaca; }
+
+  .p5 .phase-header::before { background: var(--p5); }
+  .p5 .phase-num { background: var(--p5-soft); color: var(--p5); border: 1px solid var(--p5-border); }
+  .p5 .phase-title { color: var(--p5); }
+  .p5 .phase-duration { background: var(--p5-soft); color: var(--p5); }
+  .p5 .step-circle { background: var(--p5-soft); color: var(--p5); }
+  .p5 .step-title { color: #a7f3d0; }
+
+  .p6 .phase-header::before { background: var(--p6); }
+  .p6 .phase-num { background: var(--p6-soft); color: var(--p6); border: 1px solid var(--p6-border); }
+  .p6 .phase-title { color: var(--p6); }
+  .p6 .phase-duration { background: var(--p6-soft); color: var(--p6); }
+  .p6 .step-circle { background: var(--p6-soft); color: var(--p6); }
+  .p6 .step-title { color: #e9d5ff; }
+
+  .p7 .phase-header::before { background: var(--p7); }
+  .p7 .phase-num { background: var(--p7-soft); color: var(--p7); border: 1px solid var(--p7-border); }
+  .p7 .phase-title { color: var(--p7); }
+  .p7 .phase-duration { background: var(--p7-soft); color: var(--p7); }
+  .p7 .step-circle { background: var(--p7-soft); color: var(--p7); }
+  .p7 .step-title { color: #fecdd3; }
+
+  .detail-label.who   { background: rgba(99,102,241,0.15); color: #818cf8; }
+  .detail-label.how   { background: rgba(14,165,233,0.15); color: #38bdf8; }
+  .detail-label.tool  { background: rgba(16,185,129,0.15); color: #34d399; }
+  .detail-label.risk  { background: rgba(239,68,68,0.15);  color: #f87171; }
+  .detail-label.gdpr  { background: rgba(168,85,247,0.15); color: #c084fc; }
+  .detail-label.tip   { background: rgba(245,158,11,0.15); color: #fbbf24; }
+
+  /* ── WARNING BANNER ── */
+  .warn-banner {
+    max-width: 960px;
+    margin: 0 auto 24px;
+    padding: 14px 18px;
+    background: rgba(239,68,68,0.08);
+    border: 1px solid rgba(239,68,68,0.25);
+    border-left: 4px solid #ef4444;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .warn-banner .icon { font-size: 1.2rem; flex-shrink: 0; }
+  .warn-banner strong { color: #fca5a5; }
+
+  /* ── SUMMARY FOOTER ── */
+  .summary {
+    max-width: 960px;
+    margin: 32px auto 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 26px;
+  }
+  .summary h3 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 14px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .summary-tile {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .summary-tile .label { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+  .summary-tile .value { font-size: 0.88rem; font-weight: 600; color: var(--text); }
+  .summary-tile .sub   { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; }
+
+  .golden-rules { display: flex; flex-direction: column; gap: 8px; }
+  .rule {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    padding: 8px 12px;
+    background: var(--surface2);
+    border-radius: 8px;
+    border-left: 3px solid var(--border);
+  }
+  .rule .rule-num {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--text-dim);
+    flex-shrink: 0;
+    width: 20px;
+  }
+
+  @media (max-width: 680px) {
+    .journey { grid-template-columns: repeat(4, 1fr); }
+    .phase-body { padding: 16px; }
+    .phase-header { padding: 14px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     HEADER
+══════════════════════════════════════════════ -->
+<div class="page-header">
+  <div class="role-tag">📋 Technical Program Manager — Action Plan</div>
+  <h1>GDPR Compliance &amp; Data Quality<br>Remediation Plan</h1>
+  <p class="subtitle">A plain-language, step-by-step guide to finding PII data that's out of compliance, cleaning inconsistent or duplicate data, and building controls so the problem doesn't come back.</p>
+  <div class="context-chips">
+    <span class="chip"><strong>Scope:</strong> Structured data only</span>
+    <span class="chip"><strong>Stores:</strong> Databases · Cache · Data Lake</span>
+    <span class="chip"><strong>Risk:</strong> PII · GDPR exposure</span>
+    <span class="chip"><strong>Problems:</strong> Inconsistent format · Duplicates · Compliance gaps</span>
+    <span class="chip"><strong>Phases:</strong> 7 · ~6–9 months total</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     WARNING
+══════════════════════════════════════════════ -->
+<div class="warn-banner">
+  <span class="icon">⚠️</span>
+  <div><strong>Before you start:</strong> Involve your Legal/Privacy team and Data Protection Officer (DPO) from Day 1. GDPR violations can result in fines of up to <strong>€20 million or 4% of global annual turnover</strong> — whichever is higher. Document everything you do as proof of compliance effort.</div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     JOURNEY BAR
+══════════════════════════════════════════════ -->
+<div class="journey">
+  <div class="journey-step" onclick="document.getElementById('p1').scrollIntoView({behavior:'smooth'})">
+    <div class="journey-num" style="background:rgba(99,102,241,0.15);color:#818cf8">1</div>
+    <div class="journey-label">Discover &amp; Map</div>
+  </div>
+  <div class="journey-step" onclick="document.getElementById('p2').scrollIntoView({behavior:'smooth'})">
+    <div class="journey-num" style="background:rgba(14,165,233,0.15);color:#38bdf8">2</div>
+    <div class="journey-label">Profile &amp; Assess</div>
+  </div>
+  <div class="journey-step" onclick="document.getElementById('p3').scrollIntoView({behavior:'smooth'})">
+    <div class="journey-num" style="background:rgba(245,158,11,0.15);color:#fbbf24">3</div>
+    <div class="journey-label">GDPR Gap Analysis</div>
+  </div>
+  <div class="journey-step" onclick="document.getElementById('p4').scrollIntoView({behavior:'smooth'})">
+    <div class="journey-num" style="background:rgba(239,68,68,0.15);color:#f87171">4</div>
+    <div class="journey-label">Prioritize &amp; Plan</div>
+  </div>
+  <div class="journey-step" onclick="document.getElementById('p5').scrollIntoView({behavior:'smooth'})">
+    <div class="journey-num" style="background:rgba(16,185,129,0.15);color:#34d399">5</div>
+    <div class="journey-label">Clean &amp; Fix</div>
+  </div>
+  <div class="journey-step" onclick="document.getElementById('p6').scrollIntoView({behavior:'smooth'})">
+    <div class="journey-num" style="background:rgba(168,85,247,0.15);color:#c084fc">6</div>
+    <div class="journey-label">Govern &amp; Control</div>
+  </div>
+  <div class="journey-step" onclick="document.getElementById('p7').scrollIntoView({behavior:'smooth'})">
+    <div class="journey-num" style="background:rgba(244,63,94,0.15);color:#fb7185">7</div>
+    <div class="journey-label">Prove &amp; Monitor</div>
+  </div>
+</div>
+
+<div class="phases">
+
+<!-- ══════════════════════════════════════════════
+     PHASE 1 — DISCOVER & MAP
+══════════════════════════════════════════════ -->
+<div class="phase-card p1" id="p1">
+  <div class="phase-header">
+    <div class="phase-num">1</div>
+    <div class="phase-title-block">
+      <div class="phase-title">🗺️ Discover &amp; Map — Know What You Have</div>
+      <div class="phase-subtitle">You cannot fix what you cannot see. Build a complete map of all your data before doing anything else.</div>
+    </div>
+    <div class="phase-duration">Weeks 1–4</div>
+  </div>
+  <div class="phase-body">
+    <div class="phase-blurb">
+      <strong>Think of this like a house inspection before renovation.</strong> Before you touch anything, you walk through every room and write down what's there. Here, your "rooms" are every database, cache cluster, and data lake partition that your company owns.
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-circle">1.1</div><div class="step-line"></div></div>
+        <div class="step-content">
+          <div class="step-title">List every single data store</div>
+          <div class="step-desc">Create a master spreadsheet (your "Data Store Register") listing every place data lives — every database instance, every cache cluster (Redis, Memcached), every data lake bucket/folder. Include the environment (production, staging, dev) and the team that owns it.</div>
+          <div class="step-details">
+            <div class="detail-row"><span class="detail-label who">Who</span><span class="detail-val">TPM + Engineering leads from each team + Infrastructure team</span></div>
+            <div class="detail-row"><span class="detail-label how">How</span><span class="detail-val">Send a questionnaire to each team lead. Cross-check with cloud infrastructure dashboards (AWS Console, GCP Resource Manager, Azure Portal) to find stores that teams forgot to mention.</span></div>
+            <div class="detail-row"><span class="detail-label tool">Tools</span><span class="detail-val">AWS Config · Azure Resource Graph · GCP Asset Inventory · Confluence/Notion for tracking</span></div>
+            <div class="detail-row"><span class="detail-label risk">Risk if skipped</span><span class="detail-val">You'll miss "shadow" databases that teams set up informally — these are often the most non-compliant because no one is watching them.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-circle">1.2</div><div class="step-line"></div></div>
+        <div class="step-content">
+          <div class="step-title">Catalog every table and column with PII</div>
+          <div class="step-desc">For each data store, list all tables (or collections/schemas). For every table, identify which columns contain PII — names, email addresses, phone numbers, IPs, dates of birth, social security numbers, credit card data, home addresses, device IDs, etc.</div>
+          <div class="step-details">
+            <div class="detail-row"><span class="detail-label how">How</span><span class="detail-val">Start with automated scanning tools (they flag obvious PII fields by column name and content patterns). Then have a human review to catch things the tool missed — e.g. a column called "notes" that stores free-text with phone numbers buried inside.</span></div>
+            <div class="detail-row"><span class="detail-label tool">Tools</span><span class="detail-val">AWS Macie · Google Cloud DLP (Data Loss Prevention) · Microsoft Purview · Collibra · Informatica · Alation</span></div>
+            <div class="detail-row"><span class="detail-label gdpr">GDPR link</span><span class="detail-val">GDPR Article 30 requires a <strong>Record of Processing Activities (RoPA)</strong> — this step is how you build it.</span></div>
+          </div>
+          <div class="tag-row">
+            <span class="tag">Name / Full Name</span><span class="tag">Email</span><span class="tag">Phone</span><span class="tag">DOB</span><span class="tag">SSN / NIN</span><span class="tag">IP Address</span><span class="tag">Location / Address</span><span class="tag">Device ID</span><span class="tag">Cookie ID</span><span class="tag">Financial Data</span><span class="tag">Health Data</span><span class="tag">Biometric</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-circle">1.3</div><div class="step-line"></div></div>
+        <div class="step-content">
+          <div class="step-title">Assign a Data Owner to every data store</div>
+          <div class="step-desc">Every database, cache, and data lake partition must have a named person (Data Owner) who is accountable for its compliance. Without a named owner, nothing gets fixed — responsibility evaporates into "someone else's problem."</div>
+          <div class="step-details">
+            <div class="detail-row"><span class="detail-label who">Who</span><span class="detail-val">Usually the Engineering Manager or Product Manager of the team that built/uses the system.</span></div>
+            <div class="detail-row"><span class="detail-label gdpr">GDPR link</span><span class="detail-val">GDPR requires identifying who is the Data Controller (your company) and any Data Processors (3rd-party services you share data with).</span></div>
+            <div class="detail-row"><span class="detail-label tip">TPM Tip</span><span class="detail-val">Add a "Data Owner" column to your master spreadsheet. Send a weekly reminder to anyone with empty owner fields until all stores are assigned. No exceptions.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-circle">1.4</div></div>
+        <div class="step-content">
+          <div class="step-title">Map data flows — where does data come from and go?</div>
+          <div class="step-desc">Draw a map (a Data Flow Diagram) showing how user data enters your systems and where it travels. For example: "User signs up on the website → stored in User DB → copied to Data Lake every night → exported to our email marketing vendor." Every arrow on this map is a risk point.</div>
+          <div class="step-details">
+            <div class="detail-row"><span class="detail-label how">How</span><span class="detail-val">Interview engineering teams and review ETL/pipeline code. Most data platforms have lineage features built in.</span></div>
+            <div class="detail-row"><span class="detail-label tool">Tools</span><span class="detail-val">dbt lineage graph · Apache Atlas · Collibra Lineage · DataHub · Amundsen</span></div>
+            <div class="detail-row"><span class="detail-label gdpr">GDPR link</span><span class="detail-val">Any transfer of PII to a 3rd party (vendors, analytics tools, ad platforms) may require a <strong>Data Processing Agreement (DPA)</strong> and may restrict transfer outside the EU.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="outputs-box">
+      <div class="outputs-title">✅ Phase 1 Deliverables</div>
+      <div class="outputs-grid">
+        <div class="output-item">Data Store Register (complete list)</div>
+        <div class="output-item">PII Column Inventory per table</div>
+        <div class="output-item">Data Owner assignments</div>
+        <div class="output-item">Data Flow Diagram</div>
+        <div class="output-item">Draft Record of Processing Activities (RoPA)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PHASE 2 — PROFILE & ASSESS
+══════════════════════════════════════════════ -->
+<div class="phase-card p2" id="p2">
+  <div class="phase-header">
+    <div class="phase-num">2</div>
+    <div class="phase-title-block">
+      <div class="phase-title">🔬 Profile &amp; Assess — Understand the Mess</div>
+      <div class="phase-subtitle">Run analysis on the actual data to find format inconsistencies, duplicates, and quality problems.</div>
+    </div>
+    <div class="phase-duration">Weeks 3–7</div>
+  </div>
+  <div class="phase-body">
+    <div class="phase-blurb">
+      <strong>Think of this like a blood test.</strong> You now know what organs exist (your data stores). Now you run tests on each one to find out what's wrong. This phase is about measuring — not fixing yet.
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-circle">2.1</div><div class="step-line"></div></div>
+        <div class="step-content">
+          <div class="step-title">Run Data Profiling on every PII table</div>
+          <div class="step-desc">Data profiling is automated analysis that checks the health of each column. It answers: "What does the data in this column actually look like?" For each column, it tells you: how many nulls/blanks, what values appear, are the formats consistent, are there outliers or garbage values.</div>
+          <div class="step-details">
+            <div class="detail-row"><span class="detail-label how">What to check</span><span class="detail-val"><strong>Null rate</strong> (% of empty values), <strong>Uniqueness</strong> (how many distinct values), <strong>Format patterns</strong> (e.g. are all phone numbers in the same format?), <strong>Value ranges</strong> (are DOB years reasonable?), <strong>Data types</strong> (is a "phone" column sometimes storing letters?)</span></div>
+            <div class="detail-row"><span class="detail-label tool">Tools</span><span class="detail-val">Great Expectations · Apache Griffin · Deequ (AWS) · Talend Data Quality · SQL queries with GROUP BY / COUNT / DISTINCT</span></div>
+          </div>
+          <div class="tag-row">
+            <span class="tag">Example finding: "email column has 23% nulls"</span>
+            <span class="tag">"phone stored in 6 different formats"</span>
+            <span class="tag">"DOB has future dates — impossible"</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-circle">2.2</div><div class="step-line"></div></div>
+        <div class="step-content">
+          <div class="step-title">Find duplicate and redundant records</div>
+          <div class="step-desc">The same person's data might exist multiple times — different spellings of their name, slight variations in email, or the same record copied to 5 different tables. Duplicates inflate storage costs, make GDPR "right to erasure" requests a nightmare, and create inconsistency.</div>
+          <div class="step-details">
+            <div class="detail-row"><span class="detail-label how">How</span><span class="detail-val"><strong>Exact duplicates:</strong> Same values in key fields (email + DOB = same person). Easy to detect with SQL. <strong>Fuzzy duplicates:</strong> "John Smith" vs "Jon Smith" — require fuzzy matching algorithms. <strong>Cross-store duplicates:</strong> Same user in the Users DB and the Analytics DB — check using email or user ID as a join key.</span></div>
+            <div class="detail-row"><span class="detail-label tool">Tools</span><span class="detail-val">SQL DISTINCT / GROUP BY queries · Python (pandas dedup) · Dedupe.io · Informatica MDM · Talend · dbt tests</span></div>
+            <div class="detail-row"><span class="detail-label gdpr">GDPR link</span><span class="detail-val">If a user submits a "Right to Erasure" request (right to be forgotten), you must delete them from ALL stores. Duplicates you don't know about = compliance violation you can't see.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-circle">2.3</div><div class="step-line"></div></div>
+        <div class="step-content">
+          <div class="step-title">Identify format &amp; type inconsistencies</div>
+          <div class="step-desc">The same field stored in 5 different ways across your systems. This happens because different teams built different services at different times without agreeing on standards. Common examples are shown below.</div>
+          <div class="step-details">
+            <div class="detail-row"><span class="detail-label tip">Examples</span><span class="detail-val">
+              <strong>Date of Birth:</strong> "15/04/1990" vs "1990-04-15" vs "April 15, 1990" vs timestamp<br>
+              <strong>Phone:</strong> "+1-555-123-4567" vs "5551234567" vs "(555) 123 4567"<br>
+              <strong>Name:</strong> "JOHN SMITH" vs "john smith" vs "Smith, John"<br>
+              <strong>Country:</strong> "United States" vs "US" vs "USA" vs "840" (ISO numeric code)
+            </span></div>
+            <div class="detail-row"><span class="detail-label how">How to find</span><span class="detail-val">Run REGEX pattern analysis on each PII column. Count how many distinct patterns exist. More than 2–3 patterns for the same field = inconsistency problem.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-circle">2.4</div></div>
+        <div class="step-content">
+          <div class="step-title">Check data retention — how old is this data?</div>
+          <div class="step-desc">GDPR says you can only keep personal data for as long as you actually need it (the "storage limitation principle"). Run a query to find how old your data is. Records from 7+ years ago for users who never returned are likely in violation — you have no legal reason to still hold them.</div>
+          <div class="step-details">
+            <div class="detail-row"><span class="detail-label how">How</span><span class="detail-val">Query the <strong>created_at</strong> / <strong>updated_at</strong> timestamp column in each table. Group by year. Compare against your privacy policy's stated retention period.</span></div>
+            <div class="detail-row"><span class="detail-label gdpr">GDPR link</span><span class="detail-val">Article 5(1)(e) — "Storage limitation": data must not be kept longer than necessary. If you told users "we keep your data for 2 years" in your privacy policy, data older than 2 years is a violation.</span></div>
+            <div class="detail-row"><span class="detail-label risk">Warning</span><span class="detail-val">Cache layers (Redis etc.) often store PII with no TTL set — data stays forever unless someone explicitly deletes it. Check TTL settings on every cache key that might hold PII.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="outputs-box">
+      <div class="outputs-title">✅ Phase 2 Deliverables</div>
+      <div class="outputs-grid">
+        <div class="output-item">Data Quality Scorecard per table</div>
+        <div class="output-item">Duplicate &amp; Redundancy Report</div>
+        <div class="output-item">Format Inconsistency Catalog</div>
+        <div class="output-item">Data Age Distribution Report</div>
+        <div class="output-item">List of tables with no retention policy</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PHASE 3 — GDPR GAP ANALYSIS
+══════════════════════════════════════════════ -->
+<div class="phase-card p3" id="p3">
+  <div class="phase-header">
+    <div class="phase-num">3</div>
+    <div class="phase-title-block">
+      <div class="phase-title">⚖️ GDPR Gap Analysis — Find the Legal Violations</div>
+      <div class="phase-subtitle">Map every piece of PII data against GDPR requirements and identify exactly where you're non-compliant.</div>
+    </div>
+    <div class="phase-duration">Weeks 5–8</div>
+  </div>
+  <div class="phase-body">
+    <div class="phase-blurb">
+      <strong>Think of this like comparing your building against fire safety codes.</strong> You have a map of your building (Phase 1) and you know what's broken (Phase 2). Now you check each finding against the law to classify it: "legal violation," "operational risk," or "just messy but not illegal."
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-circle">3.1</div><div class="step-line"></div></div>
+        <div class="step-content">
+          <div class="step-title">Check: Do you have a legal basis for each type of PII?</div>
+          <div class="step-desc">GDPR requires a "lawful basis" for processing every type of personal data. For each PII field you found, you need to answer: WHY are we storing this? The six valid reasons under GDPR are listed below. If you can't justify a field with one of these — delete it.</div>
+          <div class="step-details">
+            <div class="detail-row"><span class="detail-label gdpr">6 Lawful Bases</span><span class="detail-val">
+              <strong>1. Consent</strong> — user explicitly agreed (ticked a box, signed up) <br>
+              <strong>2. Contract</strong> — needed to deliver the service they paid for<br>
+              <strong>3. Legal obligation</strong> — law requires you to keep it (e.g. tax records)<br>
+              <strong>4. Vital interests</strong> — needed to protect someone's life<br>
+              <strong>5. Public task</strong> — government functions<br>
+              <strong>6. Legitimate interests</strong> — your business need outweighs privacy risk (use carefully)
+            </span></div>
+            <div class="detail-row"><span class="detail-label tip">Example</span><span class="detail-val">You collect users' <strong>date of birth</strong> for age verification. Lawful basis = Contract. Fine. But if you're also storing their <strong>browsing history</strong> for no documented reason — that's a gap.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-circle">3.2</div><div class="step-line"></div></div>
+        <div class="step-content">
+          <div class="step-title">Check: Can users exercise their rights?</div>
+          <div class="step-desc">GDPR gives users 8 rights. You need to be technically able to honor ALL of them within 30 days. For each right, test whether you can actually do it. Most companies discover they can't — especially for data scattered across many stores.</div>
+          <div class="step-details">
+            <div class="detail-row"><span class="detail-label gdpr">8 User Rights to Test</span><span class="detail-val">
+              <strong>1. Right to access</strong> — "Show me all data you have about me" → Can you export it from ALL stores in 30 days?<br>
+              <strong>2. Right to rectification</strong> — "Fix my wrong data" → If they update their email, does it update everywhere?<br>
+              <strong>3. Right to erasure</strong> — "Delete me" → Can you find and delete from ALL stores including cache &amp; data lake?<br>
+              <strong>4. Right to restrict processing</strong> — "Don't use my data for X" → Can you flag and stop specific processing?<br>
+              <strong>5. Right to data portability</strong> — "Give me my data in a usable format"<br>
+              <strong>6. Right to object</strong> — "Stop processing my data for marketing"<br>
+              <strong>7. Rights related to automated decision making</strong> — "Explain any automated decisions about me"<br>
+              <strong>8. Right to withdraw consent</strong> — If consent was the basis, can they withdraw it?
+            </span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-circle">3.3</div><div class="step-line"></div></div>
+        <div class="step-content">
+          <div class="step-title">Check: Is PII encrypted and access-controlled?</div>
+          <div class="step-desc">PII in a plain-text column that any analyst can query is a major risk. GDPR requires you to implement "appropriate technical measures" to protect personal data. Run an access audit to find out who can see PII right now.</div>
+          <div class="step-details">
+            <div class="detail-row"><span class="detail-label how">What to check</span><span class="detail-val">
+              Is PII encrypted at rest (on disk) and in transit (network)? <br>
+              Who has SELECT access to PII tables? (Principle of least privilege — only those who need it should have it) <br>
+              Are production PII tables visible to developers running local queries? (they shouldn't be — use masked/synthetic data for dev) <br>
+              Are database credentials shared or individual? (shared = can't audit who did what)
+            </span></div>
+            <div class="detail-row"><span class="detail-label tool">Tools</span><span class="detail-val">Database audit logs · IAM role review · Column-level encryption tools · Dynamic data masking (SQL Server, Oracle, Snowflake)</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-circle">3.4</div></div>
+        <div class="step-content">
+          <div class="step-title">Check: Are 3rd-party data transfers legal?</div>
+          <div class="step-desc">Every time PII leaves your systems and goes to a vendor — your email platform, analytics tool, CRM, ad network — that's a data transfer. Each one needs a legal contract (Data Processing Agreement). If PII goes outside the EU/UK, you need additional protections.</div>
+          <div class="step-details">
+            <div class="detail-row"><span class="detail-label how">How</span><span class="detail-val">Review your Data Flow Diagram from Phase 1. For every external arrow (data leaving your systems), check: Do you have a signed DPA with that vendor? Is the vendor EU-based or using SCCs/Adequacy decisions for US transfers?</span></div>
+            <div class="detail-row"><span class="detail-label gdpr">GDPR link</span><span class="detail-val">Chapter V of GDPR governs international data transfers. Sending EU user data to the US or other non-adequate countries without Standard Contractual Clauses (SCCs) = violation.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="outputs-box">
+      <div class="outputs-title">✅ Phase 3 Deliverables</div>
+      <div class="outputs-grid">
+        <div class="output-item">GDPR Gap Register (list of violations)</div>
+        <div class="output-item">Lawful Basis mapping per data type</div>
+        <div class="output-item">User Rights capability test results</div>
+        <div class="output-item">Access Control Audit report</div>
+        <div class="output-item">3rd-party transfer inventory &amp; DPA status</div>
+        <div class="output-item">Draft DPIA (Data Protection Impact Assessment)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PHASE 4 — PRIORITIZE & PLAN
+══════════════════════════════════════════════ -->
+<div class="phase-card p4" id="p4">
+  <div class="phase-header">
+    <div class="phase-num">4</div>
+    <div class="phase-title-block">
+      <div class="phase-title">🎯 Prioritize &amp; Plan — Decide What to Fix First</div>
+      <div class="phase-subtitle">You now have a big list of problems. Not everything can be fixed at once. Rank by risk and build a realistic roadmap.</div>
+    </div>
+    <div class="phase-duration">Weeks 7–9</div>
+  </div>
+  <div class="phase-body">
+    <div class="phase-blurb">
+      <strong>Think of this like hospital triage.</strong> You've diagnosed all the patients. Now you decide: who needs emergency surgery now (P0), who needs treatment this week (P1), and who can wait for a scheduled appointment (P2). Fix the life-threatening problems first.
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-circle">4.1</div><div class="step-line"></div></div>
+        <div class="step-content">
+          <div class="step-title">Score every finding by Risk × Volume × Effort</div>
+          <div class="step-desc">For each problem found in Phases 2 and 3, assign scores for: how severe is the GDPR risk, how many users are affected, and how hard is it to fix. Multiply these together to get a priority score.</div>
+          <div class="step-details">
+            <div class="detail-row"><span class="detail-label how">Formula</span><span class="detail-val">
+              <strong>Risk:</strong> 3 = regulatory fine likely · 2 = data breach risk · 1 = operational only<br>
+              <strong>Volume:</strong> 3 = affects millions of users · 2 = thousands · 1 = hundreds<br>
+              <strong>Effort to fix:</strong> 3 = quick win (days) · 2 = medium (weeks) · 1 = complex (months)<br>
+              <strong>Priority Score = Risk × Volume × Effort</strong> — fix highest scores first
+            </span></div>
+            <div class="detail-row"><span class="detail-label tip">P0 examples</span><span class="detail-val">Unencrypted PII visible to all employees · Data with no legal basis · Inability to honor erasure requests · PII sent to vendor with no DPA signed</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-circle">4.2</div><div class="step-line"></div></div>
+        <div class="step-content">
+          <div class="step-title">Create a Remediation Roadmap with clear owners</div>
+          <div class="step-desc">Turn your prioritized list into a proper project plan. Each item needs: a clear description of what needs to change, a named owner (engineer or team), a target date, and measurable success criteria. Without these four things, nothing gets done.</div>
+          <div class="step-details">
+            <div class="detail-row"><span class="detail-label how">Structure</span><span class="detail-val">
+              <strong>Month 1 (Emergency):</strong> P0 issues — legal violations that could result in fines right now<br>
+              <strong>Months 2–3 (High Priority):</strong> P1 issues — major data quality problems, access control gaps<br>
+              <strong>Months 4–6 (Systematic):</strong> P2 issues — format standardization, deduplication, retention cleanup<br>
+              <strong>Ongoing:</strong> P3 — nice-to-have improvements and technical debt
+            </span></div>
+            <div class="detail-row"><span class="detail-label tool">Tools</span><span class="detail-val">Jira · Linear · Asana · Notion — track as epics/tickets with due dates</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-circle">4.3</div></div>
+        <div class="step-content">
+          <div class="step-title">Get executive sign-off and budget</div>
+          <div class="step-desc">Present the findings to leadership in business language, not technical language. Show them: "We found X issues. The GDPR fine risk is €Y. It will cost Z to fix. Here's the plan." Get formal approval so you have budget, headcount, and executive backing to override teams that push back.</div>
+          <div class="step-details">
+            <div class="detail-row"><span class="detail-label tip">TPM Tip</span><span class="detail-val">Create a one-page executive summary with a traffic light (Red/Amber/Green) status for each data store. Executives make decisions fast when they can see the picture at a glance. Save the 50-page technical report as an appendix.</span></div>
+            <div class="detail-row"><span class="detail-label who">Attendees</span><span class="detail-val">CTO or VP Engineering · Legal / DPO · CISO (security) · Product leadership · You (TPM)</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="outputs-box">
+      <div class="outputs-title">✅ Phase 4 Deliverables</div>
+      <div class="outputs-grid">
+        <div class="output-item">Risk-scored issue register</div>
+        <div class="output-item">Remediation Roadmap (Gantt/timeline)</div>
+        <div class="output-item">Executive summary deck</div>
+        <div class="output-item">Approved budget &amp; headcount</div>
+        <div class="output-item">Owner assignments per issue</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PHASE 5 — CLEAN & FIX
+══════════════════════════════════════════════ -->
+<div class="phase-card p5" id="p5">
+  <div class="phase-header">
+    <div class="phase-num">5</div>
+    <div class="phase-title-block">
+      <div class="phase-title">🧹 Clean &amp; Fix — Do the Actual Work</div>
+      <div class="phase-subtitle">Execute the remediation plan. Fix data quality issues, remove non-compliant data, and harden access controls.</div>
+    </div>
+    <div class="phase-duration">Months 2–5</div>
+  </div>
+  <div class="phase-body">
+    <div class="phase-blurb">
+      <strong>Think of this like the renovation itself.</strong> Plans are approved, budget is secured. Now the work gets done — in the right order, carefully, with testing at each step. Never run bulk data changes on production without testing on a copy first.
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-circle">5.1</div><div class="step-line"></div></div>
+        <div class="step-content">
+          <div class="step-title">Delete data with no legal basis &amp; expired retention</div>
+          <div class="step-desc">This is the most urgent GDPR fix. Data you have no right to hold must be deleted. Data older than your stated retention period must be deleted. This is not optional. Always take a backup before deleting, archive to secure cold storage if legally required (e.g. tax records), then delete.</div>
+          <div class="step-details">
+            <div class="detail-row"><span class="detail-label how">Process</span><span class="detail-val">1. Write a deletion script → 2. Test on a copy of data → 3. Have legal approve the deletion list → 4. Run with a transaction (so you can roll back if something breaks) → 5. Log every deletion with a timestamp and who authorized it</span></div>
+            <div class="detail-row"><span class="detail-label risk">Warning</span><span class="detail-val">For the data lake: deletion is harder (you can't just DELETE a row in Parquet/ORC files). You'll need to rewrite partitions. Plan extra time for data lake cleanup — it's the most technically complex part.</span></div>
+            <div class="detail-row"><span class="detail-label tip">Cache (Redis etc.)</span><span class="detail-val">Set a TTL (Time To Live) on every cache key that holds PII. A TTL of 24 hours is reasonable for most session data. Keys with no TTL = data lives forever = violation.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-circle">5.2</div><div class="step-line"></div></div>
+        <div class="step-content">
+          <div class="step-title">Standardize PII field formats</div>
+          <div class="step-desc">Normalize inconsistent fields to a single agreed standard across all stores. This makes future analysis reliable and GDPR requests (like "find all data for this person") actually workable.</div>
+          <div class="step-details">
+            <div class="detail-row"><span class="detail-label how">Standards to adopt</span><span class="detail-val">
+              <strong>Phone numbers:</strong> E.164 format (+15551234567) — international standard<br>
+              <strong>Dates:</strong> ISO 8601 (YYYY-MM-DD) — unambiguous globally<br>
+              <strong>Names:</strong> Store First Name and Last Name in separate columns. Store the original if needed.<br>
+              <strong>Emails:</strong> Always lowercase. Validate format with REGEX on write.<br>
+              <strong>Country:</strong> ISO 3166-1 alpha-2 codes (US, GB, DE, FR)
+            </span></div>
+            <div class="detail-row"><span class="detail-label tip">TPM Tip</span><span class="detail-val">Write the standard down in a shared "Data Standards Document" that all engineers must follow. This is your reference for Phase 6 (governance). If it's not written down, teams will go back to their own formats within 3 months.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-circle">5.3</div><div class="step-line"></div></div>
+        <div class="step-content">
+          <div class="step-title">Deduplicate records and merge correctly</div>
+          <div class="step-desc">Remove duplicate records — but do it carefully. You need to decide which copy is the "golden record" (the truth). You can't just delete one randomly — you need business rules. For example: "keep the most recently updated record" or "prefer the record with the most complete fields."</div>
+          <div class="step-details">
+            <div class="detail-row"><span class="detail-label how">Steps</span><span class="detail-val">1. Identify duplicates (from Phase 2 output) → 2. Define survivorship rules ("which copy wins?") with business stakeholders → 3. Merge or delete duplicates → 4. Update any foreign keys pointing to deleted records → 5. Verify downstream systems still work</span></div>
+            <div class="detail-row"><span class="detail-label risk">Risk</span><span class="detail-val">Deduplication can break downstream systems that have foreign key references to the deleted records. Always check what depends on the records you're merging before deleting.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-circle">5.4</div><div class="step-line"></div></div>
+        <div class="step-content">
+          <div class="step-title">Restrict access to PII — Least Privilege</div>
+          <div class="step-desc">Remove broad access to PII tables. Only people whose job requires seeing raw PII should have access. Everyone else should see masked/anonymized versions. This is also a security win — a stolen analyst account can't access all your user data.</div>
+          <div class="step-details">
+            <div class="detail-row"><span class="detail-label how">Actions</span><span class="detail-val">
+              Revoke broad SELECT access to PII tables for all users → Create role-based access groups (Customer Support, Data Science, Engineering) → Each group gets only the columns they need → Implement dynamic data masking (email shows as "j***@g***.com" for unauthorized users) → All access changes are audit-logged
+            </span></div>
+            <div class="detail-row"><span class="detail-label tool">Tools</span><span class="detail-val">PostgreSQL RLS (Row-Level Security) · Snowflake Column Masking Policies · BigQuery column-level security · AWS Lake Formation for data lake access control</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-circle">5.5</div></div>
+        <div class="step-content">
+          <div class="step-title">Pseudonymize or anonymize PII where possible</div>
+          <div class="step-desc">If a team only needs to analyze patterns (not identify specific people), give them anonymized data instead of real PII. This reduces your GDPR exposure — anonymized data is not covered by GDPR at all. Pseudonymization replaces real identifiers with a code (still reversible by authorized users). Anonymization is permanent (irreversible).</div>
+          <div class="step-details">
+            <div class="detail-row"><span class="detail-label how">Use cases</span><span class="detail-val">
+              <strong>Analytics team</strong> studying purchase patterns → give them anonymized user IDs, not real emails<br>
+              <strong>ML training</strong> → use synthetic data generated from real patterns, not actual PII<br>
+              <strong>Dev/test environments</strong> → never use real PII. Use masked or synthetic copies only.
+            </span></div>
+            <div class="detail-row"><span class="detail-label tool">Tools</span><span class="detail-val">Google Cloud DLP tokenization · AWS Glue · Databricks Delta · Faker/Mimesis (Python synthetic data) · ARX (anonymization tool)</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="outputs-box">
+      <div class="outputs-title">✅ Phase 5 Deliverables</div>
+      <div class="outputs-grid">
+        <div class="output-item">Deletion log with authorization trail</div>
+        <div class="output-item">Standardized PII fields across all stores</div>
+        <div class="output-item">Deduplicated &amp; merged records</div>
+        <div class="output-item">Updated IAM / access control policies</div>
+        <div class="output-item">PII masking in non-prod environments</div>
+        <div class="output-item">Cache TTLs configured on all PII keys</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PHASE 6 — GOVERN & CONTROL
+══════════════════════════════════════════════ -->
+<div class="phase-card p6" id="p6">
+  <div class="phase-header">
+    <div class="phase-num">6</div>
+    <div class="phase-title-block">
+      <div class="phase-title">🏛️ Govern &amp; Control — Stop the Problem Coming Back</div>
+      <div class="phase-subtitle">Build automated guardrails so new data is captured correctly from day one and compliance is maintained without manual effort.</div>
+    </div>
+    <div class="phase-duration">Months 4–6</div>
+  </div>
+  <div class="phase-body">
+    <div class="phase-blurb">
+      <strong>Think of this like installing a new building code for the future.</strong> You've cleaned the mess. Now you put in smoke detectors, sprinklers, and fire exits so the next fire is caught early and can't spread. Without governance, teams will recreate the same mess within 12 months.
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-circle">6.1</div><div class="step-line"></div></div>
+        <div class="step-content">
+          <div class="step-title">Enforce data validation at ingestion (write time)</div>
+          <div class="step-desc">The cheapest time to fix bad data is before it enters your system. Add validation rules at the point where data is written — API endpoints, ETL pipelines, database insert triggers. Reject bad formats before they get stored.</div>
+          <div class="step-details">
+            <div class="detail-row"><span class="detail-label how">Examples</span><span class="detail-val">
+              API rejects an email that doesn't match REGEX pattern before saving → ETL pipeline fails and alerts if a DOB is in the future → Database CHECK constraint prevents phone numbers shorter than 7 digits → Schema validation (JSON Schema / Avro / Protobuf) enforces field types in data pipelines
+            </span></div>
+            <div class="detail-row"><span class="detail-label tool">Tools</span><span class="detail-val">Great Expectations · dbt tests · Apache Avro/Protobuf schema registry · SQL CHECK constraints · API-level validation (Pydantic, Joi, Zod)</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-circle">6.2</div><div class="step-line"></div></div>
+        <div class="step-content">
+          <div class="step-title">Implement automated data quality monitoring</div>
+          <div class="step-desc">Set up dashboards and alerts that continuously check data quality. If the null rate for the email column suddenly jumps from 2% to 40% — you get alerted immediately, not 3 months later when a customer complains.</div>
+          <div class="step-details">
+            <div class="detail-row"><span class="detail-label how">Metrics to monitor</span><span class="detail-val">
+              Null rate per PII column · Duplicate rate per table · Format conformity % · Record count vs. expected range · Data freshness (is the pipeline running on time?) · Retention age (flag records approaching deletion date)
+            </span></div>
+            <div class="detail-row"><span class="detail-label tool">Tools</span><span class="detail-val">Great Expectations + Slack alerts · Monte Carlo · Bigeye · dbt + elementary · Grafana dashboards on data quality metrics</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-circle">6.3</div><div class="step-line"></div></div>
+        <div class="step-content">
+          <div class="step-title">Automate data retention deletion</div>
+          <div class="step-desc">Don't rely on humans to remember to delete old data. Set up scheduled jobs that automatically delete or anonymize records that have exceeded the retention period. This makes GDPR compliance continuous, not a one-time cleanup.</div>
+          <div class="step-details">
+            <div class="detail-row"><span class="detail-label how">How</span><span class="detail-val">For each table with PII, create a scheduled job (cron/Cloud Scheduler) that runs monthly. It deletes or anonymizes records where (current_date - created_at) exceeds your retention policy. Log every deletion. Alert on failures.</span></div>
+            <div class="detail-row"><span class="detail-label tip">Data Lake tip</span><span class="detail-val">Use partition-based retention: store data in partitions by year/month (e.g. /data/users/2021/). Dropping a whole partition (DELETE partition) is far faster than row-by-row deletion in large-scale data lakes.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-circle">6.4</div></div>
+        <div class="step-content">
+          <div class="step-title">Build a self-service GDPR request handler</div>
+          <div class="step-desc">When a user emails your support team saying "Delete my data" — you currently have to do it manually. That doesn't scale and causes 30-day deadline misses. Build or buy a system that routes GDPR requests to all relevant data stores automatically.</div>
+          <div class="step-details">
+            <div class="detail-row"><span class="detail-label how">What it does</span><span class="detail-val">Customer Support logs the request → System identifies all stores containing that user's data (using user ID or email as a lookup key) → Deletion/export job runs across all stores → Automated confirmation is sent to the user → Request is logged with timestamp for audit purposes</span></div>
+            <div class="detail-row"><span class="detail-label tool">Tools</span><span class="detail-val">OneTrust · Transcend.io · Ethyca · Custom-built workflow using your existing job scheduler + a data subject index</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="outputs-box">
+      <div class="outputs-title">✅ Phase 6 Deliverables</div>
+      <div class="outputs-grid">
+        <div class="output-item">Schema validation at all ingestion points</div>
+        <div class="output-item">Data quality monitoring dashboard</div>
+        <div class="output-item">Automated retention deletion jobs</div>
+        <div class="output-item">GDPR request handling workflow</div>
+        <div class="output-item">Data Standards Document (enforced)</div>
+        <div class="output-item">Updated privacy policy (if needed)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PHASE 7 — PROVE & MONITOR
+══════════════════════════════════════════════ -->
+<div class="phase-card p7" id="p7">
+  <div class="phase-header">
+    <div class="phase-num">7</div>
+    <div class="phase-title-block">
+      <div class="phase-title">📋 Prove &amp; Monitor — Show You're Compliant, Stay Compliant</div>
+      <div class="phase-subtitle">Create the documentation and ongoing processes that prove compliance to regulators, auditors, and customers.</div>
+    </div>
+    <div class="phase-duration">Ongoing from Month 3</div>
+  </div>
+  <div class="phase-body">
+    <div class="phase-blurb">
+      <strong>Think of this like maintaining a fire safety logbook.</strong> The inspection is passed, the building is safe — but you need to keep dated records that prove it, re-inspect regularly, and update the logbook every time something changes. Regulators don't just want you to be compliant — they want proof.
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-circle">7.1</div><div class="step-line"></div></div>
+        <div class="step-content">
+          <div class="step-title">Finalize and maintain the Record of Processing Activities (RoPA)</div>
+          <div class="step-desc">The RoPA is your official GDPR register — a document that lists every type of personal data you process, why you process it, who has access, how long you keep it, and where it goes. GDPR Article 30 makes this legally mandatory for most organizations. If a regulator asks for it, you must produce it.</div>
+          <div class="step-details">
+            <div class="detail-row"><span class="detail-label how">What it contains</span><span class="detail-val">Name of processing activity · Purpose &amp; lawful basis · Categories of PII · Which systems hold it · Who has access · Retention period · 3rd-party recipients · Security measures</span></div>
+            <div class="detail-row"><span class="detail-label tip">TPM Tip</span><span class="detail-val">Review and update the RoPA every 6 months and whenever a new feature is built that processes PII. Assign this review as a recurring calendar event for each Data Owner.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-circle">7.2</div><div class="step-line"></div></div>
+        <div class="step-content">
+          <div class="step-title">Run quarterly internal audits</div>
+          <div class="step-desc">Every quarter, run a lightweight audit: re-run the data quality checks from Phase 2, verify retention jobs ran successfully, check that no new stores appeared without being registered, review access logs for anomalies, and confirm all GDPR requests were handled within 30 days.</div>
+          <div class="step-details">
+            <div class="detail-row"><span class="detail-label who">Who runs it</span><span class="detail-val">TPM coordinates. Data Owners complete their section. Legal/DPO reviews the results. Results presented to CISO and CTO quarterly.</span></div>
+            <div class="detail-row"><span class="detail-label tip">Checklist items</span><span class="detail-val">New data stores since last audit → PII in unexpected columns (re-run DLP scan) → Retention job logs (did they run? did they fail?) → Access control changes (new users with PII access?) → GDPR request log (all answered within 30 days?)</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-circle">7.3</div><div class="step-line"></div></div>
+        <div class="step-content">
+          <div class="step-title">Build a "Privacy by Design" checklist for new features</div>
+          <div class="step-desc">The root cause of your data mess is that teams built features quickly without thinking about data compliance. Fix this at the source: add a mandatory data privacy review to every new feature that touches or creates PII. Make it part of the design/PRD process, not an afterthought.</div>
+          <div class="step-details">
+            <div class="detail-row"><span class="detail-label how">Checklist questions</span><span class="detail-val">
+              Does this feature create or process any PII? If yes → <br>
+              What is the lawful basis? → <br>
+              Have you registered it in the RoPA? → <br>
+              Where will this data be stored, and for how long? → <br>
+              Who will have access? → <br>
+              Has Legal/DPO approved? → <br>
+              Is a DPIA needed (high-risk processing)?
+            </span></div>
+            <div class="detail-row"><span class="detail-label tip">Where to embed it</span><span class="detail-val">Add as a required section in your PRD (Product Requirements Document) template. Add to engineering's Definition of Done checklist. No PII-touching feature ships without it being answered.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-circle">7.4</div></div>
+        <div class="step-content">
+          <div class="step-title">Train all teams on data handling basics</div>
+          <div class="step-desc">Technical fixes only work if people understand why they matter. Run a short annual training for engineers, data analysts, product managers, and customer support. Focus on: what counts as PII, what they're allowed to do with it, and what to do if they accidentally see or leak it.</div>
+          <div class="step-details">
+            <div class="detail-row"><span class="detail-label how">Format</span><span class="detail-val">30-minute online module + quiz (mandatory annual) · "Data Incident Response" card (what to do if you accidentally export PII to the wrong place — you have 72 hours to report a breach to the regulator under GDPR)</span></div>
+            <div class="detail-row"><span class="detail-label gdpr">GDPR link</span><span class="detail-val">Article 33 — you must report data breaches to your supervisory authority within 72 hours of becoming aware. Train your team so they recognize and report incidents fast — don't let 72 hours pass because someone wasn't sure if it was "a real breach."</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="outputs-box">
+      <div class="outputs-title">✅ Phase 7 Deliverables</div>
+      <div class="outputs-grid">
+        <div class="output-item">Finalized RoPA document</div>
+        <div class="output-item">Quarterly audit report (recurring)</div>
+        <div class="output-item">Privacy by Design checklist</div>
+        <div class="output-item">Data breach response runbook</div>
+        <div class="output-item">Annual training completion records</div>
+        <div class="output-item">Compliance status dashboard (exec-facing)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end .phases -->
+
+<!-- ══════════════════════════════════════════════
+     SUMMARY
+══════════════════════════════════════════════ -->
+<div class="summary">
+  <h3>📌 Quick Summary — The 7-Phase Plan at a Glance</h3>
+  <div class="summary-grid">
+    <div class="summary-tile">
+      <div class="label">Phase 1</div>
+      <div class="value" style="color:#818cf8">🗺️ Discover &amp; Map</div>
+      <div class="sub">Weeks 1–4 · Find every data store, every PII column, every data flow</div>
+    </div>
+    <div class="summary-tile">
+      <div class="label">Phase 2</div>
+      <div class="value" style="color:#38bdf8">🔬 Profile &amp; Assess</div>
+      <div class="sub">Weeks 3–7 · Measure quality, find duplicates, check data age</div>
+    </div>
+    <div class="summary-tile">
+      <div class="label">Phase 3</div>
+      <div class="value" style="color:#fbbf24">⚖️ GDPR Gap Analysis</div>
+      <div class="sub">Weeks 5–8 · Check legal basis, user rights, access controls, 3rd parties</div>
+    </div>
+    <div class="summary-tile">
+      <div class="label">Phase 4</div>
+      <div class="value" style="color:#f87171">🎯 Prioritize &amp; Plan</div>
+      <div class="sub">Weeks 7–9 · Risk-score everything, build roadmap, get exec sign-off</div>
+    </div>
+    <div class="summary-tile">
+      <div class="label">Phase 5</div>
+      <div class="value" style="color:#34d399">🧹 Clean &amp; Fix</div>
+      <div class="sub">Months 2–5 · Delete, standardize, deduplicate, restrict access</div>
+    </div>
+    <div class="summary-tile">
+      <div class="label">Phase 6</div>
+      <div class="value" style="color:#c084fc">🏛️ Govern &amp; Control</div>
+      <div class="sub">Months 4–6 · Validation at write time, monitoring, automation</div>
+    </div>
+    <div class="summary-tile">
+      <div class="label">Phase 7</div>
+      <div class="value" style="color:#fb7185">📋 Prove &amp; Monitor</div>
+      <div class="sub">Ongoing · RoPA, quarterly audits, privacy-by-design, training</div>
+    </div>
+  </div>
+
+  <h3 style="margin-bottom: 10px;">🔑 Golden Rules for the TPM Running This Program</h3>
+  <div class="golden-rules">
+    <div class="rule"><span class="rule-num">01</span><span>Always involve Legal / DPO from Day 1. Technical fixes without legal guidance can create new risks. Every deletion needs legal sign-off.</span></div>
+    <div class="rule"><span class="rule-num">02</span><span>Never fix data without a backup and a rollback plan. One bad script on a production database can corrupt millions of records permanently.</span></div>
+    <div class="rule"><span class="rule-num">03</span><span>Document everything, even when it slows you down. Regulators don't just want compliance — they want proof. An undocumented deletion is legally invisible.</span></div>
+    <div class="rule"><span class="rule-num">04</span><span>Name an owner for every data store. Ownerless data is everyone's problem and no one's priority. Problems only get fixed when one named person is accountable.</span></div>
+    <div class="rule"><span class="rule-num">05</span><span>Phases 1–4 can run in parallel where possible. Discovery (Phase 1) and profiling (Phase 2) overlap. GDPR gap analysis (Phase 3) starts before Phase 2 finishes. Don't run purely sequentially — it takes too long.</span></div>
+    <div class="rule"><span class="rule-num">06</span><span>GDPR compliance is a continuous program, not a one-time project. The real risk isn't the initial cleanup — it's drifting back into non-compliance 6 months later. Phase 7 never ends.</span></div>
+  </div>
+</div>
+
+<div style="text-align:center; padding: 28px 16px; color: var(--text-dim); font-size: 0.76rem;">
+  This plan covers GDPR as it applies to EU/UK structured data. Consult your DPO for jurisdiction-specific rules (CCPA for California, PDPA for India, LGPD for Brazil, etc.).
+</div>
+
+</body>
+</html>
