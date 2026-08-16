@@ -6,347 +6,230 @@
 <title>Knowledge Directory</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 <style>
+  /* ============================================================
+     EDITORIAL CORPORATE
+     Warm stone paper · deep navy ink · steel blue · muted amber
+     ============================================================ */
   :root {
-    --ink:      #E1D9D1;
-    --surface:  #E1FFFF;
-    --surface2: #1F242E;
-    --border:   #2A3140;
-    --text:     #E7EAF0;
-    --muted:    #8A93A3;
-    --gold:     #F2B84B;
-    --gold-dim: #C9963A;
-    --teal:     #4FD1C5;
-    --radius:   14px;
-    --maxw:     760px;
+    --paper:      #F4F2ED;
+    --paper-alt:  #EDE9E1;
+    --card:       #FFFFFF;
+
+    --ink:        #13212D;
+    --body:       #3C4A56;
+    --muted:      #7B8894;
+    --faint:      #A6AFB8;
+
+    --line:       #E3DDD3;
+    --line-soft:  #EFEBE3;
+
+    --blue:       #2E5D7D;
+    --blue-deep:  #1A3B52;
+    --blue-soft:  #6D93AC;
+
+    --amber:      #B5822F;
+    --amber-tint: #F8F1E2;
+
+    --r:  14px;
+    --sh1: 0 1px 2px rgba(19,33,45,.04), 0 3px 10px rgba(19,33,45,.04);
+    --sh2: 0 2px 6px rgba(19,33,45,.04), 0 12px 32px rgba(19,33,45,.07);
+
+    --serif: "Fraunces", Georgia, "Times New Roman", serif;
+    --sans:  "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+    --maxw: 940px;
   }
 
   * { box-sizing: border-box; }
-
   html { -webkit-text-size-adjust: 100%; }
 
   body {
     margin: 0;
-    background:
-      radial-gradient(1100px 600px at 80% -10%, rgba(242,184,75,0.07), transparent 60%),
-      radial-gradient(900px 500px at -10% 110%, rgba(79,209,197,0.06), transparent 60%),
-      var(--ink);
-    color: var(--text);
-    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    background: var(--paper);
+    color: var(--body);
+    font-family: var(--sans);
     font-size: 16px;
-    line-height: 1.6;
+    line-height: 1.65;
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { color: var(--blue-deep); }
+
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
 
   /* ---------- Top bar ---------- */
   header {
     position: sticky;
     top: 0;
     z-index: 50;
-    background: rgba(14,17,22,0.82);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--border);
+    background: rgba(244,242,237,0.85);
+    backdrop-filter: blur(14px) saturate(1.4);
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+    border-bottom: 1px solid var(--line);
   }
   .brand {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 16px 20px 12px;
+    gap: 13px;
+    padding: 22px 28px;
     max-width: var(--maxw);
     margin: 0 auto;
   }
   .brand .dot {
-    width: 11px; height: 11px; border-radius: 50%;
-    background: var(--gold);
-    box-shadow: 0 0 0 4px rgba(242,184,75,0.15);
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--amber);
+    box-shadow: 0 0 0 5px var(--amber-tint);
     flex: none;
   }
   .brand h1 {
-    font-family: "Fraunces", serif;
     font-weight: 600;
-    font-size: 18px;
-    letter-spacing: 0.2px;
+    font-size: 12.5px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink);
     margin: 0;
   }
-  .brand .tag {
-    margin-left: auto;
-    font-size: 12px;
-    color: var(--muted);
-    letter-spacing: 0.3px;
-  }
 
-  /* ---------- Tabs ---------- */
-  nav {
-    max-width: var(--maxw);
-    margin: 0 auto;
-    display: flex;
-    gap: 4px;
-    padding: 0 12px 10px;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  nav::-webkit-scrollbar { display: none; }
-  .tab {
-    appearance: none;
-    border: none;
-    background: transparent;
-    color: var(--muted);
-    font: inherit;
-    font-size: 14px;
-    font-weight: 500;
-    padding: 8px 14px;
-    border-radius: 999px;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: color .15s, background .15s;
-  }
-  .tab:hover { color: var(--text); }
-  .tab[aria-selected="true"] {
-    color: var(--ink);
-    background: var(--gold);
-    font-weight: 600;
-  }
-  .tab:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
-
-  /* ---------- Panels ---------- */
-  main { padding: 28px 0 80px; }
-  .panel { display: none; animation: fade .3s ease; }
-  .panel.active { display: block; }
-  @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  /* ---------- Page body ---------- */
+  main { padding: clamp(52px, 9vw, 104px) 0 120px; }
+  .panel { display: none; }
+  .panel.active { display: block; animation: rise .5s cubic-bezier(.2,.7,.3,1); }
+  @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
   .eyebrow {
-    font-size: 12px;
-    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 11px;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--gold);
+    color: var(--muted);
     font-weight: 600;
-    margin: 0 0 14px;
+    margin: 0 0 26px;
   }
+  .eyebrow::after { content: ''; height: 1px; flex: 1; background: var(--line); }
 
-  /* ---------- Welcome hero ---------- */
   .hero h2 {
-    font-family: "Fraunces", serif;
-    font-weight: 600;
-    font-size: clamp(34px, 8vw, 52px);
-    line-height: 1.05;
-    letter-spacing: -0.5px;
-    margin: 0 0 18px;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(33px, 5.6vw, 58px);
+    line-height: 1.08;
+    letter-spacing: -0.022em;
+    color: var(--ink);
+    margin: 0 0 26px;
+    max-width: 19ch;
   }
-  .hero h2 em {
-    font-style: italic;
-    color: var(--gold);
-  }
+  .hero h2 em { font-style: italic; color: var(--blue); }
+
   .lede {
-    font-size: 18px;
+    font-size: 17px;
+    line-height: 1.78;
     color: var(--muted);
-    max-width: 56ch;
-    margin: 0 0 28px;
+    max-width: 58ch;
+    margin: 0 0 clamp(40px, 7vw, 76px);
   }
 
-  /* Countdown chip */
-  .countdown {
-    display: inline-flex;
-    align-items: stretch;
-    gap: 2px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 14px 16px;
-    margin-bottom: 36px;
-  }
-  .cd-label {
-    align-self: center;
-    font-size: 12px;
-    color: var(--muted);
-    letter-spacing: 0.4px;
-    padding-right: 14px;
-    margin-right: 4px;
-    border-right: 1px solid var(--border);
-    max-width: 120px;
-    line-height: 1.3;
-  }
-  .cd-unit { text-align: center; padding: 0 10px; }
-  .cd-num {
-    font-family: "JetBrains Mono", monospace;
-    font-weight: 700;
-    font-size: 30px;
-    color: var(--text);
-    line-height: 1;
-    font-variant-numeric: tabular-nums;
-  }
-  .cd-tag {
-    font-size: 10px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-top: 6px;
-  }
-
-  /* What's inside */
+  /* ---------- Directory cards ---------- */
   .grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 20px;
+    counter-reset: card;
   }
   .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 18px;
+    counter-increment: card;
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--r);
+    padding: 28px 28px 30px;
+    box-shadow: var(--sh1);
+    overflow: hidden;
+    transition: transform .4s cubic-bezier(.2,.7,.3,1), box-shadow .4s, border-color .4s;
   }
+  .card::before {
+    content: counter(card, decimal-leading-zero);
+    position: absolute;
+    top: 27px; right: 26px;
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    font-variant-numeric: tabular-nums;
+    color: var(--faint);
+  }
+  .card::after {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: var(--blue);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform .4s cubic-bezier(.2,.7,.3,1);
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--sh2);
+    border-color: var(--line);
+  }
+  .card:hover::after { transform: scaleY(1); }
+
   .card .k {
-    font-size: 13px;
-    color: var(--gold);
-    font-weight: 600;
-    letter-spacing: 0.3px;
-    margin: 0 0 6px;
-  }
-  .card .v { font-size: 14px; color: var(--muted); margin: 0; }
-
-  .pep {
-    margin-top: 28px;
-    padding: 22px;
-    border-radius: var(--radius);
-    border: 1px solid var(--gold-dim);
-    background: linear-gradient(180deg, rgba(242,184,75,0.10), rgba(242,184,75,0.02));
-  }
-  .pep p {
-    margin: 0;
-    font-family: "Fraunces", serif;
-    font-style: italic;
-    font-size: 18px;
-    line-height: 1.5;
-  }
-  .pep .sig {
-    display: block;
-    margin-top: 10px;
-    font-family: "Inter", sans-serif;
-    font-style: normal;
-    font-size: 13px;
-    color: var(--muted);
-    letter-spacing: 0.3px;
-  }
-
-  /* ---------- Study Notes ---------- */
-  .notes-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    margin-bottom: 22px;
-  }
-  .notes-head h2 {
-    font-family: "Fraunces", serif;
-    font-weight: 600;
-    font-size: clamp(26px, 6vw, 34px);
-    margin: 0;
-    letter-spacing: -0.4px;
-  }
-  .btn {
-    appearance: none;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--text);
-    font: inherit;
-    font-size: 13px;
-    font-weight: 600;
-    padding: 9px 14px;
-    border-radius: 999px;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: border-color .15s, color .15s;
-  }
-  .btn:hover { border-color: var(--gold); color: var(--gold); }
-  .btn:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
-
-  .acc { border-top: 1px solid var(--border); }
-  .acc-item { border-bottom: 1px solid var(--border); }
-  .acc-btn {
-    appearance: none;
-    width: 100%;
-    background: transparent;
-    border: none;
-    color: var(--text);
-    font: inherit;
-    text-align: left;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 18px 4px;
-    cursor: pointer;
-  }
-  .acc-btn:focus-visible { outline: 2px solid var(--teal); outline-offset: -2px; border-radius: 6px; }
-  .acc-num {
-    font-family: "JetBrains Mono", monospace;
-    font-size: 13px;
-    color: var(--gold);
-    font-weight: 700;
-    flex: none;
-    width: 26px;
-  }
-  .acc-title {
-    font-family: "Fraunces", serif;
-    font-weight: 600;
-    font-size: 19px;
-    flex: 1;
-    line-height: 1.25;
-  }
-  .acc-chev {
-    flex: none;
-    color: var(--muted);
-    transition: transform .2s;
-    font-size: 14px;
-  }
-  .acc-btn[aria-expanded="true"] .acc-chev { transform: rotate(180deg); color: var(--gold); }
-  .acc-body { display: none; padding: 0 4px 24px 44px; }
-  .acc-body.open { display: block; }
-  .acc-body p { margin: 0 0 12px; color: var(--text); }
-  .acc-body p.muted { color: var(--muted); }
-  .acc-body h4 {
-    font-size: 14px;
-    letter-spacing: 0.3px;
-    color: var(--gold);
-    margin: 18px 0 8px;
+    font-size: 10.5px;
+    letter-spacing: 0.17em;
     text-transform: uppercase;
+    color: var(--muted);
     font-weight: 600;
+    margin: 0 0 16px;
   }
-  .acc-body h4:first-child { margin-top: 0; }
-  .acc-body ul { margin: 0 0 12px; padding-left: 18px; }
-  .acc-body li { margin-bottom: 7px; color: var(--text); }
-  .acc-body li b { color: var(--gold); font-weight: 600; }
-  .stat-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 14px; }
-  .stat {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 8px 12px;
-    font-size: 13px;
+  .card .v {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 1.3;
+    letter-spacing: -0.012em;
+    margin: 0;
   }
-  .stat b { font-family: "JetBrains Mono", monospace; color: var(--teal); }
-  .qa {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--gold);
-    border-radius: 10px;
-    padding: 12px 14px;
-    margin-bottom: 10px;
+  .card .v a {
+    color: var(--ink);
+    transition: color .3s;
   }
-  .qa .q { font-weight: 600; margin: 0 0 4px; }
-  .qa .a { margin: 0; color: var(--muted); font-size: 14px; }
+  /* link covers the whole card */
+  .card .v a::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+  .card .v a::after {
+    content: '\2192';
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 15px;
+    color: var(--blue-soft);
+    margin-left: 11px;
+    display: inline-block;
+    transition: transform .35s cubic-bezier(.2,.7,.3,1), color .3s;
+  }
+  .card:hover .v a { color: var(--blue); }
+  .card:hover .v a::after { transform: translateX(6px); color: var(--blue); }
+
+  @media (max-width: 620px) {
+    .wrap { padding: 0 20px; }
+    .brand { padding: 18px 20px; }
+    .card { padding: 26px 22px; }
+  }
 
   @media print {
-    header, .btn { display: none !important; }
-    body { background: #fff; color: #000; }
+    header { display: none !important; }
+    body { background: #fff; }
     .panel { display: block !important; }
-    #welcome, #flash, #questions, #gameday { display: none !important; }
-    .acc-body { display: block !important; }
-    .acc-chev { display: none; }
-    .acc-num, .acc-title, .acc-body h4 { color: #000; }
-    .stat, .qa, .card { border-color: #ccc; }
+    .card { box-shadow: none; border-color: #ccc; }
   }
 </style>
 </head>
@@ -354,267 +237,29 @@
   <header>
     <div class="brand">
       <span class="dot" aria-hidden="true"></span>
-      <h1>Knowledge Directory Page for My Programs </h1>
+      <h1>Knowledge Directory</h1>
     </div>
   </header>
 
   <main class="wrap">
-    <!-- WELCOME -->
-    <section class="panel active" id="welcome" role="tabpanel" aria-labelledby="tab-welcome">
+    <section class="panel active" id="welcome">
       <div class="hero">
+        <p class="eyebrow">Programs &amp; References</p>
+        <h2>Working notes and reference guides<em>, in one place.</em></h2>
+        <p class="lede">A small library of practical program-management material — compliance planning and cloud infrastructure comparison — written to be used at work rather than filed away.</p>
 
         <div class="grid">
-          <div class="card"><p class="k">GDPR Data Cleanup</p><p class="v"> <a href="./gdpr_tpm_plan"><h4>GDPR compliance page</h4> </a></p></div>
-          <div class="card"><p class="k">Cloud comparison</p><p class="v"><a href="./cloud_comparison-Updated"><h4>Cloud comparison page</h4> </a></p></div>
+          <div class="card">
+            <p class="k">GDPR Data Cleanup</p>
+            <h4 class="v"><a href="./gdpr_tpm_plan">GDPR compliance plan</a></h4>
+          </div>
+          <div class="card">
+            <p class="k">Cloud Comparison</p>
+            <h4 class="v"><a href="./cloud_comparison-Updated">Cloud &amp; infrastructure comparison</a></h4>
+          </div>
         </div>
-
-        </div>
+      </div>
     </section>
-
   </main>
-
-<script>
-  /* ====== CONFIG — edit these ====== */
-  const CONFIG = {
-    // Set your interview date & time here (local time).
-    // Format: "YYYY-MM-DDTHH:MM:SS"
-    interviewDate: "2026-06-18T09:00:00"
-  };
-
-  /* ====== Tab navigation ====== */
-  const tabs = Array.from(document.querySelectorAll('.tab'));
-  const panels = Array.from(document.querySelectorAll('.panel'));
-
-  function selectTab(tab) {
-    tabs.forEach(t => t.setAttribute('aria-selected', String(t === tab)));
-    panels.forEach(p => p.classList.toggle('active', p.id === tab.getAttribute('aria-controls')));
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  tabs.forEach((tab, i) => {
-    tab.addEventListener('click', () => selectTab(tab));
-    tab.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
-        e.preventDefault();
-        const dir = e.key === 'ArrowRight' ? 1 : -1;
-        const next = tabs[(i + dir + tabs.length) % tabs.length];
-        next.focus(); selectTab(next);
-      }
-    });
-  });
-
-  /* ====== Countdown ====== */
-  const target = new Date(CONFIG.interviewDate).getTime();
-  const el = { d: document.getElementById('cd-d'), h: document.getElementById('cd-h'), m: document.getElementById('cd-m') };
-
-  function setCd(d, h, m) {
-    el.d.textContent = d; el.h.textContent = h; el.m.textContent = m;
-    const d2 = document.getElementById('cd2-d'), h2 = document.getElementById('cd2-h'), m2 = document.getElementById('cd2-m');
-    if (d2) { d2.textContent = d; h2.textContent = h; m2.textContent = m; }
-  }
-  function tick() {
-    const diff = target - Date.now();
-    if (isNaN(target)) { setCd('--', '--', '--'); return; }
-    if (diff <= 0) {
-      setCd('0', '0', '0');
-      const lbl = document.querySelector('.cd-label'); if (lbl) lbl.textContent = "It's go time. You're ready.";
-      const gw = document.getElementById('gdWhen'); if (gw) gw.textContent = 'Today is the day. Go get it.';
-      return;
-    }
-    const days = Math.floor(diff / 86400000);
-    const hrs  = Math.floor((diff % 86400000) / 3600000);
-    const mins = Math.floor((diff % 3600000) / 60000);
-    setCd(days, String(hrs).padStart(2, '0'), String(mins).padStart(2, '0'));
-  }
-  tick();
-  setInterval(tick, 30000);
-
-  /* ====== Study Notes accordion ====== */
-  document.querySelectorAll('.acc-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const expanded = btn.getAttribute('aria-expanded') === 'true';
-      btn.setAttribute('aria-expanded', String(!expanded));
-      btn.nextElementSibling.classList.toggle('open', !expanded);
-    });
-  });
-
-  /* ====== Print notes ====== */
-  const printBtn = document.getElementById('printNotes');
-  if (printBtn) printBtn.addEventListener('click', () => window.print());
-
-  /* ====== Flashcards ====== */
-  const DECKS = [
-    
-    
-  
-
-  const deckGrid = document.getElementById('deckGrid');
-  const flipCard = document.getElementById('flipCard');
-  const cardFront = document.getElementById('cardFront');
-  const cardBack = document.getElementById('cardBack');
-  const stageTitle = document.getElementById('stageTitle');
-  const fcProgress = document.getElementById('fcProgress');
-
-  let activeDeck = -1, order = [], pos = 0;
-
-  // Build deck selector
-  DECKS.forEach((deck, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'deck-card';
-    btn.setAttribute('aria-pressed', 'false');
-    btn.innerHTML = '<span class="dn"><span class="dnum">' + String(i + 1).padStart(2, '0') +
-      '</span>' + deck.name + '</span><span class="dc">' + deck.cards.length + ' cards</span>';
-    btn.addEventListener('click', () => loadDeck(i));
-    deckGrid.appendChild(btn);
-  });
-
-  function loadDeck(i) {
-    activeDeck = i;
-    order = DECKS[i].cards.map((_, k) => k);
-    pos = 0;
-    flipCard.classList.remove('flipped');
-    Array.from(deckGrid.children).forEach((b, k) => b.setAttribute('aria-pressed', String(k === i)));
-    stageTitle.textContent = DECKS[i].name;
-    renderCard();
-  }
-
-  function renderCard() {
-    if (activeDeck < 0) return;
-    const card = DECKS[activeDeck].cards[order[pos]];
-    flipCard.classList.remove('flipped');
-    // wait a tick so flip-back content swaps unseen
-    cardFront.textContent = card.t;
-    cardBack.textContent = card.a;
-    fcProgress.textContent = (pos + 1) + ' / ' + order.length;
-  }
-
-  function move(delta) {
-    if (activeDeck < 0) return;
-    pos = (pos + delta + order.length) % order.length;
-    renderCard();
-  }
-
-  flipCard.addEventListener('click', () => {
-    if (activeDeck < 0) return;
-    flipCard.classList.toggle('flipped');
-  });
-  flipCard.addEventListener('keydown', (e) => {
-    if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flipCard.click(); }
-    if (e.key === 'ArrowRight') { e.preventDefault(); move(1); }
-    if (e.key === 'ArrowLeft') { e.preventDefault(); move(-1); }
-  });
-
-  document.getElementById('nextCard').addEventListener('click', () => move(1));
-  document.getElementById('prevCard').addEventListener('click', () => move(-1));
-
-  document.getElementById('shuffleDeck').addEventListener('click', () => {
-    if (activeDeck < 0) return;
-    for (let k = order.length - 1; k > 0; k--) {
-      const j = Math.floor(Math.random() * (k + 1));
-      [order[k], order[j]] = [order[j], order[k]];
-    }
-    pos = 0;
-    renderCard();
-  });
-
-  document.getElementById('resetDeck').addEventListener('click', () => {
-    if (activeDeck < 0) return;
-    loadDeck(activeDeck);
-  });
-
-  
-  const QCATLABEL = Object.fromEntries(QCATS.map(c => c));
-
-  const qChips = document.getElementById('qaChips');
-  const qBank = document.getElementById('qBank');
-  const qCount = document.getElementById('qCount');
-  let qFilter = 'all';
-
-  QCATS.forEach(([id, label]) => {
-    const c = document.createElement('button');
-    c.className = 'qa-chip';
-    c.textContent = label;
-    c.setAttribute('aria-pressed', String(id === 'all'));
-    c.addEventListener('click', () => { qFilter = id; renderQuestions(); });
-    c.dataset.cat = id;
-    qChips.appendChild(c);
-  });
-
-  function renderQuestions() {
-    Array.from(qChips.children).forEach(c => c.setAttribute('aria-pressed', String(c.dataset.cat === qFilter)));
-    const list = QUESTIONS.filter(q => qFilter === 'all' || q[0] === qFilter);
-    qCount.textContent = list.length + (list.length === 1 ? ' question' : ' questions');
-    qBank.innerHTML = '';
-    list.forEach(([cat, q, why, resp]) => {
-      const item = document.createElement('div');
-      item.className = 'q-item';
-      const c = document.createElement('p'); c.className = 'q-cat'; c.textContent = QCATLABEL[cat];
-      const t = document.createElement('p'); t.className = 'q-text'; t.textContent = q;
-      const w = document.createElement('p'); w.className = 'q-why'; w.textContent = why;
-      const tg = document.createElement('button'); tg.className = 'q-toggle'; tg.setAttribute('aria-expanded', 'false');
-      tg.innerHTML = 'Your take <span class="q-arrow">\u25BC</span>';
-      const body = document.createElement('div'); body.className = 'q-resp-body';
-      const rt = document.createElement('p'); rt.className = 'q-resp-text'; rt.textContent = resp;
-      body.appendChild(rt);
-      tg.addEventListener('click', () => {
-        const open = tg.getAttribute('aria-expanded') === 'true';
-        tg.setAttribute('aria-expanded', String(!open));
-        body.classList.toggle('open', !open);
-      });
-      item.append(c, t, w, tg, body);
-      qBank.appendChild(item);
-    });
-  }
-  renderQuestions(); 
-  ];
-
-  const clRoot = document.getElementById('checklists');
-  if (clRoot) {
-    CHECKLISTS.forEach(cl => {
-      const card = document.createElement('div'); card.className = 'checklist';
-      const head = document.createElement('div'); head.className = 'cl-head';
-      const h = document.createElement('h4'); h.textContent = cl.title;
-      const cnt = document.createElement('span'); cnt.className = 'cl-count';
-      head.append(h, cnt); card.appendChild(head);
-      let done = 0;
-      const update = () => { cnt.textContent = done + ' / ' + cl.items.length + ' done'; };
-      cl.items.forEach(txt => {
-        const row = document.createElement('label'); row.className = 'cl-row';
-        const box = document.createElement('input'); box.type = 'checkbox';
-        const sp = document.createElement('span'); sp.textContent = txt;
-        box.addEventListener('change', () => {
-          row.classList.toggle('done', box.checked);
-          done += box.checked ? 1 : -1; update();
-        });
-        row.append(box, sp); card.appendChild(row);
-      });
-      update(); clRoot.appendChild(card);
-    });
-  }
-
-  
-  const winBank = document.getElementById('winBank');
-  if (winBank) {
-    WINS.forEach(([useFor, title, body]) => {
-      const it = document.createElement('div'); it.className = 'q-item';
-      const c = document.createElement('p'); c.className = 'q-cat'; c.textContent = useFor;
-      const t = document.createElement('p'); t.className = 'q-text'; t.textContent = title;
-      const b = document.createElement('p'); b.className = 'q-resp-text'; b.style.marginTop = '6px'; b.textContent = body;
-      it.append(c, t, b); winBank.appendChild(it);
-    });
-  }
-
-  
-  const hlList = document.getElementById('hlList');
-  if (hlList) {
-    HIGHLIGHTS.forEach(([k, v]) => {
-      const li = document.createElement('li');
-      const b = document.createElement('b'); b.textContent = k + ': ';
-      li.appendChild(b); li.appendChild(document.createTextNode(v));
-      hlList.appendChild(li);
-    });
-  }
-
-</script>
 </body>
 </html>

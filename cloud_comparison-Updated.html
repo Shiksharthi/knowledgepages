@@ -4,100 +4,158 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Cloud & Infrastructure Products Comparison</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <style>
+  /* ============================================================
+     EDITORIAL CORPORATE
+     Warm stone paper · deep navy ink · steel blue · muted amber
+     ============================================================ */
   :root {
-    --bg: #0f1117;
-    --surface: #1a1d27;
-    --surface2: #222536;
-    --border: #2d3148;
-    --text: #e2e8f0;
-    --text-muted: #8892a4;
-    --accent: #6366f1;
-    --accent2: #818cf8;
-    --high: #10b981;
-    --high-bg: rgba(16,185,129,0.12);
-    --med: #f59e0b;
-    --med-bg: rgba(245,158,11,0.12);
-    --low-lat: #10b981;
-    --low-lat-bg: rgba(16,185,129,0.12);
-    --low: #ef4444;
-    --low-bg: rgba(239,68,68,0.12);
-    --very-high: #7c3aed;
-    --very-high-bg: rgba(124,58,237,0.12);
-    --cat-cdn: #0ea5e9;
-    --cat-lb: #f97316;
-    --cat-api: #a855f7;
-    --cat-db: #10b981;
-    --cat-compute: #f43f5e;
-    --cat-storage: #eab308;
-    --cat-aws: #FF9900;
-    --cat-azure: #0078D4;
-    --cat-gcp: #4285F4;
-    --cat-walmart: #0071CE;
+    --paper:      #F4F2ED;
+    --paper-alt:  #EDE9E1;
+    --card:       #FFFFFF;
+
+    --ink:        #13212D;
+    --body:       #3C4A56;
+    --muted:      #7B8894;
+    --faint:      #A6AFB8;
+
+    --line:       #E3DDD3;
+    --line-soft:  #EFEBE3;
+
+    --blue:       #2E5D7D;
+    --blue-deep:  #1A3B52;
+    --blue-soft:  #6D93AC;
+    --blue-tint:  #EAF1F5;
+
+    --amber:      #B5822F;
+    --amber-tint: #F8F1E2;
+
+    --clay:       #A65545;
+    --clay-tint:  #F7EDEA;
+    --sage:       #4F7A63;
+    --sage-tint:  #EDF3EF;
+    --slate:      #5E6488;
+    --slate-tint: #F0F0F6;
+
+    /* rating scale — muted, same saturation */
+    --high:        #4F7A63; --high-bg:      #EDF3EF;
+    --med:         #B5822F; --med-bg:       #F8F1E2;
+    --low:         #A65545; --low-bg:       #F7EDEA;
+    --very-high:   #5E6488; --very-high-bg: #F0F0F6;
+    --low-lat:     #4F7A63; --low-lat-bg:   #EDF3EF;
+
+    /* category marks */
+    --cat-cdn:     #2E5D7D;
+    --cat-lb:      #B5822F;
+    --cat-api:     #5E6488;
+    --cat-db:      #4F7A63;
+    --cat-compute: #A65545;
+    --cat-storage: #8A7B4F;
+    --cat-aws:     #B5822F;
+    --cat-azure:   #2E5D7D;
+    --cat-gcp:     #4A7397;
+    --cat-walmart: #1A3B52;
+
+    --r:    14px;
+    --r-sm: 9px;
+    --r-xs: 5px;
+
+    --sh1: 0 1px 2px rgba(19,33,45,.04), 0 3px 10px rgba(19,33,45,.04);
+    --sh2: 0 2px 6px rgba(19,33,45,.04), 0 12px 32px rgba(19,33,45,.07);
+
+    --serif: "Fraunces", Georgia, "Times New Roman", serif;
+    --sans:  "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+    --maxw: 1400px;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; }
 
   body {
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background: var(--bg);
-    color: var(--text);
+    font-family: var(--sans);
+    background: var(--paper);
+    color: var(--body);
+    line-height: 1.6;
     min-height: 100vh;
-    padding: 20px;
+    padding: 0 24px 80px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { color: var(--blue-deep); }
+
+  /* ── HEADER ── */
   .header {
-    text-align: center;
-    padding: 32px 20px 24px;
-    margin-bottom: 24px;
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: clamp(52px, 8vw, 88px) 0 clamp(32px, 5vw, 46px);
   }
 
   .header h1 {
-    font-size: clamp(1.4rem, 3vw, 2.2rem);
-    font-weight: 700;
-    background: linear-gradient(135deg, #6366f1, #818cf8, #06b6d4);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 8px;
+    font-family: var(--serif);
+    font-size: clamp(32px, 5vw, 54px);
+    font-weight: 400;
+    letter-spacing: -0.022em;
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 20px;
+    max-width: 20ch;
   }
 
   .header p {
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    max-width: 700px;
-    margin: 0 auto;
-    line-height: 1.5;
+    color: var(--muted);
+    font-size: 16.5px;
+    max-width: 66ch;
+    line-height: 1.78;
   }
 
+  /* ── LEGEND ── */
   .legend {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-    margin-bottom: 20px;
-    padding: 16px;
-    background: var(--surface);
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    max-width: 900px;
-    margin: 0 auto 24px;
+    gap: 10px 20px;
+    padding: 20px 24px;
+    background: var(--card);
+    border-radius: var(--r);
+    border: 1px solid var(--line-soft);
+    box-shadow: var(--sh1);
+    max-width: var(--maxw);
+    margin: 0 auto 20px;
   }
 
   .legend-item {
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 0.78rem;
-    color: var(--text-muted);
+    gap: 8px;
+    font-size: 12.5px;
+    color: var(--muted);
   }
 
-  .legend-dot {
-    width: 10px; height: 10px; border-radius: 50%;
-  }
+  .legend-dot { width: 9px; height: 9px; border-radius: 50%; }
 
+  /* ── INTRO NOTE ── */
+  .intro-note {
+    max-width: var(--maxw);
+    margin: 0 auto 28px;
+    padding: 18px 22px;
+    background: var(--blue-tint);
+    border: 1px solid #D6E3EB;
+    border-left: 2px solid var(--blue-soft);
+    border-radius: var(--r-sm);
+    font-size: 14px;
+    color: var(--body);
+    line-height: 1.7;
+  }
+  .intro-note strong { color: var(--blue); font-weight: 600; }
+
+  /* ── CONTROLS ── */
   .controls {
-    max-width: 1400px;
+    max-width: var(--maxw);
     margin: 0 auto 20px;
     display: flex;
     flex-wrap: wrap;
@@ -107,307 +165,326 @@
 
   .search-box {
     flex: 1;
-    min-width: 200px;
-    padding: 10px 16px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--text);
-    font-size: 0.9rem;
+    min-width: 220px;
+    padding: 13px 18px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--r-sm);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 14px;
     outline: none;
-    transition: border-color 0.2s;
+    box-shadow: var(--sh1);
+    transition: border-color .25s, box-shadow .25s;
   }
+  .search-box:focus { border-color: var(--blue-soft); box-shadow: 0 0 0 3px var(--blue-tint); }
+  .search-box::placeholder { color: var(--faint); }
 
-  .search-box:focus { border-color: var(--accent); }
-  .search-box::placeholder { color: var(--text-muted); }
-
-  .filter-btns {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
+  .filter-btns { display: flex; flex-wrap: wrap; gap: 6px; }
 
   .filter-btn {
-    padding: 6px 14px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--text-muted);
-    font-size: 0.78rem;
+    padding: 9px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--card);
+    color: var(--muted);
+    font-family: inherit;
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
     cursor: pointer;
-    transition: all 0.2s;
     white-space: nowrap;
+    transition: all .25s;
+  }
+  .filter-btn:hover { border-color: var(--blue-soft); color: var(--blue); }
+  .filter-btn.active {
+    background: var(--blue);
+    color: #fff;
+    border-color: var(--blue);
   }
 
-  .filter-btn.active, .filter-btn:hover {
-    background: var(--accent);
-    color: white;
-    border-color: var(--accent);
-  }
-
+  /* ── TABLE ── */
   .table-wrap {
-    max-width: 1400px;
+    max-width: var(--maxw);
     margin: 0 auto;
     overflow-x: auto;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    border-radius: var(--r);
+    border: 1px solid var(--line-soft);
+    background: var(--card);
+    box-shadow: var(--sh1);
   }
 
   table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.83rem;
+    font-size: 13.5px;
     min-width: 1000px;
   }
 
   thead tr {
-    background: linear-gradient(135deg, #1e2035, #252840);
+    background: var(--blue-deep);
     position: sticky;
     top: 0;
     z-index: 10;
   }
 
   th {
-    padding: 14px 12px;
+    padding: 16px 14px;
     text-align: left;
     font-weight: 600;
-    font-size: 0.78rem;
+    font-size: 10px;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--accent2);
-    border-bottom: 2px solid var(--border);
+    letter-spacing: 0.15em;
+    color: #C6D6E0;
     white-space: nowrap;
   }
 
-  th:first-child { border-radius: 0; min-width: 160px; }
+  th:first-child { min-width: 170px; }
 
   tbody tr {
-    border-bottom: 1px solid var(--border);
-    transition: background 0.15s;
+    border-bottom: 1px solid var(--line-soft);
+    transition: background .2s;
   }
-
-  tbody tr:hover { background: rgba(99,102,241,0.07); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--paper); }
 
   tbody tr.group-header {
-    background: linear-gradient(90deg, rgba(99,102,241,0.15), transparent);
-    border-top: 2px solid var(--accent);
+    background: var(--paper-alt);
+    border-top: 1px solid var(--line);
   }
+  tbody tr.group-header:hover { background: var(--paper-alt); }
 
   tbody tr.group-header td {
-    padding: 10px 12px;
+    padding: 13px 14px;
     font-weight: 700;
-    font-size: 0.8rem;
+    font-size: 10px;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--accent2);
+    letter-spacing: 0.17em;
+    color: var(--blue);
   }
 
   td {
-    padding: 11px 12px;
+    padding: 15px 14px;
     vertical-align: top;
-    line-height: 1.4;
+    line-height: 1.55;
   }
 
   .product-name {
     font-weight: 600;
-    color: var(--text);
-    font-size: 0.88rem;
+    color: var(--ink);
+    font-size: 14.5px;
     display: block;
-    margin-bottom: 3px;
+    margin-bottom: 4px;
+    letter-spacing: -0.005em;
   }
 
-  .product-subtitle {
-    color: var(--text-muted);
-    font-size: 0.74rem;
-  }
+  .product-subtitle { color: var(--muted); font-size: 12px; line-height: 1.5; }
 
   .cat-tag {
     display: inline-block;
-    padding: 2px 8px;
-    border-radius: 12px;
-    font-size: 0.69rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    margin-bottom: 4px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+    margin-bottom: 6px;
     text-transform: uppercase;
   }
 
-  .best-for {
-    color: var(--text);
-    font-size: 0.8rem;
-    line-height: 1.4;
-  }
+  .best-for { color: var(--body); font-size: 13.5px; line-height: 1.6; }
 
   .badge {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    padding: 3px 9px;
-    border-radius: 20px;
-    font-size: 0.75rem;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 999px;
+    font-size: 11.5px;
     font-weight: 600;
-    margin-bottom: 4px;
+    margin-bottom: 5px;
     white-space: nowrap;
   }
 
-  .badge.high    { background: var(--high-bg); color: var(--high); border: 1px solid rgba(16,185,129,0.25); }
-  .badge.medium  { background: var(--med-bg);  color: var(--med);  border: 1px solid rgba(245,158,11,0.25); }
-  .badge.low     { background: var(--low-bg);  color: var(--low);  border: 1px solid rgba(239,68,68,0.25); }
-  .badge.very-high { background: var(--very-high-bg); color: #a78bfa; border: 1px solid rgba(124,58,237,0.25); }
-  .badge.low-lat { background: var(--low-lat-bg); color: var(--low-lat); border: 1px solid rgba(16,185,129,0.25); }
+  .badge.high      { background: var(--high-bg);      color: var(--high);      border: 1px solid #D6E4DC; }
+  .badge.medium    { background: var(--med-bg);       color: var(--med);       border: 1px solid #EADDC2; }
+  .badge.low       { background: var(--low-bg);       color: var(--low);       border: 1px solid #EBD6D0; }
+  .badge.very-high { background: var(--very-high-bg); color: var(--very-high); border: 1px solid #DCDCE9; }
+  .badge.low-lat   { background: var(--low-lat-bg);   color: var(--low-lat);   border: 1px solid #D6E4DC; }
 
-  .detail {
-    color: var(--text-muted);
-    font-size: 0.73rem;
-    margin-top: 3px;
-    line-height: 1.4;
-  }
+  .detail { color: var(--muted); font-size: 12px; margin-top: 4px; line-height: 1.55; }
 
   .hidden { display: none; }
 
-  .stat-cell { min-width: 130px; }
-
-  @media (max-width: 768px) {
-    body { padding: 10px; }
-    .header { padding: 20px 10px 16px; }
-  }
-
   .count-badge {
-    background: var(--surface2);
-    color: var(--text-muted);
-    padding: 2px 8px;
-    border-radius: 12px;
-    font-size: 0.75rem;
-    margin-left: 6px;
+    background: var(--paper-alt);
+    color: var(--muted);
+    padding: 2px 9px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-left: 8px;
+    letter-spacing: 0;
   }
 
-  .intro-note {
-    max-width: 1400px;
-    margin: 0 auto 16px;
-    padding: 12px 16px;
-    background: rgba(99,102,241,0.08);
-    border: 1px solid rgba(99,102,241,0.2);
-    border-radius: 8px;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    line-height: 1.5;
-  }
-
-  .intro-note strong { color: var(--accent2); }
-
-  /* ── Dimension Notes Section ── */
+  /* ── DIMENSION NOTES ── */
   .dim-notes-row td { padding: 0; }
 
   .dim-notes-header td {
-    padding: 11px 16px;
+    padding: 14px 18px;
     font-weight: 700;
-    font-size: 0.82rem;
-    letter-spacing: 0.06em;
+    font-size: 10px;
+    letter-spacing: 0.17em;
     text-transform: uppercase;
-    background: linear-gradient(90deg, rgba(6,182,212,0.15), rgba(99,102,241,0.1), transparent);
-    border-top: 2px solid #06b6d4;
-    color: #67e8f9;
+    background: var(--paper-alt);
+    border-top: 1px solid var(--line);
+    color: var(--amber);
   }
 
   .dim-cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
-    gap: 12px;
-    padding: 16px;
-    background: rgba(15,17,23,0.6);
-    border-bottom: 2px solid var(--border);
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 14px;
+    padding: 20px 18px;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
   }
 
   .dim-card {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 14px 12px;
+    background: var(--card);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--r-sm);
+    padding: 18px 18px 16px;
     position: relative;
     overflow: hidden;
+    box-shadow: var(--sh1);
   }
 
   .dim-card::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
-    height: 3px;
-    border-radius: 10px 10px 0 0;
+    height: 2px;
   }
-  .dim-card.consistency::before { background: linear-gradient(90deg,#818cf8,#a78bfa); }
-  .dim-card.availability::before { background: linear-gradient(90deg,#10b981,#34d399); }
-  .dim-card.latency::before      { background: linear-gradient(90deg,#06b6d4,#38bdf8); }
-  .dim-card.security::before     { background: linear-gradient(90deg,#f43f5e,#fb7185); }
-  .dim-card.scalability::before  { background: linear-gradient(90deg,#f59e0b,#fbbf24); }
-  .dim-card.walmart::before      { background: linear-gradient(90deg,#0071CE,#38bdf8); }
+  .dim-card.consistency::before  { background: var(--slate); }
+  .dim-card.availability::before { background: var(--sage); }
+  .dim-card.latency::before      { background: var(--blue); }
+  .dim-card.security::before     { background: var(--clay); }
+  .dim-card.scalability::before  { background: var(--amber); }
+  .dim-card.walmart::before      { background: var(--blue-deep); }
 
   .dim-card-title {
-    font-weight: 700;
-    font-size: 0.86rem;
-    margin-bottom: 7px;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
-    gap: 6px;
-    color: var(--text);
+    gap: 7px;
+    color: var(--ink);
+    letter-spacing: -0.005em;
   }
 
   .dim-card-desc {
-    font-size: 0.76rem;
-    color: var(--text-muted);
-    line-height: 1.55;
-    margin-bottom: 10px;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 8px;
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.65;
+    margin-bottom: 14px;
+    border-bottom: 1px solid var(--line-soft);
+    padding-bottom: 12px;
   }
 
-  .dim-card-levels { display: flex; flex-direction: column; gap: 6px; }
+  .dim-card-levels { display: flex; flex-direction: column; gap: 8px; }
 
-  .dim-level {
-    display: flex;
-    align-items: flex-start;
-    gap: 7px;
-    font-size: 0.73rem;
-  }
+  .dim-level { display: flex; align-items: flex-start; gap: 9px; font-size: 12px; }
 
   .dim-level-dot {
-    width: 8px; height: 8px;
+    width: 7px; height: 7px;
     border-radius: 50%;
     flex-shrink: 0;
-    margin-top: 4px;
+    margin-top: 5px;
   }
 
-  .dim-level-text { color: var(--text-muted); line-height: 1.4; }
-  .dim-level-text strong { color: var(--text); }
+  .dim-level-text { color: var(--muted); line-height: 1.55; }
+  .dim-level-text strong { color: var(--ink); font-weight: 600; }
+
+  .header .top-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 28px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .header .top-back::before { content: '\2190'; transition: transform .3s; display: inline-block; }
+  .header .top-back:hover { color: var(--blue); }
+  .header .top-back:hover::before { transform: translateX(-4px); }
+
+  /* ── PAGE FOOT ── */
+  .page-foot {
+    max-width: var(--maxw);
+    margin: 40px auto 0;
+    padding-top: 26px;
+    border-top: 1px solid var(--line);
+    font-size: 12.5px;
+    color: var(--faint);
+    line-height: 1.7;
+  }
+  .page-foot .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin-top: 16px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+  .page-foot .back::before { content: '\2190'; transition: transform .3s; display: inline-block; }
+  .page-foot .back:hover::before { transform: translateX(-4px); }
+
+  @media (max-width: 768px) {
+    body { padding: 0 16px 60px; }
+    .legend { padding: 16px 18px; }
+  }
+
+  @media print {
+    body { background: #fff; }
+    .table-wrap, .legend, .dim-card { box-shadow: none; border-color: #ccc; }
+    .controls { display: none; }
+  }
 </style>
 </head>
 <body>
 
 <div class="header">
-  <h1>☁️ Cloud & Infrastructure Products — Quick Reference</h1>
+  <a class="back top-back" href="./index">Back to home</a>
+  <h1>Cloud &amp; Infrastructure Products — Quick Reference</h1>
   <p>How each product performs across <strong>Consistency</strong>, <strong>Availability</strong>, <strong>Latency</strong>, <strong>Security</strong>, and <strong>Scalability</strong> — explained simply.</p>
 </div>
 
 <div class="legend" style="max-width:1400px;">
-  <div class="legend-item"><span class="legend-dot" style="background:#a78bfa"></span> Very High</div>
-  <div class="legend-item"><span class="legend-dot" style="background:#10b981"></span> High / Low Latency (Good)</div>
-  <div class="legend-item"><span class="legend-dot" style="background:#f59e0b"></span> Medium</div>
-  <div class="legend-item"><span class="legend-dot" style="background:#ef4444"></span> Low / High Latency (Watch Out)</div>
-  <div style="border-left:1px solid #2d3148; height:16px; margin: 0 4px;"></div>
-  <div class="legend-item"><span style="width:10px;height:10px;background:#0ea5e9;border-radius:3px;display:inline-block"></span> CDN/Edge</div>
-  <div class="legend-item"><span style="width:10px;height:10px;background:#f97316;border-radius:3px;display:inline-block"></span> Load Balancer</div>
-  <div class="legend-item"><span style="width:10px;height:10px;background:#a855f7;border-radius:3px;display:inline-block"></span> API/Mesh</div>
-  <div class="legend-item"><span style="width:10px;height:10px;background:#10b981;border-radius:3px;display:inline-block"></span> Database</div>
-  <div class="legend-item"><span style="width:10px;height:10px;background:#f43f5e;border-radius:3px;display:inline-block"></span> Compute</div>
-  <div class="legend-item"><span style="width:10px;height:10px;background:#eab308;border-radius:3px;display:inline-block"></span> Storage</div>
-  <div class="legend-item"><span style="width:10px;height:10px;background:#FF9900;border-radius:3px;display:inline-block"></span> AWS</div>
-  <div class="legend-item"><span style="width:10px;height:10px;background:#0078D4;border-radius:3px;display:inline-block"></span> Azure</div>
-  <div class="legend-item"><span style="width:10px;height:10px;background:#4285F4;border-radius:3px;display:inline-block"></span> GCP</div>
-  <div class="legend-item"><span style="width:10px;height:10px;background:#0071CE;border-radius:3px;display:inline-block"></span> Walmart</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#5E6488"></span> Very High</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#4F7A63"></span> High / Low Latency (Good)</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#B5822F"></span> Medium</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#A65545"></span> Low / High Latency (Watch Out)</div>
+  <div style="border-left:1px solid #E3DDD3; height:16px; margin: 0 4px;"></div>
+  <div class="legend-item"><span style="width:10px;height:10px;background:#2E5D7D;border-radius:3px;display:inline-block"></span> CDN/Edge</div>
+  <div class="legend-item"><span style="width:10px;height:10px;background:#B5822F;border-radius:3px;display:inline-block"></span> Load Balancer</div>
+  <div class="legend-item"><span style="width:10px;height:10px;background:#5E6488;border-radius:3px;display:inline-block"></span> API/Mesh</div>
+  <div class="legend-item"><span style="width:10px;height:10px;background:#4F7A63;border-radius:3px;display:inline-block"></span> Database</div>
+  <div class="legend-item"><span style="width:10px;height:10px;background:#A65545;border-radius:3px;display:inline-block"></span> Compute</div>
+  <div class="legend-item"><span style="width:10px;height:10px;background:#8A7B4F;border-radius:3px;display:inline-block"></span> Storage</div>
+  <div class="legend-item"><span style="width:10px;height:10px;background:#B5822F;border-radius:3px;display:inline-block"></span> AWS</div>
+  <div class="legend-item"><span style="width:10px;height:10px;background:#2E5D7D;border-radius:3px;display:inline-block"></span> Azure</div>
+  <div class="legend-item"><span style="width:10px;height:10px;background:#4A7397;border-radius:3px;display:inline-block"></span> GCP</div>
+  <div class="legend-item"><span style="width:10px;height:10px;background:#1A3B52;border-radius:3px;display:inline-block"></span> Walmart</div>
 </div>
 
 <div class="controls">
-  <input class="search-box" type="text" id="searchInput" placeholder="🔍  Search products, categories, or use cases…" oninput="filterTable()"/>
+  <input class="search-box" type="text" id="searchInput" placeholder="Search products, categories, or use cases…" oninput="filterTable()"/>
   <div class="filter-btns">
     <button class="filter-btn active" onclick="filterCat('all', this)">All <span class="count-badge" id="countAll">22</span></button>
     <button class="filter-btn" onclick="filterCat('CDN/Edge', this)">CDN / Edge</button>
@@ -424,31 +501,27 @@
 </div>
 
 <div class="intro-note">
-  💡 <strong>How to read this:</strong> Each row shows a product and how it handles five dimensions. <strong>Consistency</strong> = "does everyone see the same data at the same time?" | <strong>Availability</strong> = "is it always up?" | <strong>Latency</strong> = "how fast does it respond?" | <strong>Security</strong> = "how well is it protected?" | <strong>Scalability</strong> = "can it handle massive growth?"
+  <strong>How to read this:</strong> Each row shows a product and how it handles five dimensions. <strong>Consistency</strong> = "does everyone see the same data at the same time?" | <strong>Availability</strong> = "is it always up?" | <strong>Latency</strong> = "how fast does it respond?" | <strong>Security</strong> = "how well is it protected?" | <strong>Scalability</strong> = "can it handle massive growth?"
 </div>
-<div class="header">
-  <p><Strong><a href="./index"><h4>Back To Home Page</h4> </a></Strong></p>
-</div>
-
 <div class="table-wrap">
 <table id="mainTable">
 <thead>
   <tr>
     <th>Product</th>
     <th>Category</th>
-    <th>🎯 Best Used For</th>
-    <th class="stat-cell">🔄 Consistency</th>
-    <th class="stat-cell">🟢 Availability</th>
-    <th class="stat-cell">⚡ Latency</th>
-    <th class="stat-cell">🔒 Security</th>
-    <th class="stat-cell">📈 Scalability</th>
+    <th>Best Used For</th>
+    <th class="stat-cell">Consistency</th>
+    <th class="stat-cell">Availability</th>
+    <th class="stat-cell">Latency</th>
+    <th class="stat-cell">Security</th>
+    <th class="stat-cell">Scalability</th>
   </tr>
 </thead>
 <tbody id="tableBody">
 
 <!-- ════════ DIMENSION NOTES ════════ -->
 <tr class="dim-notes-header no-filter">
-  <td colspan="8">📖 Dimension Reference Guide — What each column means, why it matters &amp; how to read the ratings</td>
+  <td colspan="8">Dimension Reference Guide — What each column means, why it matters &amp; how to read the ratings</td>
 </tr>
 <tr class="dim-notes-row no-filter">
   <td colspan="8">
@@ -456,29 +529,29 @@
 
       <!-- Consistency -->
       <div class="dim-card consistency">
-        <div class="dim-card-title">🔄 Consistency</div>
+        <div class="dim-card-title">Consistency</div>
         <div class="dim-card-desc">
           Does every user see the <em>same, latest data</em> at the same time? When you write something, can everyone else read it immediately — or might they briefly see old data? This is the classic trade-off in distributed systems: the more consistent, the slightly slower the writes.
         </div>
         <div class="dim-card-levels">
           <div class="dim-level">
-            <span class="dim-level-dot" style="background:#a78bfa"></span>
+            <span class="dim-level-dot" style="background:#5E6488"></span>
             <span class="dim-level-text"><strong>Strong / ACID:</strong> Everyone always sees the latest data. No surprises. Best for banking, payments, inventory. Slight write overhead.</span>
           </div>
           <div class="dim-level">
-            <span class="dim-level-dot" style="background:#06b6d4"></span>
+            <span class="dim-level-dot" style="background:#2E5D7D"></span>
             <span class="dim-level-text"><strong>External Consistency (Spanner):</strong> Even stronger — globally ordered transactions using atomic clocks. Unique to Google Cloud Spanner.</span>
           </div>
           <div class="dim-level">
-            <span class="dim-level-dot" style="background:#f59e0b"></span>
+            <span class="dim-level-dot" style="background:#B5822F"></span>
             <span class="dim-level-text"><strong>Tunable / Session:</strong> You pick your trade-off per query. CosmosDB offers 5 levels. DynamoDB lets you choose per read. Great for flexibility.</span>
           </div>
           <div class="dim-level">
-            <span class="dim-level-dot" style="background:#10b981"></span>
+            <span class="dim-level-dot" style="background:#4F7A63"></span>
             <span class="dim-level-text"><strong>Eventual:</strong> Briefly stale reads possible (milliseconds–seconds). Fine for CDN caches, social feeds, analytics. Faster &amp; cheaper writes.</span>
           </div>
           <div class="dim-level">
-            <span class="dim-level-dot" style="background:#ef4444"></span>
+            <span class="dim-level-dot" style="background:#A65545"></span>
             <span class="dim-level-text"><strong>Watch out:</strong> Eventual consistency in financial or inventory systems = overselling, double-spending bugs. Always match consistency to your use case.</span>
           </div>
         </div>
@@ -486,25 +559,25 @@
 
       <!-- Availability -->
       <div class="dim-card availability">
-        <div class="dim-card-title">🟢 Availability</div>
+        <div class="dim-card-title">Availability</div>
         <div class="dim-card-desc">
           Is the service always reachable? Measured as an uptime SLA (Service Level Agreement). Even a 0.01% difference in nines = hours of downtime per year. Multi-region and multi-AZ designs push availability higher, but at higher cost.
         </div>
         <div class="dim-card-levels">
           <div class="dim-level">
-            <span class="dim-level-dot" style="background:#a78bfa"></span>
+            <span class="dim-level-dot" style="background:#5E6488"></span>
             <span class="dim-level-text"><strong>99.999% — 5 nines:</strong> ≈5 min downtime/year. DynamoDB Global Tables, CosmosDB multi-region writes. The gold standard.</span>
           </div>
           <div class="dim-level">
-            <span class="dim-level-dot" style="background:#10b981"></span>
+            <span class="dim-level-dot" style="background:#4F7A63"></span>
             <span class="dim-level-text"><strong>99.99% — 4 nines:</strong> ≈52 min/year. Most managed cloud services (GCS, GKE, Akamai, S3). Sufficient for most production apps.</span>
           </div>
           <div class="dim-level">
-            <span class="dim-level-dot" style="background:#f59e0b"></span>
+            <span class="dim-level-dot" style="background:#B5822F"></span>
             <span class="dim-level-text"><strong>99.9% — 3 nines:</strong> ≈8.7 hrs/year. Standard SLA for many services. Self-managed systems without HA config often land here.</span>
           </div>
           <div class="dim-level">
-            <span class="dim-level-dot" style="background:#ef4444"></span>
+            <span class="dim-level-dot" style="background:#A65545"></span>
             <span class="dim-level-text"><strong>Self-managed Kubernetes:</strong> No SLA — you own it. HA needs careful setup (3+ control plane nodes, etcd backups, multi-AZ nodes).</span>
           </div>
         </div>
@@ -512,29 +585,29 @@
 
       <!-- Latency -->
       <div class="dim-card latency">
-        <div class="dim-card-title">⚡ Latency</div>
+        <div class="dim-card-title">Latency</div>
         <div class="dim-card-desc">
           How fast does the service respond to a request? Under 100ms feels instant to users. Over 1 second feels slow. Latency is affected by geography (distance to servers), cold starts, number of network hops, caching, and concurrency.
         </div>
         <div class="dim-card-levels">
           <div class="dim-level">
-            <span class="dim-level-dot" style="background:#10b981"></span>
+            <span class="dim-level-dot" style="background:#4F7A63"></span>
             <span class="dim-level-text"><strong>Ultra Low (&lt;1–10ms):</strong> DynamoDB, CDN edge serving, ILB, NLB — feels instant even under heavy load. Data is nearby.</span>
           </div>
           <div class="dim-level">
-            <span class="dim-level-dot" style="background:#10b981"></span>
+            <span class="dim-level-dot" style="background:#4F7A63"></span>
             <span class="dim-level-text"><strong>Low (10–100ms):</strong> AlloyDB, MongoDB, Apigee, Cloud Run (warm), GKE — fast enough for all user-facing workloads.</span>
           </div>
           <div class="dim-level">
-            <span class="dim-level-dot" style="background:#f59e0b"></span>
+            <span class="dim-level-dot" style="background:#B5822F"></span>
             <span class="dim-level-text"><strong>Medium (100ms–1s):</strong> Istio (sidecar overhead per hop), cross-region calls, Pub/Sub delivery. Acceptable for background work.</span>
           </div>
           <div class="dim-level">
-            <span class="dim-level-dot" style="background:#ef4444"></span>
+            <span class="dim-level-dot" style="background:#A65545"></span>
             <span class="dim-level-text"><strong>Cold Starts (1–3s):</strong> Lambda, Cloud Run, Azure Functions when idle. Fix: set min instances = 1 or use Provisioned Concurrency.</span>
           </div>
           <div class="dim-level">
-            <span class="dim-level-dot" style="background:#ef4444"></span>
+            <span class="dim-level-dot" style="background:#A65545"></span>
             <span class="dim-level-text"><strong>Archive Retrieval (min–hours):</strong> GCS Coldline/Archive, S3 Glacier — cheap storage but not for real-time access. Plan ahead.</span>
           </div>
         </div>
@@ -542,25 +615,25 @@
 
       <!-- Security -->
       <div class="dim-card security">
-        <div class="dim-card-title">🔒 Security</div>
+        <div class="dim-card-title">Security</div>
         <div class="dim-card-desc">
           How protected is the service from unauthorized access, data breaches, and attacks? Covers: who can access (IAM), how data travels (TLS/mTLS), how data is stored (encryption), network isolation (VPC), and compliance certifications (HIPAA, PCI-DSS, SOC 2).
         </div>
         <div class="dim-card-levels">
           <div class="dim-level">
-            <span class="dim-level-dot" style="background:#a78bfa"></span>
+            <span class="dim-level-dot" style="background:#5E6488"></span>
             <span class="dim-level-text"><strong>Very High — Zero Trust:</strong> Istio (auto-mTLS between all services), Akamai (WAF + Zero Trust), Walmart WCNP (full data sovereignty — no shared responsibility).</span>
           </div>
           <div class="dim-level">
-            <span class="dim-level-dot" style="background:#10b981"></span>
+            <span class="dim-level-dot" style="background:#4F7A63"></span>
             <span class="dim-level-text"><strong>High — Managed Cloud:</strong> IAM, encryption at rest+transit, VPC isolation, private endpoints, audit logs, CMEK. Standard for GCP/AWS/Azure managed services.</span>
           </div>
           <div class="dim-level">
-            <span class="dim-level-dot" style="background:#f59e0b"></span>
+            <span class="dim-level-dot" style="background:#B5822F"></span>
             <span class="dim-level-text"><strong>Medium — DIY Kubernetes:</strong> Self-managed K8s is powerful but YOU configure RBAC, network policies, secrets encryption, pod security. Easy to miss steps.</span>
           </div>
           <div class="dim-level">
-            <span class="dim-level-dot" style="background:#ef4444"></span>
+            <span class="dim-level-dot" style="background:#A65545"></span>
             <span class="dim-level-text"><strong>Watch out:</strong> "Shared responsibility" — cloud secures the platform; YOU secure your app config, IAM policies, data classification, and code.</span>
           </div>
         </div>
@@ -568,25 +641,25 @@
 
       <!-- Scalability -->
       <div class="dim-card scalability">
-        <div class="dim-card-title">📈 Scalability</div>
+        <div class="dim-card-title">Scalability</div>
         <div class="dim-card-desc">
           Can the service handle 10×, 100×, or 1000× more traffic without breaking or needing manual intervention? Two types: <strong>Vertical</strong> (bigger machine) — has limits. <strong>Horizontal</strong> (more machines) — near-limitless. The best cloud services scale automatically.
         </div>
         <div class="dim-card-levels">
           <div class="dim-level">
-            <span class="dim-level-dot" style="background:#a78bfa"></span>
+            <span class="dim-level-dot" style="background:#5E6488"></span>
             <span class="dim-level-text"><strong>Infinite / Fully Auto:</strong> Akamai, CloudFront, S3, DynamoDB, Pub/Sub — absorb any load spike with zero configuration. No pre-warming needed.</span>
           </div>
           <div class="dim-level">
-            <span class="dim-level-dot" style="background:#10b981"></span>
+            <span class="dim-level-dot" style="background:#4F7A63"></span>
             <span class="dim-level-text"><strong>Scale-to-Zero:</strong> Cloud Run, Lambda, Azure Functions — cost $0 when idle, scale up in seconds. Perfect for variable workloads.</span>
           </div>
           <div class="dim-level">
-            <span class="dim-level-dot" style="background:#10b981"></span>
+            <span class="dim-level-dot" style="background:#4F7A63"></span>
             <span class="dim-level-text"><strong>Managed Auto-scale:</strong> GKE, AKS, Aurora — autoscalers handle growth; you set limits and policies. Good for stateful workloads.</span>
           </div>
           <div class="dim-level">
-            <span class="dim-level-dot" style="background:#f59e0b"></span>
+            <span class="dim-level-dot" style="background:#B5822F"></span>
             <span class="dim-level-text"><strong>Manual / Config-Heavy:</strong> Self-managed Kubernetes — requires Cluster Autoscaler setup, node group config, capacity planning. Not automatic out-of-box.</span>
           </div>
         </div>
@@ -594,25 +667,25 @@
 
       <!-- Walmart WCNP -->
       <div class="dim-card walmart">
-        <div class="dim-card-title">🔵 Walmart WCNP — Special Notes</div>
+        <div class="dim-card-title">Walmart WCNP — Special Notes</div>
         <div class="dim-card-desc">
           WCNP is Walmart's <strong>private, internal platform</strong> — not available to the public. Built on Kubernetes, it simultaneously spans Walmart's own data centers, Google Cloud (GCP), and Microsoft Azure using the <strong>"Triplet Model"</strong>: deploy once, run on all three.
         </div>
         <div class="dim-card-levels">
           <div class="dim-level">
-            <span class="dim-level-dot" style="background:#0071CE"></span>
+            <span class="dim-level-dot" style="background:#1A3B52"></span>
             <span class="dim-level-text"><strong>Who uses it:</strong> Walmart engineers only. Powers walmart.com, Sam's Club, Walmart+, store operations, and supply chain systems.</span>
           </div>
           <div class="dim-level">
-            <span class="dim-level-dot" style="background:#10b981"></span>
+            <span class="dim-level-dot" style="background:#4F7A63"></span>
             <span class="dim-level-text"><strong>Why build it:</strong> Avoid vendor lock-in (can negotiate pricing with GCP &amp; Azure), reduce cloud spend, and keep sensitive data in-house.</span>
           </div>
           <div class="dim-level">
-            <span class="dim-level-dot" style="background:#a78bfa"></span>
+            <span class="dim-level-dot" style="background:#5E6488"></span>
             <span class="dim-level-text"><strong>Scale proof:</strong> Handles 240M+ weekly customers. Survives Black Friday (10× traffic spikes). One of the world's largest Kubernetes deployments.</span>
           </div>
           <div class="dim-level">
-            <span class="dim-level-dot" style="background:#f59e0b"></span>
+            <span class="dim-level-dot" style="background:#B5822F"></span>
             <span class="dim-level-text"><strong>Element ML Platform:</strong> Runs on WCNP — trains AI/ML models once, deploys across all three clouds for product recommendations, demand forecasting &amp; pricing.</span>
           </div>
         </div>
@@ -624,7 +697,7 @@
 
 <!-- ════════ CDN / EDGE ════════ -->
 <tr class="group-header" data-cat="CDN/Edge">
-  <td colspan="8">🌐 CDN / Edge Delivery</td>
+  <td colspan="8">CDN / Edge Delivery</td>
 </tr>
 
 <tr data-cat="CDN/Edge">
@@ -632,26 +705,26 @@
     <span class="product-name">Akamai</span>
     <span class="product-subtitle">Intelligent Edge Platform</span>
   </td>
-  <td><span class="cat-tag" style="background:rgba(14,165,233,0.15);color:#38bdf8">CDN/Edge</span></td>
+  <td><span class="cat-tag" style="background:#EAF1F5;color:#2E5D7D">CDN/Edge</span></td>
   <td class="best-for">Delivering websites, videos, and apps super fast to users worldwide. Best for enterprises needing top-tier DDoS protection and edge security. Think: streaming platforms, banks, government sites.</td>
   <td class="stat-cell">
-    <span class="badge medium">⚖️ Eventual</span>
+    <span class="badge medium">Eventual</span>
     <div class="detail">Cached content may be slightly stale. Files are updated at cache expiry. Not a concern for static assets, but not for live data.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">✅ Very High</span>
+    <span class="badge high">Very High</span>
     <div class="detail">4,000+ edge servers globally. 99.99%+ uptime. Redundant routing around outages.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge low-lat">⚡ Very Low</span>
+    <span class="badge low-lat">Very Low</span>
     <div class="detail">Content served from the nearest edge server — often within milliseconds of the user.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">🔒 Very High</span>
+    <span class="badge high">Very High</span>
     <div class="detail">Industry-leading WAF, DDoS protection, Zero Trust, bot management, TLS everywhere.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge very-high">🚀 Massive</span>
+    <span class="badge very-high">Massive</span>
     <div class="detail">Handles petabytes of traffic automatically. No manual scaling needed.</div>
   </td>
 </tr>
@@ -661,33 +734,33 @@
     <span class="product-name">Amazon CloudFront</span>
     <span class="product-subtitle">AWS CDN</span>
   </td>
-  <td><span class="cat-tag" style="background:rgba(255,153,0,0.15);color:#FF9900">AWS / CDN</span></td>
+  <td><span class="cat-tag" style="background:#F8F1E2;color:#B5822F">AWS / CDN</span></td>
   <td class="best-for">Content delivery tightly integrated with AWS. Perfect when your backend is already on AWS (S3, EC2, API Gateway). Great for APIs, websites, video-on-demand.</td>
   <td class="stat-cell">
-    <span class="badge medium">⚖️ Eventual</span>
+    <span class="badge medium">Eventual</span>
     <div class="detail">Cache invalidation can take a moment. Use cache headers or manual invalidation for fresh content.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">✅ High</span>
+    <span class="badge high">High</span>
     <div class="detail">600+ edge locations. 99.9% SLA. Seamlessly reroutes around failures.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge low-lat">⚡ Very Low</span>
+    <span class="badge low-lat">Very Low</span>
     <div class="detail">Origin Shield feature reduces origin load. Sub-millisecond edge serving for cached content.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">🔒 High</span>
+    <span class="badge high">High</span>
     <div class="detail">AWS Shield (DDoS), WAF, signed URLs/cookies, TLS, geo-restriction.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge very-high">🚀 Massive</span>
+    <span class="badge very-high">Massive</span>
     <div class="detail">Auto-scales globally. No capacity planning required.</div>
   </td>
 </tr>
 
 <!-- ════════ LOAD BALANCERS ════════ -->
 <tr class="group-header" data-cat="Load Balancer">
-  <td colspan="8">⚖️ Load Balancers</td>
+  <td colspan="8">Load Balancers</td>
 </tr>
 
 <tr data-cat="Load Balancer GCP">
@@ -695,26 +768,26 @@
     <span class="product-name">Google Global Load Balancer</span>
     <span class="product-subtitle">Google Cloud GLB</span>
   </td>
-  <td><span class="cat-tag" style="background:rgba(66,133,244,0.15);color:#60a5fa">GCP / LB</span></td>
+  <td><span class="cat-tag" style="background:#EDF1F5;color:#4A7397">GCP / LB</span></td>
   <td class="best-for">Sending user traffic to the nearest, healthiest server across multiple regions worldwide. Uses a single global IP address (Anycast). Great for apps that need to be fast everywhere.</td>
   <td class="stat-cell">
-    <span class="badge high">✅ Strong</span>
+    <span class="badge high">Strong</span>
     <div class="detail">Always routes to the correct, healthy backend. Configuration changes propagate globally within seconds.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">✅ Very High</span>
+    <span class="badge high">Very High</span>
     <div class="detail">99.99% SLA. Automatic failover to another region if one goes down. No maintenance windows.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge low-lat">⚡ Very Low</span>
+    <span class="badge low-lat">Very Low</span>
     <div class="detail">Anycast routing — user hits the nearest Google PoP automatically. No DNS tricks needed.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">🔒 High</span>
+    <span class="badge high">High</span>
     <div class="detail">Integrates with Google Cloud Armor (WAF/DDoS). SSL termination, managed certificates.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge very-high">🚀 Massive</span>
+    <span class="badge very-high">Massive</span>
     <div class="detail">No pre-warming. Handles sudden traffic spikes automatically. No instance limits to configure.</div>
   </td>
 </tr>
@@ -724,33 +797,33 @@
     <span class="product-name">Google Internal LB</span>
     <span class="product-subtitle">Google Cloud ILB</span>
   </td>
-  <td><span class="cat-tag" style="background:rgba(66,133,244,0.15);color:#60a5fa">GCP / LB</span></td>
+  <td><span class="cat-tag" style="background:#EDF1F5;color:#4A7397">GCP / LB</span></td>
   <td class="best-for">Distributing traffic between microservices inside your private network (VPC). Never exposed to the public internet. Used when Service A needs to call Service B reliably.</td>
   <td class="stat-cell">
-    <span class="badge high">✅ Strong</span>
+    <span class="badge high">Strong</span>
     <div class="detail">Consistent routing within region. Health checks ensure only healthy instances receive traffic.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">✅ High</span>
+    <span class="badge high">High</span>
     <div class="detail">Regional HA. Automatically removes unhealthy backends. No single point of failure.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge low-lat">⚡ Ultra Low</span>
+    <span class="badge low-lat">Ultra Low</span>
     <div class="detail">Traffic stays inside Google's private backbone. Sub-millisecond overhead typical.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge very-high">🔒 Very High</span>
+    <span class="badge very-high">Very High</span>
     <div class="detail">Private only — not reachable from internet. VPC firewall rules, IAM, no public IP exposure.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">📈 High</span>
+    <span class="badge high">High</span>
     <div class="detail">Scales automatically within a region. Add backend instances anytime.</div>
   </td>
 </tr>
 
 <!-- ════════ API / SERVICE MESH ════════ -->
 <tr class="group-header" data-cat="API/Mesh">
-  <td colspan="8">🔌 API Gateway & Service Mesh</td>
+  <td colspan="8">API Gateway & Service Mesh</td>
 </tr>
 
 <tr data-cat="API/Mesh GCP">
@@ -758,26 +831,26 @@
     <span class="product-name">Apigee API Gateway</span>
     <span class="product-subtitle">Google Apigee</span>
   </td>
-  <td><span class="cat-tag" style="background:rgba(168,85,247,0.15);color:#c084fc">API Gateway</span></td>
+  <td><span class="cat-tag" style="background:#F0F0F6;color:#5E6488">API Gateway</span></td>
   <td class="best-for">Managing and securing APIs you expose to external developers or partners. Handles rate limiting ("only 1000 calls/minute"), API keys, billing/monetization, and developer portals. Think: "front door" for your APIs.</td>
   <td class="stat-cell">
-    <span class="badge high">✅ Strong</span>
+    <span class="badge high">Strong</span>
     <div class="detail">Centralized policy enforcement — every API call follows the same rules consistently.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">✅ High</span>
+    <span class="badge high">High</span>
     <div class="detail">99.9% SLA. Supports multi-region active-active deployment for 24/7 uptime.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge medium">🕐 Low-Medium</span>
+    <span class="badge medium">Low-Medium</span>
     <div class="detail">Adds ~1–5ms overhead for policy processing (auth, rate limiting). Acceptable for most APIs.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">🔒 Very High</span>
+    <span class="badge high">Very High</span>
     <div class="detail">OAuth 2.0, API keys, JWT, TLS, threat detection, quota management, audit logging.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">📈 High</span>
+    <span class="badge high">High</span>
     <div class="detail">Horizontal auto-scaling. Can be deployed on-premise, GCP, AWS, or Azure (hybrid).</div>
   </td>
 </tr>
@@ -787,33 +860,33 @@
     <span class="product-name">Istio Service Mesh</span>
     <span class="product-subtitle">Open Source / GCP Anthos</span>
   </td>
-  <td><span class="cat-tag" style="background:rgba(168,85,247,0.15);color:#c084fc">Service Mesh</span></td>
+  <td><span class="cat-tag" style="background:#F0F0F6;color:#5E6488">Service Mesh</span></td>
   <td class="best-for">Managing how microservices talk to each other inside Kubernetes. Automatically encrypts traffic between services, handles retries, load balancing, and gives you visibility into what's talking to what. Like a "traffic cop" inside your cluster.</td>
   <td class="stat-cell">
-    <span class="badge high">✅ Strong</span>
+    <span class="badge high">Strong</span>
     <div class="detail">Enforces consistent traffic policies, retries, and timeouts across ALL services automatically.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">✅ High</span>
+    <span class="badge high">High</span>
     <div class="detail">Circuit breakers prevent cascade failures. Automatic retries and failover between service instances.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge medium">🕐 Medium</span>
+    <span class="badge medium">Medium</span>
     <div class="detail">Sidecar proxy adds ~1–5ms per network hop. Can stack up in deep microservice chains.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">🔒 Very High</span>
+    <span class="badge high">Very High</span>
     <div class="detail">Mutual TLS (mTLS) between ALL services automatically. Fine-grained authorization. Zero-trust networking.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">📈 High</span>
+    <span class="badge high">High</span>
     <div class="detail">Scales with Kubernetes. Add services and policies are applied automatically.</div>
   </td>
 </tr>
 
 <!-- ════════ DATABASES ════════ -->
 <tr class="group-header" data-cat="Database">
-  <td colspan="8">🗄️ Databases</td>
+  <td colspan="8">Databases</td>
 </tr>
 
 <tr data-cat="Database GCP">
@@ -821,26 +894,26 @@
     <span class="product-name">AlloyDB</span>
     <span class="product-subtitle">Google Cloud — PostgreSQL-compatible</span>
   </td>
-  <td><span class="cat-tag" style="background:rgba(16,185,129,0.15);color:#34d399">GCP / SQL</span></td>
+  <td><span class="cat-tag" style="background:#EDF3EF;color:#4F7A63">GCP / SQL</span></td>
   <td class="best-for">High-performance PostgreSQL workloads. Up to 4x faster than regular Cloud SQL. Great for apps needing both fast transactions AND analytics on the same data. Works with all existing PostgreSQL apps — no code change needed.</td>
   <td class="stat-cell">
-    <span class="badge high">✅ Strong ACID</span>
+    <span class="badge high">Strong ACID</span>
     <div class="detail">Full ACID transactions. Everyone always sees the latest data. No surprises with stale reads.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">✅ Very High</span>
+    <span class="badge high">Very High</span>
     <div class="detail">99.99% SLA. Automatic HA with standby in same region. Fast failover (~60 seconds).</div>
   </td>
   <td class="stat-cell">
-    <span class="badge low-lat">⚡ Very Low</span>
+    <span class="badge low-lat">Very Low</span>
     <div class="detail">Columnar engine for analytics queries. Read pools for scaling reads without slowing writes.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">🔒 High</span>
+    <span class="badge high">High</span>
     <div class="detail">Private VPC only, CMEK encryption, IAM auth, VPC Service Controls, audit logging.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">📈 High</span>
+    <span class="badge high">High</span>
     <div class="detail">Auto-scales storage. Add read pool instances for read-heavy workloads. Up to 128 vCPU.</div>
   </td>
 </tr>
@@ -850,26 +923,26 @@
     <span class="product-name">Amazon DynamoDB</span>
     <span class="product-subtitle">AWS — NoSQL Key-Value</span>
   </td>
-  <td><span class="cat-tag" style="background:rgba(255,153,0,0.15);color:#FF9900">AWS / NoSQL</span></td>
+  <td><span class="cat-tag" style="background:#F8F1E2;color:#B5822F">AWS / NoSQL</span></td>
   <td class="best-for">Ultra-fast, massive-scale key-value storage. Think: Amazon shopping carts, gaming leaderboards, user sessions, IoT sensor data. When you need millions of reads/writes per second with predictable speed.</td>
   <td class="stat-cell">
-    <span class="badge medium">⚖️ Tunable</span>
+    <span class="badge medium">Tunable</span>
     <div class="detail">Eventual consistency by default (faster, cheaper). Strong consistency available on request (costs 2x read units). Global tables = eventual only.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge very-high">✅ Extremely High</span>
+    <span class="badge very-high">Extremely High</span>
     <div class="detail">99.999% SLA with Global Tables (multi-region). Fully managed — no patching, no downtime windows.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge low-lat">⚡ Ultra Low</span>
+    <span class="badge low-lat">Ultra Low</span>
     <div class="detail">Single-digit millisecond at ANY scale. With DAX cache, microsecond reads. Truly consistent speed.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">🔒 High</span>
+    <span class="badge high">High</span>
     <div class="detail">IAM fine-grained access, encryption at rest, VPC endpoints, CloudTrail audit logs.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge very-high">🚀 Virtually Unlimited</span>
+    <span class="badge very-high">Virtually Unlimited</span>
     <div class="detail">No table size limits. On-demand mode scales instantly. Provisioned mode for predictable workloads.</div>
   </td>
 </tr>
@@ -879,26 +952,26 @@
     <span class="product-name">MongoDB</span>
     <span class="product-subtitle">Atlas (Cloud) or Self-Managed</span>
   </td>
-  <td><span class="cat-tag" style="background:rgba(16,185,129,0.15);color:#34d399">NoSQL / Doc</span></td>
+  <td><span class="cat-tag" style="background:#EDF3EF;color:#4F7A63">NoSQL / Doc</span></td>
   <td class="best-for">Flexible document storage when your data structure changes often. Great for content management, product catalogs, user profiles, real-time analytics. Developers love it because data looks like JSON — easy to work with.</td>
   <td class="stat-cell">
-    <span class="badge medium">⚖️ Tunable</span>
+    <span class="badge medium">Tunable</span>
     <div class="detail">Primary reads: Strong. Secondary reads: Eventual (faster but may lag). Tunable write concern lets you trade speed for safety.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">✅ High</span>
+    <span class="badge high">High</span>
     <div class="detail">99.99% SLA on Atlas. Replica sets provide automatic failover. Multi-region available.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge low-lat">⚡ Low</span>
+    <span class="badge low-lat">Low</span>
     <div class="detail">Fast for document reads/writes. Indexes critical for performance. Atlas Search adds some overhead.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">🔒 High</span>
+    <span class="badge high">High</span>
     <div class="detail">RBAC, field-level encryption, auditing, VPC peering, SOC 2/HIPAA compliant on Atlas.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">📈 High</span>
+    <span class="badge high">High</span>
     <div class="detail">Horizontal sharding across nodes. Atlas auto-scales. Good for terabytes of data.</div>
   </td>
 </tr>
@@ -908,33 +981,33 @@
     <span class="product-name">Azure Cosmos DB</span>
     <span class="product-subtitle">Microsoft — Multi-model Global DB</span>
   </td>
-  <td><span class="cat-tag" style="background:rgba(0,120,212,0.15);color:#60a5fa">Azure / NoSQL</span></td>
+  <td><span class="cat-tag" style="background:#EAF1F5;color:#2E5D7D">Azure / NoSQL</span></td>
   <td class="best-for">Apps that need to be fast AND consistent worldwide — multi-region reads AND writes simultaneously. Unique: you pick exactly how consistent you want (5 levels). Supports SQL, MongoDB, Cassandra, Gremlin, and Table APIs all in one service.</td>
   <td class="stat-cell">
-    <span class="badge very-high">✅ Unique: 5 Levels</span>
+    <span class="badge very-high">Unique: 5 Levels</span>
     <div class="detail">Only DB with 5 tunable consistency levels: Strong → Bounded Staleness → Session → Consistent Prefix → Eventual. Pick your trade-off!</div>
   </td>
   <td class="stat-cell">
-    <span class="badge very-high">✅ Extremely High</span>
+    <span class="badge very-high">Extremely High</span>
     <div class="detail">99.999% SLA with multi-region writes. Industry-leading uptime guarantee.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge low-lat">⚡ Very Low</span>
+    <span class="badge low-lat">Very Low</span>
     <div class="detail">Guarantees &lt;10ms reads and &lt;15ms writes at 99th percentile globally. SLA-backed latency!</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">🔒 Very High</span>
+    <span class="badge high">Very High</span>
     <div class="detail">Private endpoints, RBAC, CMEK, always-encrypted, compliance certifications (HIPAA, SOC, ISO).</div>
   </td>
   <td class="stat-cell">
-    <span class="badge very-high">🚀 Massive</span>
+    <span class="badge very-high">Massive</span>
     <div class="detail">Serverless or provisioned. Instant global distribution. No manual sharding — automatic everywhere.</div>
   </td>
 </tr>
 
 <!-- ════════ COMPUTE ════════ -->
 <tr class="group-header" data-cat="Compute">
-  <td colspan="8">⚙️ Compute & Container Platforms</td>
+  <td colspan="8">Compute & Container Platforms</td>
 </tr>
 
 <tr data-cat="Compute">
@@ -942,26 +1015,26 @@
     <span class="product-name">Kubernetes (Self-managed)</span>
     <span class="product-subtitle">Open Source — You Manage It</span>
   </td>
-  <td><span class="cat-tag" style="background:rgba(244,63,94,0.15);color:#fb7185">Container</span></td>
+  <td><span class="cat-tag" style="background:#F7EDEA;color:#A65545">Container</span></td>
   <td class="best-for">Running containers with full control — on-premise data centers, custom clouds, or when you need specific configurations no managed service offers. You choose the hardware, networking, and everything. Maximum flexibility but maximum responsibility.</td>
   <td class="stat-cell">
-    <span class="badge high">✅ Strong</span>
+    <span class="badge high">Strong</span>
     <div class="detail">etcd provides consistent cluster state. You're responsible for setting it up correctly though.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge medium">⚖️ Medium</span>
+    <span class="badge medium">Medium</span>
     <div class="detail">HA requires careful setup (3+ control plane nodes, etcd backups). No SLA — you own uptime.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge low-lat">⚡ Low</span>
+    <span class="badge low-lat">Low</span>
     <div class="detail">Direct container performance. No managed-service overhead. Network plugin choice matters.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge medium">⚖️ Medium (DIY)</span>
+    <span class="badge medium">Medium (DIY)</span>
     <div class="detail">You configure RBAC, network policies, pod security, secrets encryption. Easy to misconfigure.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">📈 High</span>
+    <span class="badge high">High</span>
     <div class="detail">Cluster Autoscaler and HPA/VPA available but require setup. Scale = add more nodes manually.</div>
   </td>
 </tr>
@@ -971,26 +1044,26 @@
     <span class="product-name">GKE — Google Kubernetes Engine</span>
     <span class="product-subtitle">Google Cloud — Managed K8s</span>
   </td>
-  <td><span class="cat-tag" style="background:rgba(66,133,244,0.15);color:#60a5fa">GCP / K8s</span></td>
+  <td><span class="cat-tag" style="background:#EDF1F5;color:#4A7397">GCP / K8s</span></td>
   <td class="best-for">Managed Kubernetes — all the power of Kubernetes without managing the control plane yourself. Google handles upgrades, patching, and repairs automatically. GKE Autopilot takes it further: Google manages nodes too. Best for production container workloads.</td>
   <td class="stat-cell">
-    <span class="badge high">✅ Strong</span>
+    <span class="badge high">Strong</span>
     <div class="detail">Google-managed control plane with consistent state. Transparent upgrades — zero disruption.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">✅ Very High</span>
+    <span class="badge high">Very High</span>
     <div class="detail">99.95% SLA (Autopilot). Auto-repair broken nodes. Auto-upgrade to latest secure version.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge low-lat">⚡ Low</span>
+    <span class="badge low-lat">Low</span>
     <div class="detail">Direct container performance. Google's network fabric for pod-to-pod. No added latency from management.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">🔒 Very High</span>
+    <span class="badge high">Very High</span>
     <div class="detail">Workload Identity, Binary Authorization (only trusted images run), GKE Sandbox, Shielded Nodes.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">📈 High</span>
+    <span class="badge high">High</span>
     <div class="detail">Node Auto Provisioning creates the right nodes for each workload. Cluster autoscaler built-in.</div>
   </td>
 </tr>
@@ -1000,33 +1073,33 @@
     <span class="product-name">Cloud Run</span>
     <span class="product-subtitle">Google Cloud — Serverless Containers</span>
   </td>
-  <td><span class="cat-tag" style="background:rgba(66,133,244,0.15);color:#60a5fa">GCP / Serverless</span></td>
+  <td><span class="cat-tag" style="background:#EDF1F5;color:#4A7397">GCP / Serverless</span></td>
   <td class="best-for">Run containers without managing any servers. Just deploy your container and Google handles everything. Scales to zero (costs nothing when idle) and scales up automatically on demand. Perfect for APIs, web apps, background jobs triggered by events.</td>
   <td class="stat-cell">
-    <span class="badge high">✅ Strong</span>
+    <span class="badge high">Strong</span>
     <div class="detail">Stateless by design — each request is independent. No shared state to get out of sync.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">✅ Very High</span>
+    <span class="badge high">Very High</span>
     <div class="detail">99.95% SLA. Google manages everything. No servers to patch or go down at 3 AM.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge medium">🕐 Low-Medium</span>
+    <span class="badge medium">Low-Medium</span>
     <div class="detail">Cold starts (first request after idle) can take 1–3 seconds. Use "min instances = 1" to keep warm for latency-sensitive apps.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">🔒 High</span>
+    <span class="badge high">High</span>
     <div class="detail">IAM controls who can invoke. VPC connector for private network. No SSH — smaller attack surface.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge very-high">🚀 Auto (0→∞)</span>
+    <span class="badge very-high">Auto (0→∞)</span>
     <div class="detail">Scales to zero (free when idle) and up to 1000 instances in seconds. Concurrency tuning available.</div>
   </td>
 </tr>
 
 <!-- ════════ STORAGE ════════ -->
 <tr class="group-header" data-cat="Storage">
-  <td colspan="8">💾 Object & File Storage</td>
+  <td colspan="8">Object & File Storage</td>
 </tr>
 
 <tr data-cat="Storage GCP">
@@ -1034,33 +1107,33 @@
     <span class="product-name">Google Cloud Storage (GCS)</span>
     <span class="product-subtitle">Google Cloud — Object Storage</span>
   </td>
-  <td><span class="cat-tag" style="background:rgba(234,179,8,0.15);color:#facc15">GCP / Storage</span></td>
+  <td><span class="cat-tag" style="background:#F5F1E4;color:#8A7B4F">GCP / Storage</span></td>
   <td class="best-for">Storing any type of file at any scale — images, videos, backups, datasets, log archives, static websites. The "infinite hard drive" in the cloud. Also the backbone for data lakes and ML training datasets. Think: Google Drive for your applications.</td>
   <td class="stat-cell">
-    <span class="badge high">✅ Strong</span>
+    <span class="badge high">Strong</span>
     <div class="detail">Strongly consistent since 2021. Read-after-write consistency — upload a file, immediately read it back correctly. No more stale reads!</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">✅ Very High</span>
+    <span class="badge high">Very High</span>
     <div class="detail">99.99% SLA (Multi-Regional). Data replicated across multiple zones automatically.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge medium">🕐 Medium</span>
+    <span class="badge medium">Medium</span>
     <div class="detail">Standard: fast. Nearline (accessed &lt;1x/month): OK. Coldline/Archive: retrieval takes seconds–minutes. Choose the right class!</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">🔒 High</span>
+    <span class="badge high">High</span>
     <div class="detail">IAM, CMEK, VPC Service Controls (prevents data exfiltration), signed URLs, Object Versioning.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge very-high">🚀 Exabyte-Scale</span>
+    <span class="badge very-high">Exabyte-Scale</span>
     <div class="detail">No storage limits. Stores exabytes. Throughput scales with object count automatically.</div>
   </td>
 </tr>
 
 <!-- ════════ AWS SERVICES ════════ -->
 <tr class="group-header" data-cat="AWS">
-  <td colspan="8">🟠 Amazon Web Services (AWS) — Key Services</td>
+  <td colspan="8">Amazon Web Services (AWS) — Key Services</td>
 </tr>
 
 <tr data-cat="AWS">
@@ -1068,26 +1141,26 @@
     <span class="product-name">AWS ELB / ALB / NLB</span>
     <span class="product-subtitle">Elastic / Application / Network LB</span>
   </td>
-  <td><span class="cat-tag" style="background:rgba(255,153,0,0.15);color:#FF9900">AWS / LB</span></td>
+  <td><span class="cat-tag" style="background:#F8F1E2;color:#B5822F">AWS / LB</span></td>
   <td class="best-for">Distributing incoming traffic across multiple EC2 instances, containers, or Lambda functions. ALB is smart (routes based on URL path/headers). NLB is ultra-fast (Layer 4, handles millions of requests/second). The traffic directors of AWS.</td>
   <td class="stat-cell">
-    <span class="badge high">✅ Strong</span>
+    <span class="badge high">Strong</span>
     <div class="detail">Health checks ensure only healthy targets get traffic. Consistent routing rules applied every request.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">✅ Very High</span>
+    <span class="badge high">Very High</span>
     <div class="detail">Fully managed, multi-AZ by default. 99.99% uptime. Auto-scales the LB itself too.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge low-lat">⚡ Very Low</span>
+    <span class="badge low-lat">Very Low</span>
     <div class="detail">NLB: microsecond latency (Layer 4). ALB: milliseconds (Layer 7). NLB for real-time, ALB for smart routing.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">🔒 High</span>
+    <span class="badge high">High</span>
     <div class="detail">TLS termination, security groups, WAF integration (ALB), access logs to S3.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge very-high">🚀 Massive</span>
+    <span class="badge very-high">Massive</span>
     <div class="detail">ALB pre-warms automatically. NLB handles millions of req/sec. Both scale without configuration.</div>
   </td>
 </tr>
@@ -1097,26 +1170,26 @@
     <span class="product-name">AWS Lambda</span>
     <span class="product-subtitle">Serverless Functions</span>
   </td>
-  <td><span class="cat-tag" style="background:rgba(255,153,0,0.15);color:#FF9900">AWS / Serverless</span></td>
+  <td><span class="cat-tag" style="background:#F8F1E2;color:#B5822F">AWS / Serverless</span></td>
   <td class="best-for">Running small pieces of code without any servers. Pay per execution (costs pennies for low traffic). Great for processing images when uploaded to S3, handling API requests, scheduled tasks, event-driven automation. "Just write the function, not the server."</td>
   <td class="stat-cell">
-    <span class="badge high">✅ Strong</span>
+    <span class="badge high">Strong</span>
     <div class="detail">Stateless — each invocation is isolated. No shared state between executions (use external DB for state).</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">✅ Very High</span>
+    <span class="badge high">Very High</span>
     <div class="detail">Fully managed. Multi-AZ. No servers to go down. 99.95% SLA.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge medium">🕐 Low-Medium</span>
+    <span class="badge medium">Low-Medium</span>
     <div class="detail">Cold start: 100ms–1s (worse for Java/.NET). Provisioned Concurrency keeps functions warm. Warm calls: &lt;5ms.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">🔒 High</span>
+    <span class="badge high">High</span>
     <div class="detail">IAM roles, VPC support, environment variable encryption, no server access needed, CodeGuru for security scanning.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge very-high">🚀 Instant Auto-scale</span>
+    <span class="badge very-high">Instant Auto-scale</span>
     <div class="detail">10,000 concurrent executions by default (increase via request). Scales in milliseconds.</div>
   </td>
 </tr>
@@ -1126,26 +1199,26 @@
     <span class="product-name">Amazon RDS / Aurora</span>
     <span class="product-subtitle">Managed Relational Database</span>
   </td>
-  <td><span class="cat-tag" style="background:rgba(255,153,0,0.15);color:#FF9900">AWS / SQL</span></td>
+  <td><span class="cat-tag" style="background:#F8F1E2;color:#B5822F">AWS / SQL</span></td>
   <td class="best-for">Traditional SQL databases (MySQL, PostgreSQL, SQL Server, Oracle) fully managed by AWS. Aurora is AWS's turbo version — 3–5x faster than regular MySQL. Great for e-commerce, ERP, any app that needs structured data and SQL queries.</td>
   <td class="stat-cell">
-    <span class="badge high">✅ Strong ACID</span>
+    <span class="badge high">Strong ACID</span>
     <div class="detail">Full ACID compliance. Aurora: up to 15 read replicas with near-zero replication lag.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">✅ Very High</span>
+    <span class="badge high">Very High</span>
     <div class="detail">99.99% SLA (Aurora Multi-Master). Multi-AZ automatic failover in ~30 seconds. Auto-backup.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge low-lat">⚡ Low</span>
+    <span class="badge low-lat">Low</span>
     <div class="detail">Aurora: millisecond reads. RDS Proxy reduces connection overhead for Lambda. Faster than on-premises typical.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">🔒 High</span>
+    <span class="badge high">High</span>
     <div class="detail">VPC isolation, IAM auth, KMS encryption, SSL, automated patches, database activity streams.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">📈 High</span>
+    <span class="badge high">High</span>
     <div class="detail">Aurora Auto Scaling for read replicas. Aurora Serverless v2 scales by 0.5 ACU increments instantly.</div>
   </td>
 </tr>
@@ -1155,26 +1228,26 @@
     <span class="product-name">Amazon S3</span>
     <span class="product-subtitle">Simple Storage Service</span>
   </td>
-  <td><span class="cat-tag" style="background:rgba(255,153,0,0.15);color:#FF9900">AWS / Storage</span></td>
+  <td><span class="cat-tag" style="background:#F8F1E2;color:#B5822F">AWS / Storage</span></td>
   <td class="best-for">The gold standard for object storage. Store any file (images, videos, logs, backups, datasets). Static website hosting, data lake foundation, ML training data. Nearly every AWS service integrates with S3. Think: unlimited, durable cloud file system.</td>
   <td class="stat-cell">
-    <span class="badge high">✅ Strong</span>
+    <span class="badge high">Strong</span>
     <div class="detail">Strong read-after-write consistency for all objects (updated 2020). No more eventual-consistency surprises.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge very-high">✅ Extremely High</span>
+    <span class="badge very-high">Extremely High</span>
     <div class="detail">99.999999999% (11 nines) durability. 99.99% availability. Data replicated across 3+ AZs.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge medium">🕐 Medium</span>
+    <span class="badge medium">Medium</span>
     <div class="detail">Standard: fast. Glacier: minutes to hours. Transfer Acceleration speeds up uploads via CloudFront edge.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">🔒 Very High</span>
+    <span class="badge high">Very High</span>
     <div class="detail">IAM policies, bucket policies, ACLs, SSE-S3/KMS/C, VPC endpoints, Macie for data discovery, Object Lock for WORM.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge very-high">🚀 Infinite</span>
+    <span class="badge very-high">Infinite</span>
     <div class="detail">No storage limits. Request rate scales automatically. S3 Express One Zone for ultra-high throughput.</div>
   </td>
 </tr>
@@ -1184,33 +1257,33 @@
     <span class="product-name">Amazon SQS / SNS / EventBridge</span>
     <span class="product-subtitle">Messaging & Events</span>
   </td>
-  <td><span class="cat-tag" style="background:rgba(255,153,0,0.15);color:#FF9900">AWS / Messaging</span></td>
+  <td><span class="cat-tag" style="background:#F8F1E2;color:#B5822F">AWS / Messaging</span></td>
   <td class="best-for">Connecting different services without them needing to talk directly (decoupling). SQS = message queue (reliable delivery, one consumer). SNS = broadcast to many consumers at once. EventBridge = smart routing of events between AWS services, SaaS apps, and your code.</td>
   <td class="stat-cell">
-    <span class="badge medium">⚖️ At-Least-Once</span>
+    <span class="badge medium">At-Least-Once</span>
     <div class="detail">SQS: "at-least-once" delivery (rarely duplicates — handle idempotency). FIFO SQS = exactly-once. SNS = at-least-once.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">✅ Very High</span>
+    <span class="badge high">Very High</span>
     <div class="detail">99.9% SLA. Multi-AZ replication. Messages survive AZ failures. Dead Letter Queues catch failures.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge low-lat">⚡ Low</span>
+    <span class="badge low-lat">Low</span>
     <div class="detail">SQS: milliseconds. SNS: near-real-time fan-out. EventBridge: typical ~0.5s latency for rule matching.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">🔒 High</span>
+    <span class="badge high">High</span>
     <div class="detail">IAM, KMS encryption, VPC endpoints, server-side encryption, resource policies.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge very-high">🚀 Massive</span>
+    <span class="badge very-high">Massive</span>
     <div class="detail">SQS handles unlimited messages. SNS scales to millions of subscribers. No throughput limits to configure.</div>
   </td>
 </tr>
 
 <!-- ════════ AZURE SERVICES ════════ -->
 <tr class="group-header" data-cat="Azure">
-  <td colspan="8">🔵 Microsoft Azure — Key Services</td>
+  <td colspan="8">Microsoft Azure — Key Services</td>
 </tr>
 
 <tr data-cat="Azure Compute">
@@ -1218,26 +1291,26 @@
     <span class="product-name">Azure Kubernetes Service (AKS)</span>
     <span class="product-subtitle">Microsoft — Managed Kubernetes</span>
   </td>
-  <td><span class="cat-tag" style="background:rgba(0,120,212,0.15);color:#60a5fa">Azure / K8s</span></td>
+  <td><span class="cat-tag" style="background:#EAF1F5;color:#2E5D7D">Azure / K8s</span></td>
   <td class="best-for">Managed Kubernetes on Azure — similar to GKE but for Azure workloads. Microsoft manages the control plane for free (you pay for nodes). Great for .NET microservices, hybrid cloud with Azure AD integration, and Windows container workloads.</td>
   <td class="stat-cell">
-    <span class="badge high">✅ Strong</span>
+    <span class="badge high">Strong</span>
     <div class="detail">Managed control plane with consistent state. Azure manages etcd reliability.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">✅ High</span>
+    <span class="badge high">High</span>
     <div class="detail">99.95% SLA (with Availability Zones). Auto-repair and auto-upgrade of node pools.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge low-lat">⚡ Low</span>
+    <span class="badge low-lat">Low</span>
     <div class="detail">Accelerated networking (DPDK) for ultra-fast pod networking. Azure CNI for direct VNET integration.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">🔒 High</span>
+    <span class="badge high">High</span>
     <div class="detail">Azure AD integration (Entra ID), Microsoft Defender for Containers, RBAC, private cluster option.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">📈 High</span>
+    <span class="badge high">High</span>
     <div class="detail">Cluster autoscaler, KEDA for event-driven scaling, Virtual Node (Azure Container Instances burst).</div>
   </td>
 </tr>
@@ -1247,26 +1320,26 @@
     <span class="product-name">Azure Functions</span>
     <span class="product-subtitle">Microsoft — Serverless Compute</span>
   </td>
-  <td><span class="cat-tag" style="background:rgba(0,120,212,0.15);color:#60a5fa">Azure / Serverless</span></td>
+  <td><span class="cat-tag" style="background:#EAF1F5;color:#2E5D7D">Azure / Serverless</span></td>
   <td class="best-for">Serverless code execution on Azure. Triggered by HTTP, timers, queue messages, blob uploads, database changes. Best for event-driven automation, Azure service integration, and .NET/C# workloads where the ecosystem fits naturally.</td>
   <td class="stat-cell">
-    <span class="badge high">✅ Strong</span>
+    <span class="badge high">Strong</span>
     <div class="detail">Stateless invocations. Durable Functions extension adds stateful workflows (orchestrations).</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">✅ High</span>
+    <span class="badge high">High</span>
     <div class="detail">99.95% SLA. Fully managed. Multi-region with Traffic Manager or Front Door.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge medium">🕐 Low-Medium</span>
+    <span class="badge medium">Low-Medium</span>
     <div class="detail">Cold starts exist (worse for .NET). Premium Plan keeps instances warm. Durable Functions add coordination overhead.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">🔒 High</span>
+    <span class="badge high">High</span>
     <div class="detail">Managed Identity (no passwords), VNET integration, Azure Key Vault for secrets, Entra ID auth.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge very-high">🚀 High Auto-scale</span>
+    <span class="badge very-high">High Auto-scale</span>
     <div class="detail">Consumption plan: instant scale to 200 instances. Premium plan: pre-warmed instances for zero cold start.</div>
   </td>
 </tr>
@@ -1276,26 +1349,26 @@
     <span class="product-name">Azure Blob Storage</span>
     <span class="product-subtitle">Microsoft — Object Storage</span>
   </td>
-  <td><span class="cat-tag" style="background:rgba(0,120,212,0.15);color:#60a5fa">Azure / Storage</span></td>
+  <td><span class="cat-tag" style="background:#EAF1F5;color:#2E5D7D">Azure / Storage</span></td>
   <td class="best-for">Azure's equivalent of S3 — store any unstructured data (images, videos, documents, backups). Data Lake Storage Gen2 extends Blob for big data analytics. Works natively with Azure Machine Learning, HDInsight, Databricks.</td>
   <td class="stat-cell">
-    <span class="badge high">✅ Strong</span>
+    <span class="badge high">Strong</span>
     <div class="detail">Strong consistency for single account. Geo-redundant options: read-access geo-redundant (RA-GRS) adds eventually-consistent read replicas in secondary region.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge very-high">✅ Extremely High</span>
+    <span class="badge very-high">Extremely High</span>
     <div class="detail">16 nines durability (LRS). 99.99% read availability (RA-GRS). Replicated across 6 copies by default (LRS = 3, GRS = 6).</div>
   </td>
   <td class="stat-cell">
-    <span class="badge medium">🕐 Medium</span>
+    <span class="badge medium">Medium</span>
     <div class="detail">Hot tier: fast. Cool tier: slightly slower, cheaper. Archive: hours to rehydrate. Choose based on access pattern.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">🔒 Very High</span>
+    <span class="badge high">Very High</span>
     <div class="detail">Private endpoints, SAS tokens, encryption at rest (Microsoft or BYOK), Azure Defender for Storage, immutable WORM storage.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge very-high">🚀 Infinite</span>
+    <span class="badge very-high">Infinite</span>
     <div class="detail">No capacity limits. Premium tier for high-throughput I/O. Data Lake for petabyte-scale analytics.</div>
   </td>
 </tr>
@@ -1305,33 +1378,33 @@
     <span class="product-name">Azure Service Bus</span>
     <span class="product-subtitle">Microsoft — Enterprise Messaging</span>
   </td>
-  <td><span class="cat-tag" style="background:rgba(0,120,212,0.15);color:#60a5fa">Azure / Messaging</span></td>
+  <td><span class="cat-tag" style="background:#EAF1F5;color:#2E5D7D">Azure / Messaging</span></td>
   <td class="best-for">Reliable message queuing for enterprise applications. Supports transactions, dead-lettering, message sessions. Better than SQS for enterprise patterns. Great for ordering systems, financial transactions, workflows that cannot lose a message.</td>
   <td class="stat-cell">
-    <span class="badge high">✅ Strong</span>
+    <span class="badge high">Strong</span>
     <div class="detail">Exactly-once delivery with sessions. FIFO guarantee with sessions. Message lock prevents duplicates.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">✅ High</span>
+    <span class="badge high">High</span>
     <div class="detail">99.9% SLA. Geo-disaster recovery for namespace metadata. Premium tier: zone-redundant.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge low-lat">⚡ Low</span>
+    <span class="badge low-lat">Low</span>
     <div class="detail">Millisecond message delivery. Premium tier: dedicated capacity for consistent low latency.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">🔒 High</span>
+    <span class="badge high">High</span>
     <div class="detail">SAS tokens, Managed Identity, private endpoints, TLS, IP filtering, audit logs.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">📈 High</span>
+    <span class="badge high">High</span>
     <div class="detail">Premium tier auto-scales messaging units. Standard tier: shared, scales automatically.</div>
   </td>
 </tr>
 
 <!-- ════════ GCP ADDITIONAL ════════ -->
 <tr class="group-header" data-cat="GCP">
-  <td colspan="8">🔵 Google Cloud Platform (GCP) — Additional Services</td>
+  <td colspan="8">Google Cloud Platform (GCP) — Additional Services</td>
 </tr>
 
 <tr data-cat="GCP Database">
@@ -1339,26 +1412,26 @@
     <span class="product-name">Cloud Spanner</span>
     <span class="product-subtitle">Google Cloud — Global Relational DB</span>
   </td>
-  <td><span class="cat-tag" style="background:rgba(66,133,244,0.15);color:#60a5fa">GCP / SQL</span></td>
+  <td><span class="cat-tag" style="background:#EDF1F5;color:#4A7397">GCP / SQL</span></td>
   <td class="best-for">The only SQL database that can scale globally while keeping full consistency. If you need millions of transactions/second across multiple continents and can't afford any inconsistency, this is it. Used by Google internally for ads and payments. Very expensive but uniquely capable.</td>
   <td class="stat-cell">
-    <span class="badge very-high">✅ Unique: External Consistency</span>
+    <span class="badge very-high">Unique: External Consistency</span>
     <div class="detail">Stronger than "Strong" consistency — global transactions with external consistency (TrueTime). No other cloud DB matches this.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge very-high">✅ Extremely High</span>
+    <span class="badge very-high">Extremely High</span>
     <div class="detail">99.999% SLA (multi-region). Zero planned downtime. Spans multiple regions simultaneously.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge low-lat">⚡ Low (Global)</span>
+    <span class="badge low-lat">Low (Global)</span>
     <div class="detail">~2ms within region, ~10ms cross-continent for reads. Writes committed globally in ~10ms (multi-region).</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">🔒 Very High</span>
+    <span class="badge high">Very High</span>
     <div class="detail">CMEK, VPC Service Controls, IAM, audit logging, data residency controls.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge very-high">🚀 Infinite SQL Scale</span>
+    <span class="badge very-high">Infinite SQL Scale</span>
     <div class="detail">Add compute nodes (processing units) anytime. Scales from 1 node to thousands. No sharding to manage.</div>
   </td>
 </tr>
@@ -1368,26 +1441,26 @@
     <span class="product-name">Google Cloud Pub/Sub</span>
     <span class="product-subtitle">Google Cloud — Messaging</span>
   </td>
-  <td><span class="cat-tag" style="background:rgba(66,133,244,0.15);color:#60a5fa">GCP / Messaging</span></td>
+  <td><span class="cat-tag" style="background:#EDF1F5;color:#4A7397">GCP / Messaging</span></td>
   <td class="best-for">Real-time messaging between services. Like a reliable post office for your data — publish a message, multiple services can subscribe and receive it. Great for streaming data pipelines, event-driven architectures, IoT data ingestion, analytics pipelines with Dataflow/BigQuery.</td>
   <td class="stat-cell">
-    <span class="badge medium">⚖️ At-Least-Once</span>
+    <span class="badge medium">At-Least-Once</span>
     <div class="detail">Messages delivered at least once. Ordering keys enable in-order delivery per key. Exactly-once available with Dataflow.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">✅ Very High</span>
+    <span class="badge high">Very High</span>
     <div class="detail">99.95% SLA. Messages replicated across multiple zones. Dead letter topics for failed messages.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge low-lat">⚡ Low</span>
+    <span class="badge low-lat">Low</span>
     <div class="detail">~100ms end-to-end message delivery. Hundreds of milliseconds for cross-region. Batching reduces cost.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">🔒 High</span>
+    <span class="badge high">High</span>
     <div class="detail">IAM, CMEK, VPC Service Controls, audit logging, private service access.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge very-high">🚀 Massive</span>
+    <span class="badge very-high">Massive</span>
     <div class="detail">Ingests millions of messages/sec globally. No capacity planning. BigQuery integration for analytics at scale.</div>
   </td>
 </tr>
@@ -1397,33 +1470,33 @@
     <span class="product-name">BigQuery</span>
     <span class="product-subtitle">Google Cloud — Data Warehouse</span>
   </td>
-  <td><span class="cat-tag" style="background:rgba(66,133,244,0.15);color:#60a5fa">GCP / Analytics</span></td>
+  <td><span class="cat-tag" style="background:#EDF1F5;color:#4A7397">GCP / Analytics</span></td>
   <td class="best-for">Analyzing massive datasets with SQL — terabytes in seconds, petabytes in minutes. No servers to manage. Pay per query. Great for business intelligence, reporting, ML feature engineering, data exploration. Not for transaction processing — this is read-heavy analytics.</td>
   <td class="stat-cell">
-    <span class="badge high">✅ Strong</span>
+    <span class="badge high">Strong</span>
     <div class="detail">Consistent reads within a table. Streaming inserts visible within seconds. Table snapshots for point-in-time queries.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">✅ Very High</span>
+    <span class="badge high">Very High</span>
     <div class="detail">99.99% SLA. Serverless — no instances to maintain. Data replicated across multiple zones.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge low-lat">⚡ Low (for scale)</span>
+    <span class="badge low-lat">Low (for scale)</span>
     <div class="detail">Terabyte queries in seconds using massively parallel processing. Not for millisecond lookups — use Bigtable for that.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">🔒 High</span>
+    <span class="badge high">High</span>
     <div class="detail">Column-level security, row-level access, CMEK, VPC Service Controls, data masking, audit logs.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge very-high">🚀 Petabyte-Scale</span>
+    <span class="badge very-high">Petabyte-Scale</span>
     <div class="detail">Processes petabytes automatically. Slots (compute) auto-scale. BigQuery Omni runs queries on AWS/Azure data too.</div>
   </td>
 </tr>
 
 <!-- ════════ WALMART WCNP ════════ -->
 <tr class="group-header" data-cat="Walmart">
-  <td colspan="8">🟦 Walmart Cloud Native Platform (WCNP)</td>
+  <td colspan="8">Walmart Cloud Native Platform (WCNP)</td>
 </tr>
 
 <tr data-cat="Walmart">
@@ -1431,26 +1504,26 @@
     <span class="product-name">Walmart WCNP</span>
     <span class="product-subtitle">Walmart's Internal "Supercloud" Platform</span>
   </td>
-  <td><span class="cat-tag" style="background:rgba(0,113,206,0.15);color:#60a5fa">Walmart / Platform</span></td>
+  <td><span class="cat-tag" style="background:#E9EEF2;color:#1A3B52">Walmart / Platform</span></td>
   <td class="best-for">Walmart's own internal platform (not publicly available) built on Kubernetes. Runs 400+ apps across Walmart's private data centers + Google Cloud + Azure. Gives Walmart's developers a consistent experience regardless of which cloud infrastructure is underneath — avoiding vendor lock-in.</td>
   <td class="stat-cell">
-    <span class="badge high">✅ Strong</span>
+    <span class="badge high">Strong</span>
     <div class="detail">Consistent deployment model across private cloud, GCP, and Azure. Unified control plane ensures same behavior everywhere — the "Triplet Model" deploys once, runs on any cloud.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge very-high">✅ Very High</span>
+    <span class="badge very-high">Very High</span>
     <div class="detail">Multi-cloud redundancy. If one cloud provider has an outage, workloads shift. Designed for Black Friday traffic surges (10x normal load). Battle-tested at Walmart scale.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge low-lat">⚡ Low</span>
+    <span class="badge low-lat">Low</span>
     <div class="detail">Private cloud runs on Walmart's own hardware close to operations. No cloud provider network hop for internal traffic. Optimized for retail workloads (inventory, checkout, recommendations).</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">🔒 Very High</span>
+    <span class="badge high">Very High</span>
     <div class="detail">Enterprise-grade: zero-trust networking, strict RBAC, compliance for payment card data (PCI-DSS), SOC 2. Walmart controls ALL security policies — no shared responsibility model with cloud providers for core platform.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge very-high">🚀 Massive (Retail Scale)</span>
+    <span class="badge very-high">Massive (Retail Scale)</span>
     <div class="detail">Runs one of the world's largest e-commerce and retail operations. 240 million customers/week. Platform scales seamlessly across private and public cloud capacity. Pioneered "supercloud" concept.</div>
   </td>
 </tr>
@@ -1460,26 +1533,26 @@
     <span class="product-name">WCNP — Element ML Platform</span>
     <span class="product-subtitle">Walmart's Multi-Cloud ML</span>
   </td>
-  <td><span class="cat-tag" style="background:rgba(0,113,206,0.15);color:#60a5fa">Walmart / ML/AI</span></td>
+  <td><span class="cat-tag" style="background:#E9EEF2;color:#1A3B52">Walmart / ML/AI</span></td>
   <td class="best-for">Walmart's internal machine learning platform built on WCNP. Allows ML models to be trained once and deployed across private cloud, GCP, and Azure without changes (Triplet Model). Powers Walmart's recommendation engine, demand forecasting, inventory optimization, and pricing.</td>
   <td class="stat-cell">
-    <span class="badge high">✅ Strong</span>
+    <span class="badge high">Strong</span>
     <div class="detail">"Train once, deploy anywhere" — same model version runs identically on all three clouds. No consistency drift between cloud environments.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">✅ High</span>
+    <span class="badge high">High</span>
     <div class="detail">Multi-cloud redundancy means ML serving doesn't go down if one provider has issues. Critical for real-time product recommendations.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge low-lat">⚡ Low</span>
+    <span class="badge low-lat">Low</span>
     <div class="detail">Model serving optimized for real-time retail decisions — product recommendations at checkout must respond in milliseconds.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge high">🔒 High</span>
+    <span class="badge high">High</span>
     <div class="detail">Walmart-controlled data pipelines — customer data stays within Walmart's governance policies. No sharing with cloud providers' own AI systems.</div>
   </td>
   <td class="stat-cell">
-    <span class="badge very-high">🚀 Retail Scale</span>
+    <span class="badge very-high">Retail Scale</span>
     <div class="detail">Serves ML predictions to 240M+ weekly customers. Spans private + public cloud capacity. Scales for seasonal demand (holidays, back-to-school).</div>
   </td>
 </tr>
@@ -1488,12 +1561,12 @@
 </table>
 </div>
 
-<div style="text-align:center; padding: 24px; color: var(--text-muted); font-size: 0.78rem; max-width: 1400px; margin: 0 auto;">
-  <p>💡 <strong>Quick Rule of Thumb:</strong> For <em>speed to users</em> → CDN (Akamai/CloudFront). For <em>internal traffic</em> → ILB/Service Mesh. For <em>API management</em> → Apigee. For <em>global data</em> → CosmosDB or Spanner. For <em>fast key-value</em> → DynamoDB. For <em>flexible docs</em> → MongoDB. For <em>containers</em> → GKE or AKS. For <em>no-server code</em> → Cloud Run or Lambda. For <em>files</em> → GCS or S3.</p>
+<div class="page-foot">
+  <p><strong>Quick Rule of Thumb:</strong> For <em>speed to users</em> → CDN (Akamai/CloudFront). For <em>internal traffic</em> → ILB/Service Mesh. For <em>API management</em> → Apigee. For <em>global data</em> → CosmosDB or Spanner. For <em>fast key-value</em> → DynamoDB. For <em>flexible docs</em> → MongoDB. For <em>containers</em> → GKE or AKS. For <em>no-server code</em> → Cloud Run or Lambda. For <em>files</em> → GCS or S3.</p>
   <p style="margin-top: 8px; opacity: 0.6;">Ratings are general guidance — actual performance depends on configuration, region, tier, and workload. Always benchmark for your specific use case.</p>
 </div>
 <div class="header">
-  <p><Strong><a href="./index"><h4>Back To Home Page</h4> </a></Strong></p>
+  <a class="back" href="./index">Back to home</a>
 </div>
 <script>
 let activeFilter = 'all';
