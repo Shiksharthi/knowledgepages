@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-Commerce Marketplace — System Design & Architecture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #F5F6F8;
+    --panel: #FFFFFF;
+    --ink: #161B26;
+    --ink-soft: #4B5468;
+    --line: #E1E4EA;
+    --slate: #212A40;
+    --teal: #157A72;
+    --teal-bg: #E7F3F1;
+    --orange: #C2410C;
+    --orange-bg: #FBEDE3;
+    --blue: #2B5FAD;
+    --blue-bg: #E8EEF8;
+    --violet: #6D3FC4;
+    --violet-bg: #EFE8FA;
+    --code-bg: #0F1626;
+    --code-text: #9FEAD1;
+    --sidebar-w: 272px;
+    --content-max: 980px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif; font-size:16px; line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--teal); text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  h1,h2,h3,h4{font-family:'Space Grotesk', sans-serif; color:var(--slate); margin:0;}
+  code, .mono{font-family:'IBM Plex Mono', monospace;}
+
+  /* ---------- LAYOUT ---------- */
+  .layout{display:flex; align-items:flex-start; max-width:1440px; margin:0 auto;}
+  .sidebar{
+    width:var(--sidebar-w); flex-shrink:0; height:100vh; position:sticky; top:0;
+    overflow-y:auto; background:var(--panel); border-right:1px solid var(--line);
+    padding:26px 20px 60px;
+  }
+  .sidebar::-webkit-scrollbar{width:7px;}
+  .sidebar::-webkit-scrollbar-thumb{background:var(--line); border-radius:8px;}
+  .brand{display:flex; align-items:center; gap:9px; margin-bottom:16px;}
+  .brand .dot{width:8px;height:8px;border-radius:50%;background:var(--orange);
+    box-shadow:0 0 0 3px rgba(194,65,12,0.15); animation:pulse 2.4s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+  @media (prefers-reduced-motion: reduce){.brand .dot{animation:none;}}
+  .brand span{font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-soft);}
+  .sidebar h3.doc-title{font-size:1.0rem; font-weight:600; line-height:1.35; margin-bottom:22px;}
+  nav.toc{font-size:0.86rem;}
+  nav.toc a{display:block; color:var(--ink-soft); padding:7px 0 7px 13px; border-left:2px solid var(--line);
+    margin-bottom:1px; transition:all 0.15s ease;}
+  nav.toc a:hover{color:var(--teal); border-color:var(--teal); text-decoration:none;}
+  nav.toc a.active{color:var(--teal); border-color:var(--teal); font-weight:600; background:var(--teal-bg);}
+  .toc-toggle{display:none; position:fixed; bottom:20px; right:20px; z-index:50; background:var(--slate); color:#fff;
+    border:none; border-radius:50px; padding:12px 18px; font-family:'IBM Plex Mono',monospace; font-size:12.5px;
+    box-shadow:0 6px 20px rgba(20,25,40,0.3); cursor:pointer;}
+
+  main.content{flex:1; min-width:0; padding:0 0 100px; display:flex; justify-content:center;}
+  .content-inner{max-width:var(--content-max); width:100%; padding:0 48px;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background: radial-gradient(ellipse 900px 420px at 30% -10%, rgba(21,122,114,0.16), transparent 60%), var(--slate);
+    color:#EDEFF4; padding:64px 48px 52px; margin:0 0 48px;
+  }
+  .hero-inner{max-width:var(--content-max); margin:0 auto;}
+  .hero .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.18em; text-transform:uppercase;
+    color:#8FD8CD; margin-bottom:16px;}
+  .hero h1{font-size:clamp(1.8rem,3.6vw,2.7rem); color:#fff; line-height:1.16; margin-bottom:14px; letter-spacing:-0.01em;}
+  .hero p.lede{color:#B7BECB; font-size:1.02rem; max-width:640px; margin:0 0 22px;}
+  .hero .companies{display:flex; flex-wrap:wrap; gap:10px;}
+  .hero .companies span{font-family:'IBM Plex Mono',monospace; font-size:11.5px; border:1px solid rgba(255,255,255,0.18);
+    color:#C9CEDA; padding:5px 11px; border-radius:20px;}
+
+  /* ---------- SECTION HEADERS ---------- */
+  section{margin-bottom:64px; scroll-margin-top:24px;}
+  .sec-eyebrow{font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--orange); margin-bottom:8px;}
+  section > h2{font-size:1.65rem; margin-bottom:8px;}
+  section > p.sec-sub{color:var(--ink-soft); margin:0 0 26px; max-width:680px;}
+
+  /* ---------- STAT GRID ---------- */
+  .stat-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .stat-card{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:18px 18px 16px;}
+  .stat-card .num{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.7rem; color:var(--teal);}
+  .stat-card .label{font-weight:600; font-size:0.88rem; margin:2px 0 6px; color:var(--slate);}
+  .stat-card .detail{font-size:0.79rem; color:var(--ink-soft); line-height:1.5;}
+  @media (max-width:680px){.stat-grid{grid-template-columns:1fr 1fr;}}
+
+  /* ---------- MARKET GRID ---------- */
+  .market-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px;}
+  .market-card{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:16px;}
+  .market-card .num{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.35rem; color:var(--blue);}
+  .market-card .label{font-size:0.78rem; color:var(--ink-soft); margin-top:3px;}
+  @media (max-width:780px){.market-grid{grid-template-columns:1fr 1fr;}}
+  .sources-line{font-family:'IBM Plex Mono',monospace; font-size:11px; color:#96A0B4; margin-top:14px;}
+
+  /* ---------- ARCHITECTURE DIAGRAM ---------- */
+  .diagram-frame{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:20px; overflow-x:auto;}
+  .diagram-frame svg{display:block; margin:0 auto; min-width:760px;}
+  .diagram-legend{display:flex; flex-wrap:wrap; gap:16px; margin-top:16px; font-size:0.8rem; color:var(--ink-soft);}
+  .diagram-legend .lg-item{display:flex; align-items:center; gap:7px;}
+  .diagram-legend .sw{width:11px;height:11px;border-radius:3px;flex-shrink:0;}
+
+  /* ---------- MICROSERVICES GRID ---------- */
+  .svc-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
+  @media (max-width:900px){.svc-grid{grid-template-columns:1fr 1fr;}}
+  .svc-card{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:16px;}
+  .svc-card h4{font-size:0.98rem; margin-bottom:6px;}
+  .svc-card .tech{display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--teal);
+    background:var(--teal-bg); padding:2px 8px; border-radius:12px; margin-bottom:8px;}
+  .svc-card p{font-size:0.83rem; color:var(--ink-soft); margin:0 0 8px;}
+  .svc-card .scale{font-size:0.76rem; color:var(--orange); font-weight:500;}
+
+  /* ---------- RESILIENCE CARDS ---------- */
+  .resilience-service{background:var(--panel); border:1px solid var(--line); border-radius:12px; margin-bottom:16px; overflow:hidden;}
+  .resilience-service > summary{list-style:none; cursor:pointer; display:flex; align-items:center; gap:10px;
+    padding:14px 18px; background:#FAFAFB; font-weight:600; color:var(--slate); font-size:0.98rem;}
+  .resilience-service > summary::-webkit-details-marker{display:none;}
+  .resilience-service .r-icon{color:var(--orange); transition:transform 0.18s ease;}
+  .resilience-service[open] .r-icon{transform:rotate(90deg);}
+  .resilience-service .r-count{margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-soft);
+    background:#fff; border:1px solid var(--line); padding:2px 9px; border-radius:20px;}
+  .r-body{padding:6px 18px 16px;}
+  .r-row{display:grid; grid-template-columns:1fr 1fr; gap:14px; padding:12px 0; border-top:1px solid var(--line);}
+  .r-row:first-child{border-top:none;}
+  .r-col .r-tag{font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:0.08em; text-transform:uppercase; font-weight:600;}
+  .r-col.risk .r-tag{color:var(--orange);}
+  .r-col.fix .r-tag{color:var(--teal);}
+  .r-col p{font-size:0.85rem; margin:4px 0 0; color:var(--ink-soft); line-height:1.5;}
+  .r-stack{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); padding-top:12px; border-top:1px solid var(--line); margin-top:4px;}
+  @media (max-width:640px){.r-row{grid-template-columns:1fr;}}
+
+  /* ---------- CUSTOMER JOURNEY ---------- */
+  .journey-track{display:flex; flex-direction:column; gap:0;}
+  .journey-step{display:grid; grid-template-columns:40px 1fr; gap:16px; position:relative; padding-bottom:22px;}
+  .journey-step::before{content:""; position:absolute; left:19px; top:36px; bottom:0; width:2px; background:var(--line);}
+  .journey-step:last-child::before{display:none;}
+  .j-num{width:38px; height:38px; border-radius:50%; background:var(--slate); color:#fff; display:flex; align-items:center;
+    justify-content:center; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:0.95rem; flex-shrink:0; z-index:1;}
+  .j-body{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:12px 16px;}
+  .j-body h4{font-size:0.95rem; margin-bottom:3px;}
+  .j-body p{font-size:0.83rem; color:var(--ink-soft); margin:0;}
+  .j-body .j-time{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--teal); float:right;}
+  .journey-total{background:var(--slate); color:#fff; border-radius:10px; padding:14px 18px; font-family:'IBM Plex Mono',monospace;
+    font-size:0.85rem; margin-top:8px;}
+
+  /* ---------- API TABLE ---------- */
+  .api-list{display:flex; flex-direction:column; gap:10px;}
+  .api-row{display:grid; grid-template-columns:64px 1fr; gap:14px; background:var(--panel); border:1px solid var(--line);
+    border-radius:8px; padding:12px 16px; align-items:start;}
+  .api-method{font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; padding:4px 0; text-align:center;
+    border-radius:5px; height:fit-content;}
+  .api-method.get{background:var(--blue-bg); color:var(--blue);}
+  .api-method.post{background:var(--teal-bg); color:var(--teal);}
+  .api-path{font-family:'IBM Plex Mono',monospace; font-size:0.85rem; color:var(--slate); word-break:break-all;}
+  .api-resp{font-family:'IBM Plex Mono',monospace; font-size:0.76rem; color:var(--ink-soft); margin-top:5px;}
+  .api-note{font-size:0.82rem; color:var(--ink-soft); margin-top:14px;}
+
+  /* ---------- DATABASE CARDS ---------- */
+  .db-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+  @media (max-width:900px){.db-grid{grid-template-columns:1fr;}}
+  .db-card{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:18px; border-top:3px solid var(--blue);}
+  .db-card.mongo{border-top-color:var(--teal);}
+  .db-card.es{border-top-color:var(--violet);}
+  .db-card h4{font-size:1.05rem; margin-bottom:2px;}
+  .db-card .db-domain{font-size:0.8rem; color:var(--ink-soft); margin-bottom:10px;}
+  .db-card .db-reason{font-size:0.83rem; margin-bottom:12px; color:var(--ink);}
+  .db-card pre{background:var(--code-bg); color:var(--code-text); border-radius:8px; padding:12px 14px; font-size:0.72rem;
+    overflow-x:auto; margin:0 0 12px; line-height:1.6;}
+  .db-card .db-scale{font-size:0.78rem; color:var(--ink-soft); border-top:1px solid var(--line); padding-top:10px;}
+
+  /* ---------- SCALABILITY PILLARS ---------- */
+  .pillar-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  @media (max-width:780px){.pillar-grid{grid-template-columns:1fr;}}
+  .pillar-card{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:18px;}
+  .pillar-card h4{font-size:1.02rem; margin-bottom:6px;}
+  .pillar-card p{font-size:0.86rem; color:var(--ink-soft); margin:0 0 10px;}
+  .pillar-card .example{background:var(--orange-bg); color:#8a3308; font-size:0.8rem; padding:8px 11px; border-radius:7px; margin-bottom:10px;}
+  .pillar-card .stack{font-family:'IBM Plex Mono',monospace; font-size:0.74rem; color:var(--ink-soft);}
+
+  /* ---------- GENERIC TABLE ---------- */
+  table.data-table{width:100%; border-collapse:collapse; font-size:0.86rem; background:var(--panel); border-radius:10px; overflow:hidden;}
+  table.data-table th{background:var(--slate); color:#fff; text-align:left; padding:10px 12px; font-family:'IBM Plex Mono',monospace;
+    font-weight:500; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.03em;}
+  table.data-table td{padding:9px 12px; border-bottom:1px solid var(--line); color:var(--ink-soft);}
+  table.data-table tbody tr:nth-child(even){background:#FBFCFD;}
+  table.data-table tbody tr:last-child td{border-bottom:none;}
+  .table-wrap-outer{border:1px solid var(--line); border-radius:10px; overflow:hidden;}
+  .table-note{font-size:0.82rem; color:var(--ink-soft); margin-top:12px;}
+
+  /* ---------- FAULT TOLERANCE ---------- */
+  .cb-diagram{font-family:'IBM Plex Mono',monospace; font-size:0.82rem; background:var(--code-bg); color:var(--code-text);
+    border-radius:10px; padding:16px 18px; margin:18px 0; overflow-x:auto; white-space:pre;}
+  .consistency-grid{display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:16px;}
+  @media (max-width:780px){.consistency-grid{grid-template-columns:1fr;}}
+  .consist-card{border-radius:10px; padding:14px; font-size:0.83rem;}
+  .consist-card.strong{background:var(--orange-bg); color:#7a3106;}
+  .consist-card.eventual{background:var(--teal-bg); color:#0d4d47;}
+  .consist-card.causal{background:var(--blue-bg); color:#1c3f78;}
+  .consist-card b{display:block; margin-bottom:4px; font-family:'Space Grotesk',sans-serif;}
+
+  /* ---------- REAL-WORLD IMPL ---------- */
+  .company-grid{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+  @media (max-width:780px){.company-grid{grid-template-columns:1fr;}}
+  .company-card{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:20px;}
+  .company-card h4{font-size:1.1rem; margin-bottom:2px;}
+  .company-card .tag{font-size:0.8rem; color:var(--ink-soft); margin-bottom:14px;}
+  .company-stats{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;}
+  .company-stats .cs{background:var(--paper); border-radius:8px; padding:9px 10px;}
+  .company-stats .cs .n{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.05rem; color:var(--teal);}
+  .company-stats .cs .l{font-size:0.72rem; color:var(--ink-soft);}
+  .company-card ul{margin:0; padding-left:18px; font-size:0.82rem; color:var(--ink-soft);}
+  .company-card li{margin-bottom:4px;}
+  .company-card .stack-line{font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:var(--ink-soft);
+    border-top:1px solid var(--line); margin-top:12px; padding-top:10px;}
+
+  /* ---------- TRADE-OFFS ---------- */
+  .tradeoff-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  @media (max-width:780px){.tradeoff-grid{grid-template-columns:1fr;}}
+  .tradeoff-col h3{font-size:1.05rem; margin-bottom:14px;}
+  .tradeoff-col.use h3{color:var(--teal);}
+  .tradeoff-col.avoid h3{color:var(--orange);}
+  .to-item{background:var(--panel); border:1px solid var(--line); border-radius:9px; padding:12px 14px; margin-bottom:10px;}
+  .to-item .to-title{font-weight:600; font-size:0.9rem; margin-bottom:3px;}
+  .to-item .to-detail{font-size:0.8rem; color:var(--ink-soft);}
+  .tradeoff-col.use .to-item{border-left:3px solid var(--teal);}
+  .tradeoff-col.avoid .to-item{border-left:3px solid var(--orange);}
+
+  /* ---------- TAKEAWAYS ---------- */
+  .takeaway-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  @media (max-width:780px){.takeaway-grid{grid-template-columns:1fr;}}
+  .takeaway-card{background:var(--slate); color:#EDEFF4; border-radius:12px; padding:18px 20px;}
+  .takeaway-card .tk-num{font-family:'Space Grotesk',sans-serif; font-weight:700; color:#8FD8CD; font-size:0.85rem; margin-bottom:6px;}
+  .takeaway-card h4{color:#fff; font-size:1.0rem; margin-bottom:6px;}
+  .takeaway-card p{font-size:0.83rem; color:#B7BECB; margin:0;}
+  .takeaway-refs{font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--ink-soft); margin-top:18px; text-align:center;}
+
+  /* back to top */
+  .back-top{position:fixed; bottom:24px; right:24px; width:44px; height:44px; border-radius:50%; background:var(--slate);
+    color:#fff; display:flex; align-items:center; justify-content:center; text-decoration:none; box-shadow:0 6px 18px rgba(20,25,40,0.3);
+    opacity:0; pointer-events:none; transition:opacity 0.2s ease, transform 0.2s ease; z-index:40; font-size:18px;}
+  .back-top.visible{opacity:1; pointer-events:auto;}
+  .back-top:hover{transform:translateY(-3px);}
+
+  @media (max-width:980px){
+    .sidebar{position:fixed; left:0; top:0; z-index:60; transform:translateX(-102%); transition:transform 0.25s ease;
+      width:82vw; max-width:320px; box-shadow:0 0 40px rgba(0,0,0,0.25);}
+    .sidebar.open{transform:translateX(0);}
+    .toc-toggle{display:block;}
+    .content-inner{padding:0 20px;}
+    .hero{padding:52px 20px 40px;}
+    .stat-grid, .market-grid, .svc-grid{grid-template-columns:1fr 1fr;}
+  }
+</style>
+</head>
+<body id="top">
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand"><span class="dot"></span><span>System Design</span></div>
+    <h3 class="doc-title">E-Commerce Marketplace<br>Architecture</h3>
+    <nav class="toc" id="toc">
+      <a href="#exec-summary">Executive Summary</a>
+      <a href="#market-scale">Market Scale 2025–2026</a>
+      <a href="#architecture">High-Level Architecture</a>
+      <a href="#microservices">Core Microservices</a>
+      <a href="#resilience">Failure &amp; Resilience</a>
+      <a href="#journey">Customer Journey</a>
+      <a href="#api">REST API Design</a>
+      <a href="#database">Database Architecture</a>
+      <a href="#scalability">Scalability Strategies</a>
+      <a href="#traffic">Traffic &amp; Benchmarks</a>
+      <a href="#fault-tolerance">Fault Tolerance &amp; HA</a>
+      <a href="#real-world">Real-World Implementations</a>
+      <a href="#tradeoffs">When to Use / Avoid</a>
+      <a href="#takeaways">Key Takeaways</a>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <div class="content-inner" style="padding:0;">
+
+      <header class="hero">
+        <div class="hero-inner">
+          <div class="eyebrow">System Design Reference</div>
+          <h1>E-Commerce Marketplace System Design</h1>
+          <p class="lede">Customer experience flow, architecture patterns, and 2025–2026 performance data for large-scale marketplace platforms.</p>
+          <div class="companies">
+            <span>Amazon</span><span>Walmart</span><span>Flipkart</span><span>Coupang</span><span>Instacart</span><span>Temu</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="content-inner">
+
+        <!-- ================= EXEC SUMMARY ================= -->
+        <section id="exec-summary">
+          <div class="sec-eyebrow">01 · Overview</div>
+          <h2>Executive Summary</h2>
+          <p class="sec-sub">Modern marketplaces are distributed systems built on microservices: CDN → Load Balancer → API Gateway → 8 core services → Cache + Kafka → Databases → AI/ML.</p>
+          <div class="stat-grid">
+            <div class="stat-card"><div class="num">&lt;200ms</div><div class="label">API Response (p99)</div><div class="detail">p95 &lt; 100ms · Cloudflare 38ms avg</div></div>
+            <div class="stat-card"><div class="num">99.99%</div><div class="label">Uptime SLA</div><div class="detail">52 min downtime/year · Multi-AZ deployment</div></div>
+            <div class="stat-card"><div class="num">1M+ RPS</div><div class="label">Peak Throughput</div><div class="detail">Amazon/Flipkart scale · Kafka async buffering</div></div>
+            <div class="stat-card"><div class="num">&lt;2s</div><div class="label">Mobile Page Load</div><div class="detail">1s delay → 20% conversion drop</div></div>
+            <div class="stat-card"><div class="num">&lt;50ms</div><div class="label">Search Autocomplete</div><div class="detail">Elasticsearch · &lt;1s for 65B documents</div></div>
+            <div class="stat-card"><div class="num">95%+</div><div class="label">Checkout Success Rate</div><div class="detail">Hyper-personalized: 6%+ conversion vs 2% generic</div></div>
+          </div>
+        </section>
+
+        <!-- ================= MARKET SCALE ================= -->
+        <section id="market-scale">
+          <div class="sec-eyebrow">02 · Industry Data</div>
+          <h2>Market Scale &amp; Technology Adoption</h2>
+          <p class="sec-sub">2025–2026 architecture trends and global marketplace scale.</p>
+          <div class="market-grid">
+            <div class="market-card"><div class="num">2.14B</div><div class="label">Global digital buyers</div></div>
+            <div class="market-card"><div class="num">90%</div><div class="label">Microservices adoption (new apps)</div></div>
+            <div class="market-card"><div class="num">$6.3T</div><div class="label">Projected marketplace retail sales</div></div>
+            <div class="market-card"><div class="num">85%</div><div class="label">SaaS-based architecture by 2025</div></div>
+            <div class="market-card"><div class="num">$32.8T</div><div class="label">B2B e-commerce market, 2025</div></div>
+            <div class="market-card"><div class="num">64%</div><div class="label">Headless commerce — enterprise</div></div>
+            <div class="market-card"><div class="num">366M</div><div class="label">Temu unique visitors (Dec '25–Feb '26)</div></div>
+            <div class="market-card"><div class="num">33%</div><div class="label">B2B investment increase 11%+</div></div>
+            <div class="market-card"><div class="num">$52B</div><div class="label">Alibaba AI investment 2025–2028</div></div>
+            <div class="market-card"><div class="num">15%</div><div class="label">AI-native platforms (US retail, 2026)</div></div>
+          </div>
+          <div class="sources-line">Sources: RBMSoft, BigCommerce, Swell, ChineseSellers, Conduktor (2025–2026)</div>
+        </section>
+
+        <!-- ================= ARCHITECTURE DIAGRAM ================= -->
+        <section id="architecture">
+          <div class="sec-eyebrow">03 · System Diagram</div>
+          <h2>High-Level Architecture</h2>
+          <p class="sec-sub">Distributed systems layer diagram — from client request to data persistence.</p>
+
+          <div class="diagram-frame">
+<svg viewBox="0 0 1140 760" xmlns="http://www.w3.org/2000/svg" font-family="'IBM Plex Mono', monospace">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#616B80"/>
+    </marker>
+  </defs>
+
+  <!-- USERS -->
+  <rect x="40" y="20" width="337" height="50" rx="10" fill="#E8EEF8" stroke="#2B5FAD" stroke-width="1.4"/>
+  <text x="208" y="50" text-anchor="middle" font-size="12.5" font-weight="600" fill="#1c3f78">Web Browsers</text>
+  <rect x="401" y="20" width="337" height="50" rx="10" fill="#E8EEF8" stroke="#2B5FAD" stroke-width="1.4"/>
+  <text x="569" y="50" text-anchor="middle" font-size="12.5" font-weight="600" fill="#1c3f78">iOS / Android Mobile</text>
+  <rect x="762" y="20" width="337" height="50" rx="10" fill="#E8EEF8" stroke="#2B5FAD" stroke-width="1.4"/>
+  <text x="930" y="50" text-anchor="middle" font-size="12.5" font-weight="600" fill="#1c3f78">Third-Party API Clients</text>
+
+  <line x1="570" y1="70" x2="570" y2="94" stroke="#616B80" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+  <!-- CDN -->
+  <rect x="190" y="96" width="760" height="56" rx="10" fill="#DCE7F7" stroke="#2B5FAD" stroke-width="1.6"/>
+  <text x="570" y="120" text-anchor="middle" font-size="14.5" font-weight="700" fill="#1c3f78">CDN — CloudFront / Cloudflare</text>
+  <text x="570" y="138" text-anchor="middle" font-size="10.5" fill="#3c5a8c">300+ Edge Locations · Static Assets (images, CSS, JS, video) · p99 &lt; 50ms globally</text>
+
+  <line x1="570" y1="152" x2="570" y2="176" stroke="#616B80" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+  <!-- LB + GATEWAY -->
+  <rect x="70" y="178" width="1000" height="118" rx="12" fill="#E8EEF8" stroke="#2B5FAD" stroke-width="1.6"/>
+  <text x="570" y="202" text-anchor="middle" font-size="14.5" font-weight="700" fill="#1c3f78">LOAD BALANCER + API GATEWAY</text>
+
+  <rect x="90" y="224" width="151" height="38" rx="8" fill="#FFFFFF" stroke="#8CA9D6" stroke-width="1.2"/>
+  <text x="165" y="247" text-anchor="middle" font-size="10.5" fill="#2B5FAD" font-weight="600">NGINX / ALB</text>
+  <rect x="251" y="224" width="151" height="38" rx="8" fill="#FFFFFF" stroke="#8CA9D6" stroke-width="1.2"/>
+  <text x="326" y="247" text-anchor="middle" font-size="10.5" fill="#2B5FAD" font-weight="600">Kong API GW</text>
+  <rect x="412" y="224" width="151" height="38" rx="8" fill="#FFFFFF" stroke="#8CA9D6" stroke-width="1.2"/>
+  <text x="487" y="247" text-anchor="middle" font-size="10.5" fill="#2B5FAD" font-weight="600">Auth + JWT</text>
+  <rect x="573" y="224" width="151" height="38" rx="8" fill="#FFFFFF" stroke="#8CA9D6" stroke-width="1.2"/>
+  <text x="648" y="247" text-anchor="middle" font-size="10.5" fill="#2B5FAD" font-weight="600">Rate Limiting</text>
+  <rect x="734" y="224" width="151" height="38" rx="8" fill="#FFFFFF" stroke="#8CA9D6" stroke-width="1.2"/>
+  <text x="809" y="247" text-anchor="middle" font-size="10.5" fill="#2B5FAD" font-weight="600">SSL Term.</text>
+  <rect x="895" y="224" width="151" height="38" rx="8" fill="#FFFFFF" stroke="#8CA9D6" stroke-width="1.2"/>
+  <text x="970" y="247" text-anchor="middle" font-size="10.5" fill="#2B5FAD" font-weight="600">Routing</text>
+
+  <line x1="570" y1="296" x2="570" y2="318" stroke="#616B80" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+  <!-- MICROSERVICES -->
+  <text x="570" y="334" text-anchor="middle" font-size="12" font-weight="700" fill="#0d4d47" letter-spacing="1.5">MICROSERVICES LAYER</text>
+
+  <rect x="70" y="344" width="238" height="50" rx="10" fill="#E7F3F1" stroke="#157A72" stroke-width="1.4"/>
+  <text x="189" y="374" text-anchor="middle" font-size="13" font-weight="600" fill="#0d4d47">Catalog</text>
+  <rect x="324" y="344" width="238" height="50" rx="10" fill="#E7F3F1" stroke="#157A72" stroke-width="1.4"/>
+  <text x="443" y="374" text-anchor="middle" font-size="13" font-weight="600" fill="#0d4d47">Search</text>
+  <rect x="578" y="344" width="238" height="50" rx="10" fill="#E7F3F1" stroke="#157A72" stroke-width="1.4"/>
+  <text x="697" y="374" text-anchor="middle" font-size="13" font-weight="600" fill="#0d4d47">Cart</text>
+  <rect x="832" y="344" width="238" height="50" rx="10" fill="#E7F3F1" stroke="#157A72" stroke-width="1.4"/>
+  <text x="951" y="374" text-anchor="middle" font-size="13" font-weight="600" fill="#0d4d47">Order</text>
+
+  <rect x="70" y="408" width="238" height="50" rx="10" fill="#E7F3F1" stroke="#157A72" stroke-width="1.4"/>
+  <text x="189" y="438" text-anchor="middle" font-size="13" font-weight="600" fill="#0d4d47">Payment</text>
+  <rect x="324" y="408" width="238" height="50" rx="10" fill="#E7F3F1" stroke="#157A72" stroke-width="1.4"/>
+  <text x="443" y="438" text-anchor="middle" font-size="13" font-weight="600" fill="#0d4d47">Inventory</text>
+  <rect x="578" y="408" width="238" height="50" rx="10" fill="#E7F3F1" stroke="#157A72" stroke-width="1.4"/>
+  <text x="697" y="438" text-anchor="middle" font-size="13" font-weight="600" fill="#0d4d47">User</text>
+  <rect x="832" y="408" width="238" height="50" rx="10" fill="#E7F3F1" stroke="#157A72" stroke-width="1.4"/>
+  <text x="951" y="438" text-anchor="middle" font-size="13" font-weight="600" fill="#0d4d47">Notification</text>
+
+  <line x1="570" y1="458" x2="570" y2="482" stroke="#616B80" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+  <!-- CACHE + MQ -->
+  <rect x="70" y="484" width="490" height="64" rx="10" fill="#FBEDE3" stroke="#C2410C" stroke-width="1.4"/>
+  <text x="315" y="510" text-anchor="middle" font-size="13" font-weight="700" fill="#8a3308">CACHE — Redis / Memcached</text>
+  <text x="315" y="530" text-anchor="middle" font-size="9.5" fill="#a8562a">Sessions · Product Info · Pricing · Cart | 0.12ms p50, 0.45ms p99</text>
+
+  <rect x="580" y="484" width="490" height="64" rx="10" fill="#FBEDE3" stroke="#C2410C" stroke-width="1.4"/>
+  <text x="825" y="510" text-anchor="middle" font-size="13" font-weight="700" fill="#8a3308">MESSAGE QUEUE — Kafka / RabbitMQ</text>
+  <text x="825" y="530" text-anchor="middle" font-size="9.5" fill="#a8562a">Order events · Inventory updates · Notifications · Async decoupling</text>
+
+  <line x1="570" y1="548" x2="570" y2="570" stroke="#616B80" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+  <!-- DATABASE TIER -->
+  <rect x="70" y="572" width="320" height="72" rx="10" fill="#EFE8FA" stroke="#6D3FC4" stroke-width="1.4"/>
+  <text x="230" y="600" text-anchor="middle" font-size="13.5" font-weight="700" fill="#432882">PostgreSQL</text>
+  <text x="230" y="618" text-anchor="middle" font-size="9" fill="#5c3d99">Orders · Users · Payments</text>
+  <text x="230" y="632" text-anchor="middle" font-size="9" fill="#5c3d99">ACID, sharded by user_id</text>
+
+  <rect x="410" y="572" width="320" height="72" rx="10" fill="#EFE8FA" stroke="#6D3FC4" stroke-width="1.4"/>
+  <text x="570" y="600" text-anchor="middle" font-size="13.5" font-weight="700" fill="#432882">MongoDB</text>
+  <text x="570" y="618" text-anchor="middle" font-size="9" fill="#5c3d99">Product Catalog · Sessions</text>
+  <text x="570" y="632" text-anchor="middle" font-size="9" fill="#5c3d99">Flexible schema, replica sets</text>
+
+  <rect x="750" y="572" width="320" height="72" rx="10" fill="#EFE8FA" stroke="#6D3FC4" stroke-width="1.4"/>
+  <text x="910" y="600" text-anchor="middle" font-size="13.5" font-weight="700" fill="#432882">Elasticsearch</text>
+  <text x="910" y="618" text-anchor="middle" font-size="9" fill="#5c3d99">Search Index</text>
+  <text x="910" y="632" text-anchor="middle" font-size="9" fill="#5c3d99">&lt;50ms full-text, &lt;1s for 65B docs</text>
+
+  <line x1="570" y1="644" x2="570" y2="666" stroke="#616B80" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+  <!-- STORAGE + AI/ML -->
+  <rect x="70" y="668" width="490" height="64" rx="10" fill="#F1EBFA" stroke="#6D3FC4" stroke-width="1.2" stroke-dasharray="0"/>
+  <text x="315" y="694" text-anchor="middle" font-size="13" font-weight="700" fill="#432882">OBJECT STORAGE — S3 / Azure Blob</text>
+  <text x="315" y="714" text-anchor="middle" font-size="9.5" fill="#5c3d99">Images, Videos, Documents</text>
+
+  <rect x="580" y="668" width="490" height="64" rx="10" fill="#F1EBFA" stroke="#6D3FC4" stroke-width="1.2"/>
+  <text x="825" y="694" text-anchor="middle" font-size="13" font-weight="700" fill="#432882">AI / ML SERVICES</text>
+  <text x="825" y="714" text-anchor="middle" font-size="9.5" fill="#5c3d99">Recommendations · Fraud Detection · Search Ranking · Demand Forecasting</text>
+</svg>
+
+          </div>
+          <div class="diagram-legend">
+            <div class="lg-item"><span class="sw" style="background:#2B5FAD"></span>Edge &amp; Gateway</div>
+            <div class="lg-item"><span class="sw" style="background:#157A72"></span>Microservices</div>
+            <div class="lg-item"><span class="sw" style="background:#C2410C"></span>Cache &amp; Messaging</div>
+            <div class="lg-item"><span class="sw" style="background:#6D3FC4"></span>Data &amp; Storage</div>
+          </div>
+        </section>
+
+        <!-- ================= MICROSERVICES ================= -->
+        <section id="microservices">
+          <div class="sec-eyebrow">04 · Services</div>
+          <h2>Core Microservices — Roles &amp; Technology</h2>
+          <p class="sec-sub">Each service owns its domain, its own data store, and its own scaling strategy.</p>
+          <div class="svc-grid">
+            <div class="svc-card"><h4>Catalog Service</h4><div class="tech">MongoDB + Redis</div><p>Product data, images, specs, pricing.</p><div class="scale">↑ Read replicas + Redis cache (95% hit rate)</div></div>
+            <div class="svc-card"><h4>Search Service</h4><div class="tech">Elasticsearch + Kafka</div><p>Full-text search, autocomplete, ML ranking.</p><div class="scale">↑ 5-node cluster, index sharding by category</div></div>
+            <div class="svc-card"><h4>Cart Service</h4><div class="tech">Redis + DynamoDB</div><p>Cross-device cart state, 90-day TTL.</p><div class="scale">↑ Write-through cache, sticky sessions</div></div>
+            <div class="svc-card"><h4>Order Service</h4><div class="tech">PostgreSQL + Kafka</div><p>Order lifecycle, ACID transactions.</p><div class="scale">↑ Saga pattern, shard by user_id mod 10</div></div>
+            <div class="svc-card"><h4>Payment Service</h4><div class="tech">Stripe + Adyen (backup)</div><p>Tokenization, auth/capture, fraud ML.</p><div class="scale">↑ Multi-gateway failover, circuit breaker</div></div>
+            <div class="svc-card"><h4>Inventory Service</h4><div class="tech">Redis + Kafka CDC</div><p>Real-time stock across warehouses.</p><div class="scale">↑ Distributed locks, Redis DECR atomic</div></div>
+            <div class="svc-card"><h4>User Service</h4><div class="tech">PostgreSQL + JWT/Redis</div><p>Auth, profiles, address book.</p><div class="scale">↑ JWT caching 24h, replicas for reads</div></div>
+            <div class="svc-card"><h4>Notification Service</h4><div class="tech">SendGrid + Twilio + FCM</div><p>Email, SMS, push, in-app alerts.</p><div class="scale">↑ Kafka priority queue, K8s autoscaling</div></div>
+          </div>
+        </section>
+
+        <!-- ================= RESILIENCE ================= -->
+        <section id="resilience">
+          <div class="sec-eyebrow">05 · Reliability</div>
+          <h2>Failure → Resilience Patterns</h2>
+          <p class="sec-sub">How each service is designed to fail safely. Click a service to expand its failure scenarios and mitigations.</p>
+
+          <details class="resilience-service" open>
+            <summary><span class="r-icon">▸</span> API Gateway / Load Balancer <span class="r-count">4 scenarios</span></summary>
+            <div class="r-body">
+              <div class="r-row"><div class="r-col risk"><div class="r-tag">Failure</div><p>Single LB crash</p></div><div class="r-col fix"><div class="r-tag">Resilience</div><p>Active-active multi-AZ + DNS failover</p></div></div>
+              <div class="r-row"><div class="r-col risk"><div class="r-tag">Failure</div><p>Region outage (earthquake/power)</p></div><div class="r-col fix"><div class="r-tag">Resilience</div><p>Multi-region geo-routing (3+ regions)</p></div></div>
+              <div class="r-row"><div class="r-col risk"><div class="r-tag">Failure</div><p>DDoS flood</p></div><div class="r-col fix"><div class="r-tag">Resilience</div><p>AWS WAF + rate limit (1K req/min/user)</p></div></div>
+              <div class="r-row"><div class="r-col risk"><div class="r-tag">Failure</div><p>Auth service down</p></div><div class="r-col fix"><div class="r-tag">Resilience</div><p>Circuit breaker + JWT cache (24h TTL)</p></div></div>
+              <div class="r-stack">Stack: AWS ALB · Kong · Route53 · CloudFlare WAF</div>
+            </div>
+          </details>
+
+          <details class="resilience-service">
+            <summary><span class="r-icon">▸</span> Product Catalog Service <span class="r-count">4 scenarios</span></summary>
+            <div class="r-body">
+              <div class="r-row"><div class="r-col risk"><div class="r-tag">Failure</div><p>Primary DB crash</p></div><div class="r-col fix"><div class="r-tag">Resilience</div><p>1 primary + 2 read replicas, auto-failover &lt;30s</p></div></div>
+              <div class="r-row"><div class="r-col risk"><div class="r-tag">Failure</div><p>Slow page loads</p></div><div class="r-col fix"><div class="r-tag">Resilience</div><p>Redis cache 95% hit rate (top 100K products)</p></div></div>
+              <div class="r-row"><div class="r-col risk"><div class="r-tag">Failure</div><p>Data out of sync across regions</p></div><div class="r-col fix"><div class="r-tag">Resilience</div><p>Kafka CDC → &lt;3s cross-region sync</p></div></div>
+              <div class="r-row"><div class="r-col risk"><div class="r-tag">Failure</div><p>Corrupt seller image upload</p></div><div class="r-col fix"><div class="r-tag">Resilience</div><p>Async validation → S3, invalid images notified</p></div></div>
+              <div class="r-stack">Stack: MongoDB replica sets · Redis TTL 1hr · Kafka CDC</div>
+            </div>
+          </details>
+
+          <details class="resilience-service">
+            <summary><span class="r-icon">▸</span> Search &amp; Discovery Service <span class="r-count">4 scenarios</span></summary>
+            <div class="r-body">
+              <div class="r-row"><div class="r-col risk"><div class="r-tag">Failure</div><p>ES cluster down</p></div><div class="r-col fix"><div class="r-tag">Resilience</div><p>3-node ES cluster + SQL fallback (circuit breaker)</p></div></div>
+              <div class="r-row"><div class="r-col risk"><div class="r-tag">Failure</div><p>Search latency &gt; 5s</p></div><div class="r-col fix"><div class="r-tag">Resilience</div><p>Cache top 10K queries in Redis (5-min TTL)</p></div></div>
+              <div class="r-row"><div class="r-col risk"><div class="r-tag">Failure</div><p>Stale index (new products not showing)</p></div><div class="r-col fix"><div class="r-tag">Resilience</div><p>Kafka CDC delta index every 30s</p></div></div>
+              <div class="r-row"><div class="r-col risk"><div class="r-tag">Failure</div><p>Irrelevant ranking</p></div><div class="r-col fix"><div class="r-tag">Resilience</div><p>ML ranking (LambdaMART) + A/B test 20% traffic</p></div></div>
+              <div class="r-stack">Stack: Elasticsearch 5-node · Redis · Spark ML · Kafka</div>
+            </div>
+          </details>
+
+          <details class="resilience-service">
+            <summary><span class="r-icon">▸</span> Cart Service <span class="r-count">3 scenarios</span></summary>
+            <div class="r-body">
+              <div class="r-row"><div class="r-col risk"><div class="r-tag">Failure</div><p>Cart data lost (Redis evicted)</p></div><div class="r-col fix"><div class="r-tag">Resilience</div><p>Write-through to Redis + DynamoDB backup; cache miss reloads from DB</p></div></div>
+              <div class="r-row"><div class="r-col risk"><div class="r-tag">Failure</div><p>Flash sale: 1M users, 1K items</p></div><div class="r-col fix"><div class="r-tag">Resilience</div><p>Rate limit 10 req/sec/user; Redis DECR atomic; queue overflow via Kafka</p></div></div>
+              <div class="r-row"><div class="r-col risk"><div class="r-tag">Failure</div><p>Cart across devices conflict</p></div><div class="r-col fix"><div class="r-tag">Resilience</div><p>Optimistic locking with version numbers; last-write-wins or merge union</p></div></div>
+              <div class="r-stack">Stack: Redis TTL 7d · DynamoDB 90d · Kafka queue · Idempotency keys</div>
+            </div>
+          </details>
+
+          <details class="resilience-service">
+            <summary><span class="r-icon">▸</span> Order Service <span class="r-count">3 scenarios</span></summary>
+            <div class="r-body">
+              <div class="r-row"><div class="r-col risk"><div class="r-tag">Failure</div><p>Payment succeeds, order missing</p></div><div class="r-col fix"><div class="r-tag">Resilience</div><p>Saga pattern: Reserve → Charge → Create, with compensating transactions on failure</p></div></div>
+              <div class="r-row"><div class="r-col risk"><div class="r-tag">Failure</div><p>Order stuck in "Processing"</p></div><div class="r-col fix"><div class="r-tag">Resilience</div><p>Timeout rules (24h → escalate); dead-letter queue; exponential backoff x3</p></div></div>
+              <div class="r-row"><div class="r-col risk"><div class="r-tag">Failure</div><p>Duplicate orders (double-click)</p></div><div class="r-col fix"><div class="r-tag">Resilience</div><p>Idempotency key (client UUID); Redis store 5-min TTL; HTTP 409 on retry</p></div></div>
+              <div class="r-stack">Stack: PostgreSQL Multi-AZ · Kafka Saga · Temporal/Cadence · Redis</div>
+            </div>
+          </details>
+
+          <details class="resilience-service">
+            <summary><span class="r-icon">▸</span> Payment Service <span class="r-count">3 scenarios</span></summary>
+            <div class="r-body">
+              <div class="r-row"><div class="r-col risk"><div class="r-tag">Failure</div><p>Payment gateway (Stripe) down</p></div><div class="r-col fix"><div class="r-tag">Resilience</div><p>Multi-gateway: Stripe primary → PayPal backup; circuit breaker after 5 failures</p></div></div>
+              <div class="r-row"><div class="r-col risk"><div class="r-tag">Failure</div><p>Auth captured, order not updated</p></div><div class="r-col fix"><div class="r-tag">Resilience</div><p>Auth-capture pattern; reconciliation job releases auths &gt; 7 days</p></div></div>
+              <div class="r-row"><div class="r-col risk"><div class="r-tag">Failure</div><p>Fraudulent transaction</p></div><div class="r-col fix"><div class="r-tag">Resilience</div><p>ML fraud score 0–100: &gt;80 approve, 50–80 manual, &lt;50 block; 3D Secure high-risk</p></div></div>
+              <div class="r-stack">Stack: Stripe · Adyen · PayPal backup · Vault · ML fraud model</div>
+            </div>
+          </details>
+
+          <details class="resilience-service">
+            <summary><span class="r-icon">▸</span> Inventory Service <span class="r-count">3 scenarios</span></summary>
+            <div class="r-body">
+              <div class="r-row"><div class="r-col risk"><div class="r-tag">Failure</div><p>Oversold (10 orders, 5 in stock)</p></div><div class="r-col fix"><div class="r-tag">Resilience</div><p>Redis distributed lock (Redlock); soft reserve 15m at cart, hard lock at checkout</p></div></div>
+              <div class="r-row"><div class="r-col risk"><div class="r-tag">Failure</div><p>Flash sale: 1M users → 1K items</p></div><div class="r-col fix"><div class="r-tag">Resilience</div><p>Redis DECR atomic; API returns "Sold out" at 0; queue 100K req/sec</p></div></div>
+              <div class="r-row"><div class="r-col risk"><div class="r-tag">Failure</div><p>Inventory drift (DB ≠ warehouse)</p></div><div class="r-col fix"><div class="r-tag">Resilience</div><p>Nightly reconciliation job; event sourcing; physical audits quarterly</p></div></div>
+              <div class="r-stack">Stack: Redis DECR · Kafka CDC · Zookeeper · PostgreSQL event log</div>
+            </div>
+          </details>
+        </section>
+
+        <!-- ================= CUSTOMER JOURNEY ================= -->
+        <section id="journey">
+          <div class="sec-eyebrow">06 · Walkthrough</div>
+          <h2>Customer Journey: Sarah Buys Headphones on Black Friday</h2>
+          <p class="sec-sub">Browse → Search → Product Page → Add to Cart → Checkout → Payment → Confirmation → Delivery.</p>
+          <div class="journey-track">
+            <div class="journey-step"><div class="j-num">1</div><div class="j-body"><span class="j-time">50ms</span><h4>Open App</h4><p>CDN serves app from Seattle edge.</p></div></div>
+            <div class="journey-step"><div class="j-num">2</div><div class="j-body"><span class="j-time">73ms</span><h4>Search</h4><p>Elasticsearch returns 1,247 results.</p></div></div>
+            <div class="journey-step"><div class="j-num">3</div><div class="j-body"><span class="j-time">200ms</span><h4>View Product</h4><p>Catalog fetches MongoDB; 15 images from CDN.</p></div></div>
+            <div class="journey-step"><div class="j-num">4</div><div class="j-body"><span class="j-time">25ms</span><h4>Add to Cart</h4><p>Redis write (5ms) + DynamoDB backup (20ms).</p></div></div>
+            <div class="journey-step"><div class="j-num">5</div><div class="j-body"><h4>Reserve Stock</h4><p>Soft lock 15 min; 347 units in Seattle warehouse.</p></div></div>
+            <div class="journey-step"><div class="j-num">6</div><div class="j-body"><h4>Checkout</h4><p>JWT validated; shipping address retrieved.</p></div></div>
+            <div class="journey-step"><div class="j-num">7</div><div class="j-body"><span class="j-time">800ms</span><h4>Pay</h4><p>Stripe tokenizes card; auth hold placed.</p></div></div>
+            <div class="journey-step"><div class="j-num">8</div><div class="j-body"><span class="j-time">500ms</span><h4>Order Created</h4><p>PostgreSQL ACID txn: order + inventory + payment.</p></div></div>
+            <div class="journey-step"><div class="j-num">9</div><div class="j-body"><span class="j-time">500ms</span><h4>Capture &amp; Confirm</h4><p>Stripe captures $349; Kafka event fires — async.</p></div></div>
+            <div class="journey-step"><div class="j-num">10</div><div class="j-body"><span class="j-time">&lt;30s</span><h4>Notify</h4><p>Email (SendGrid) + SMS (Twilio) + Push.</p></div></div>
+            <div class="journey-step"><div class="j-num">11</div><div class="j-body"><h4>Ship</h4><p>WMS pick task; UPS label generated; tracked.</p></div></div>
+            <div class="journey-step"><div class="j-num">12</div><div class="j-body"><h4>Delivered ⭐</h4><p>SMS confirmation + review prompt + recs updated.</p></div></div>
+          </div>
+          <div class="journey-total">Browse-to-cart: ~300ms (CDN 50ms + search 73ms + product 200ms + cart 25ms) &nbsp;·&nbsp; Checkout: ~2s (payment 800ms + order 500ms + capture 500ms + async notify)</div>
+        </section>
+
+        <!-- ================= API DESIGN ================= -->
+        <section id="api">
+          <div class="sec-eyebrow">07 · Interface</div>
+          <h2>REST API Design — Key Endpoints</h2>
+          <p class="sec-sub">All endpoints versioned (/api/v1/). Auth via JWT Bearer token.</p>
+          <div class="api-list">
+            <div class="api-row"><div class="api-method get">GET</div><div><div class="api-path">/api/v1/search?q=headphones&amp;page=1&amp;limit=20&amp;filters=price:50-200</div><div class="api-resp">Response: { products: [...], total: 1247, page: 1, filters: {...} }</div></div></div>
+            <div class="api-row"><div class="api-method post">POST</div><div><div class="api-path">/api/v1/orders — body: { cart_id, shipping_address, payment_method_id }</div><div class="api-resp">Response: { cart_id, items[], subtotal, item_count }</div></div></div>
+            <div class="api-row"><div class="api-method get">GET</div><div><div class="api-path">/api/v1/products/{product_id}</div><div class="api-resp">Response: { id, ...fields }</div></div></div>
+            <div class="api-row"><div class="api-method get">GET</div><div><div class="api-path">/api/v1/orders/{order_id}</div><div class="api-resp">Response: { id, ...fields }</div></div></div>
+            <div class="api-row"><div class="api-method post">POST</div><div><div class="api-path">/api/v1/cart/items — body: { product_id, quantity, variant_id }</div><div class="api-resp">Response: { cart_id, items[], subtotal, item_count }</div></div></div>
+            <div class="api-row"><div class="api-method get">GET</div><div><div class="api-path">/api/v1/orders/{order_id}/tracking</div><div class="api-resp">Response: { carrier, tracking_number, status, events[] }</div></div></div>
+            <div class="api-row"><div class="api-method get">GET</div><div><div class="api-path">/api/v1/cart</div><div class="api-resp">Response: { id, ...fields }</div></div></div>
+            <div class="api-row"><div class="api-method post">POST</div><div><div class="api-path">/api/v1/products/{product_id}/reviews — body: { rating, comment }</div><div class="api-resp">Response: { review_id, status, moderation_status }</div></div></div>
+          </div>
+          <p class="api-note">Rate limiting: 1000 req/min (standard) · 100 req/min (free tier)</p>
+        </section>
+
+        <!-- ================= DATABASE ================= -->
+        <section id="database">
+          <div class="sec-eyebrow">08 · Storage</div>
+          <h2>Database Architecture — Three-Layer Storage Strategy</h2>
+          <p class="sec-sub">Read/write ratio: 95% reads / 5% writes — optimize with read replicas, CDN, and multi-level caching.</p>
+          <div class="db-grid">
+            <div class="db-card">
+              <h4>PostgreSQL</h4>
+              <div class="db-domain">Orders · Users · Payments</div>
+              <div class="db-reason">ACID transactions — financial accuracy required.</div>
+<pre>orders(id, user_id, status,
+       total, created_at)
+order_items(id, order_id,
+       product_id, qty, price)
+payments(id, order_id, amount,
+       status, gateway_txn_id)</pre>
+              <div class="db-scale">Shard by user_id mod 10 · Primary + 2 replicas · PgBouncer pooling · Multi-AZ, auto-failover &lt;30s, 1M+ QPS (TiDB in Flipkart)</div>
+            </div>
+            <div class="db-card mongo">
+              <h4>MongoDB</h4>
+              <div class="db-domain">Product Catalog · Sessions</div>
+              <div class="db-reason">Flexible schema — products have varying attributes.</div>
+<pre>{ _id: "SKU-123", title, brand,
+  price, images[],
+  specifications: { color,
+    wireless, battery },
+  inventory: { wh1: 347,
+    total: 476 } }</pre>
+              <div class="db-scale">Replica sets (1 primary + 2 secondary) · Partition by category · Atlas · 80% reads on top 5% of products — cache reduces DB load 20×</div>
+            </div>
+            <div class="db-card es">
+              <h4>Elasticsearch</h4>
+              <div class="db-domain">Product Search Index</div>
+              <div class="db-reason">Sub-50ms full-text search across billions of products.</div>
+<pre>{ product_id, title,
+  description, brand,
+  category[], price, rating,
+  review_count, in_stock,
+  popularity_score }</pre>
+              <div class="db-scale">5-node cluster (3 data + 2 master) · Shard by category · Kafka CDC · Near-real-time indexing &lt;30s delay · Fallback: PostgreSQL full-text if ES down</div>
+            </div>
+          </div>
+          <p class="api-note">⚡ Redis cache layer sits in front of all three: TTL 1–60 min for hot data, 0.12ms p50 latency.</p>
+        </section>
+
+        <!-- ================= SCALABILITY ================= -->
+        <section id="scalability">
+          <div class="sec-eyebrow">09 · Scaling</div>
+          <h2>Scalability Strategies — 5 Key Pillars</h2>
+          <div class="pillar-grid">
+            <div class="pillar-card">
+              <h4>1 · Horizontal Scaling</h4>
+              <p>Add more servers; Kubernetes HPA auto-scales pods on CPU/RPS.</p>
+              <div class="example">🏢 Flipkart: 2K → 10K+ API pods during Big Billion Days</div>
+              <div class="stack">K8s HPA (scale at CPU &gt; 70%) · AWS Auto Scaling Groups · 10× capacity</div>
+            </div>
+            <div class="pillar-card">
+              <h4>2 · Multi-Layer Caching</h4>
+              <p>Browser → CDN → API Gateway → Redis → DB (each layer 10–100× faster).</p>
+              <div class="example">🏢 Amazon: 90% of traffic served from CloudFront (300+ PoPs)</div>
+              <div class="stack">Redis 0.12ms p50 · CDN cache TTL 24h images · 95%+ hit rate</div>
+            </div>
+            <div class="pillar-card">
+              <h4>3 · Database Sharding</h4>
+              <p>Split data across DBs: hash by user_id, range by time, geo by region.</p>
+              <div class="example">🏢 Instagram: user data sharded across 100+ PostgreSQL DBs</div>
+              <div class="stack">TiDB auto-sharding · Shard = hash(user_id) mod 10 · 1M+ QPS</div>
+            </div>
+            <div class="pillar-card">
+              <h4>4 · Async Processing</h4>
+              <p>Kafka queues decouple services; email/push sent after checkout returns.</p>
+              <div class="example">🏢 Checkout: 1.3s (was 2s) by making email async via Kafka event</div>
+              <div class="stack">Kafka topics per domain · Consumer groups · Dead-letter queues</div>
+            </div>
+            <div class="pillar-card" style="grid-column:1 / -1;">
+              <h4>5 · CDN + Edge Computing</h4>
+              <p>Static assets + dynamic edge logic at 300+ PoPs worldwide.</p>
+              <div class="example">🏢 Temu: 40% faster load times via CDN edge optimization</div>
+              <div class="stack">CloudFront 600+ PoPs · Cloudflare Workers &lt;50ms global · WebP images</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= TRAFFIC & BENCHMARKS ================= -->
+        <section id="traffic">
+          <div class="sec-eyebrow">10 · Load</div>
+          <h2>Traffic Patterns &amp; Performance Benchmarks</h2>
+          <p class="sec-sub">Cache hierarchy: Browser 0ms (304) → CDN 20ms → Redis 5–10ms → DB 50–200ms. Target: 90%+ requests served from cache layers.</p>
+          <div class="table-wrap-outer">
+            <table class="data-table">
+              <thead><tr><th>Metric</th><th>Normal Day</th><th>Flash Sale</th><th>Cyber Monday Peak</th></tr></thead>
+              <tbody>
+                <tr><td>Requests/sec</td><td>10,000 RPS</td><td>500,000 RPS</td><td>1,000,000+ RPS</td></tr>
+                <tr><td>Concurrent Users</td><td>50,000</td><td>2,000,000</td><td>5,000,000</td></tr>
+                <tr><td>Orders/minute</td><td>200</td><td>50,000</td><td>100,000</td></tr>
+                <tr><td>Database QPS</td><td>50,000 q/s</td><td>800,000 q/s</td><td>1,500,000 q/s</td></tr>
+                <tr><td>Cache Hit Rate</td><td>85%</td><td>95%</td><td>98%</td></tr>
+                <tr><td>Search Queries/sec</td><td>5,000</td><td>100,000</td><td>200,000</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="market-grid" style="margin-top:16px; grid-template-columns:repeat(3,1fr);">
+            <div class="market-card"><div class="label" style="font-weight:600; color:var(--slate); margin-bottom:4px;">Flipkart Big Billion Days</div><div class="label">100 → 1,000+ RPS spike · TiDB 1M+ QPS · 7.4ms p99</div></div>
+            <div class="market-card"><div class="label" style="font-weight:600; color:var(--slate); margin-bottom:4px;">Amazon Prime Day 2024</div><div class="label">100M+ items in 48h · CloudFront 600+ PoPs · 1M+ RPS</div></div>
+            <div class="market-card"><div class="label" style="font-weight:600; color:var(--slate); margin-bottom:4px;">Coupang Flash Sales</div><div class="label">Redis DECR atomic · 10K cancellations/min queued via Kafka</div></div>
+          </div>
+        </section>
+
+        <!-- ================= FAULT TOLERANCE ================= -->
+        <section id="fault-tolerance">
+          <div class="sec-eyebrow">11 · Availability</div>
+          <h2>Fault Tolerance &amp; High Availability</h2>
+          <p class="sec-sub">Target: 99.99% uptime = 52 minutes of downtime per year.</p>
+          <div class="table-wrap-outer">
+            <table class="data-table">
+              <thead><tr><th>Component</th><th>Failure Risk</th><th>Mitigation Strategy</th><th>Recovery</th></tr></thead>
+              <tbody>
+                <tr><td>Load Balancer</td><td>Entire site down if single LB fails</td><td>Active-active multi-AZ + DNS failover</td><td>&lt;60s</td></tr>
+                <tr><td>Database Primary</td><td>No writes if primary crashes</td><td>Streaming replication, auto-failover</td><td>&lt;30s</td></tr>
+                <tr><td>Payment Gateway</td><td>No orders if Stripe is down</td><td>Multi-gateway: Stripe → PayPal backup</td><td>&lt;5s</td></tr>
+                <tr><td>Search (ES)</td><td>Search broken for all users</td><td>3–5 node cluster + SQL LIKE fallback</td><td>Instant</td></tr>
+                <tr><td>Cache (Redis)</td><td>DB overloaded, slow responses</td><td>Redis Cluster + cache-aside (tolerate miss)</td><td>None needed</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 style="font-size:1.05rem; margin:28px 0 8px;">Circuit Breaker Pattern</h3>
+          <div class="cb-diagram">CLOSED (serving traffic)
+    │
+    ▼  5 consecutive failures
+  OPEN (fail fast, 60s cooldown)
+    │
+    ▼  cooldown elapses
+  HALF-OPEN (try one request)
+    │
+    ├─ success → CLOSED
+    └─ failure → OPEN</div>
+          <p class="table-note">Used by: Flipkart ES fallback · Walmart payment gateway · Netflix auth &nbsp;|&nbsp; Libraries: Hystrix (Java) · resilience4j · Polly (.NET)</p>
+
+          <h3 style="font-size:1.05rem; margin:28px 0 8px;">Data Consistency Models</h3>
+          <div class="consistency-grid">
+            <div class="consist-card strong"><b>Strong</b>Orders / Payments — slower writes (must sync replicas).</div>
+            <div class="consist-card eventual"><b>Eventual</b>Product Catalog — stale data for 1–5s is acceptable.</div>
+            <div class="consist-card causal"><b>Causal</b>User Reviews — your own posts are visible immediately.</div>
+          </div>
+        </section>
+
+        <!-- ================= REAL-WORLD ================= -->
+        <section id="real-world">
+          <div class="sec-eyebrow">12 · Case Studies</div>
+          <h2>Real-World Implementations</h2>
+          <div class="company-grid">
+            <div class="company-card">
+              <h4>Amazon — The Gold Standard</h4>
+              <div class="tag">300M+ active customers worldwide</div>
+              <div class="company-stats">
+                <div class="cs"><div class="n">1M+ RPS</div><div class="l">Estimated during Prime Day</div></div>
+                <div class="cs"><div class="n">$575B</div><div class="l">Annual revenue (2023)</div></div>
+                <div class="cs"><div class="n">79.7%</div><div class="l">US retail media ad spend (2025)</div></div>
+                <div class="cs"><div class="n">600+</div><div class="l">CloudFront PoPs (Q1 2026)</div></div>
+              </div>
+              <ul>
+                <li>DynamoDB built internally → now AWS DynamoDB</li>
+                <li>Two-pizza teams (&lt;10 people) own each microservice</li>
+                <li>Multi-region active-active (20+ regions)</li>
+                <li>35% of revenue from AI recommendation engine</li>
+                <li>AWS born from internal infrastructure-as-code tools</li>
+              </ul>
+              <div class="stack-line">Architecture: DynamoDB · two-pizza teams · multi-region active-active</div>
+            </div>
+            <div class="company-card">
+              <h4>Walmart — Omnichannel Leader</h4>
+              <div class="tag">240M+ customers weekly (online + stores)</div>
+              <div class="company-stats">
+                <div class="cs"><div class="n">10,500+</div><div class="l">Stores as fulfillment centers</div></div>
+                <div class="cs"><div class="n">70%</div><div class="l">Mobile traffic share</div></div>
+                <div class="cs"><div class="n">8.0%</div><div class="l">Total US retail media spend (2025)</div></div>
+                <div class="cs"><div class="n">6 qtrs</div><div class="l">Consecutive double-digit e-comm growth</div></div>
+              </div>
+              <ul>
+                <li>Sparky GenAI shopping assistant (launched 2024)</li>
+                <li>Omnichannel: fulfill online orders from nearest store</li>
+                <li>React/Next.js frontend + Java microservices backend</li>
+                <li>Stripe primary + PayPal backup (99.9%+ payment uptime)</li>
+                <li>Walmart Connect MTA (multi-touch attribution, 2025)</li>
+              </ul>
+              <div class="stack-line">Architecture: React/Next.js · Java microservices · omnichannel fulfillment</div>
+            </div>
+            <div class="company-card">
+              <h4>Coupang — Amazon of South Korea</h4>
+              <div class="tag">20M+ customers (40% of South Korea)</div>
+              <div class="company-stats">
+                <div class="cs"><div class="n">#132</div><div class="l">Fortune 500 (2026)</div></div>
+                <div class="cs"><div class="n">$8.5B</div><div class="l">Q1 2026 revenue</div></div>
+                <div class="cs"><div class="n">70%</div><div class="l">Rocket Delivery overnight (Taiwan)</div></div>
+                <div class="cs"><div class="n">30%+</div><div class="l">Marketplace sales growth Q4 2024</div></div>
+              </div>
+              <div class="stack-line">Vitamin MQ (custom Kafka) · Vitamin Framework microservices · Coupang Intelligent Cloud (CIC) GenAI</div>
+            </div>
+            <div class="company-card">
+              <h4>Flipkart — India's E-Commerce Giant</h4>
+              <div class="tag">Big Billion Days flash-sale scale</div>
+              <div class="company-stats">
+                <div class="cs"><div class="n">1M+ QPS</div><div class="l">TiDB, 7.4ms p99 latency</div></div>
+                <div class="cs"><div class="n">80M</div><div class="l">Time-series metrics via Prometheus</div></div>
+                <div class="cs"><div class="n">200+</div><div class="l">K8s clusters for microservices</div></div>
+                <div class="cs"><div class="n">1K+ RPS</div><div class="l">Spike from 100 RPS baseline</div></div>
+              </div>
+              <div class="stack-line">TiDB (replaces MySQL sharding) · Hierarchical Prometheus federation · Aerospike 90M QPS</div>
+            </div>
+            <div class="company-card">
+              <h4>Instacart — Real-Time Inventory Master</h4>
+              <div class="tag">80,000+ retail store locations</div>
+              <div class="company-stats">
+                <div class="cs"><div class="n">80K+</div><div class="l">Store locations tracked</div></div>
+                <div class="cs"><div class="n">59K+</div><div class="l">Locations on Confluent Cloud</div></div>
+                <div class="cs"><div class="n">10 yrs</div><div class="l">Growth scaled in 6 weeks (COVID)</div></div>
+                <div class="cs"><div class="n">Jan '26</div><div class="l">Data Hub clean room launched</div></div>
+              </div>
+              <div class="stack-line">Confluent Kafka for real-time inventory · ML predicts availability vs. POS data · AWS Lambda auto-scaling</div>
+            </div>
+            <div class="company-card">
+              <h4>Temu — C2M Disruptor</h4>
+              <div class="tag">90 markets, launched 2022</div>
+              <div class="company-stats">
+                <div class="cs"><div class="n">366M</div><div class="l">Unique visitors (Dec '25–Feb '26)</div></div>
+                <div class="cs"><div class="n">#2</div><div class="l">Most-visited e-commerce site globally</div></div>
+                <div class="cs"><div class="n">&lt;2 yrs</div><div class="l">Launch to 90 markets</div></div>
+                <div class="cs"><div class="n">40%</div><div class="l">Faster load times vs competitors</div></div>
+              </div>
+              <div class="stack-line">e-Tower unified supply chain platform · Dynamic/predictive loading · AI-driven demand matching with manufacturers</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= TRADE-OFFS ================= -->
+        <section id="tradeoffs">
+          <div class="sec-eyebrow">13 · Fit Check</div>
+          <h2>When to Use This Architecture</h2>
+          <div class="tradeoff-grid">
+            <div class="tradeoff-col use">
+              <h3>✓ Use This Design When…</h3>
+              <div class="to-item"><div class="to-title">High Traffic (&gt;100K daily users)</div><div class="to-detail">Need horizontal scaling, load balancing, caching</div></div>
+              <div class="to-item"><div class="to-title">Multi-Vendor (&gt;100 sellers)</div><div class="to-detail">Need seller onboarding, inventory management</div></div>
+              <div class="to-item"><div class="to-title">Global Operations (multi-country)</div><div class="to-detail">Need multi-region CDN, localization</div></div>
+              <div class="to-item"><div class="to-title">Real-Time Inventory (warehouses/stores)</div><div class="to-detail">Need event-driven, Kafka CDC, Instacart-style</div></div>
+              <div class="to-item"><div class="to-title">AI/ML Personalization</div><div class="to-detail">Need ML infra, feature stores, A/B testing</div></div>
+              <div class="to-item"><div class="to-title">99.99% Uptime SLA required</div><div class="to-detail">Need multi-AZ, circuit breakers, failover</div></div>
+            </div>
+            <div class="tradeoff-col avoid">
+              <h3>✕ Avoid This Design When…</h3>
+              <div class="to-item"><div class="to-title">Small Business (&lt;10K monthly users)</div><div class="to-detail">Over-engineered → use Shopify ($29/mo)</div></div>
+              <div class="to-item"><div class="to-title">Single Vendor (you own all inventory)</div><div class="to-detail">Simpler alternative: WooCommerce / Magento</div></div>
+              <div class="to-item"><div class="to-title">Low Budget (&lt;$50K/month infra)</div><div class="to-detail">Use serverless: Firebase + Stripe + Vercel</div></div>
+              <div class="to-item"><div class="to-title">B2B with Batch Processing</div><div class="to-detail">Enterprise: SAP Commerce, Oracle Commerce</div></div>
+              <div class="to-item"><div class="to-title">Local/Regional Only (1 city)</div><div class="to-detail">Single AWS region + CloudFlare free tier</div></div>
+              <div class="to-item"><div class="to-title">Content-First with Occasional Sales</div><div class="to-detail">WordPress + WooCommerce / Gumroad</div></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= TAKEAWAYS ================= -->
+        <section id="takeaways">
+          <div class="sec-eyebrow">14 · Summary</div>
+          <h2>Key Takeaways</h2>
+          <p class="sec-sub">Everything you need to design a world-class marketplace.</p>
+          <div class="takeaway-grid">
+            <div class="takeaway-card"><div class="tk-num">01</div><h4>Microservices are standard</h4><p>90% of new apps. Each service owns its domain: Catalog, Cart, Order, Payment, Inventory, Notification.</p></div>
+            <div class="takeaway-card"><div class="tk-num">02</div><h4>Cache everything</h4><p>90%+ of reads. Redis → 0.12ms p50. CDN → 300+ PoPs. Multi-level: Browser → CDN → Redis → DB.</p></div>
+            <div class="takeaway-card"><div class="tk-num">03</div><h4>Design for failure, not uptime</h4><p>Circuit breakers, multi-gateway payments, multi-AZ DBs, Saga pattern for distributed transactions.</p></div>
+            <div class="takeaway-card"><div class="tk-num">04</div><h4>Kafka decouples everything</h4><p>Async: order confirmed in 1.3s (not 2s). Events flow: inventory, notifications, analytics.</p></div>
+            <div class="takeaway-card"><div class="tk-num">05</div><h4>Eventual consistency is fine for catalog</h4><p>Strong consistency for $ (orders/payments). Eventual OK for product descriptions, reviews.</p></div>
+            <div class="takeaway-card"><div class="tk-num">06</div><h4>Observe → measure → optimize</h4><p>4 Golden Signals: Latency, Traffic, Errors, Saturation. P0/P1/P2 alert tiers.</p></div>
+          </div>
+          <div class="takeaway-refs">Real-world references: Amazon · Walmart · Flipkart (TiDB 1M QPS) · Coupang (Vitamin MQ) · Instacart (80K stores, Kafka) · Temu (C2M, 90 markets)</div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+</div>
+
+<button class="toc-toggle" id="tocToggle">☰ Contents</button>
+<a href="#top" class="back-top" id="backTop" aria-label="Back to top">↑</a>
+
+<script>
+  const sidebar = document.getElementById('sidebar');
+  document.getElementById('tocToggle').addEventListener('click', () => sidebar.classList.toggle('open'));
+  document.getElementById('toc').addEventListener('click', (e) => {
+    if (e.target.tagName === 'A' && window.innerWidth <= 980) sidebar.classList.remove('open');
+  });
+
+  const backTop = document.getElementById('backTop');
+  window.addEventListener('scroll', () => backTop.classList.toggle('visible', window.scrollY > 600));
+
+  const tocLinks = Array.from(document.querySelectorAll('#toc a'));
+  const sectionIds = tocLinks.map(a => a.getAttribute('href').slice(1));
+  const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const link = tocLinks.find(a => a.getAttribute('href').slice(1) === entry.target.id);
+      if (!link) return;
+      if (entry.isIntersecting) {
+        tocLinks.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '0px 0px -70% 0px', threshold: 0 });
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
