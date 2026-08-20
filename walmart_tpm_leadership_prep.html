@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Distinguished TPM Leadership Interview Briefing — Walmart Global Tech</title>
+<style>
+  :root{
+    --navy:#12203a;
+    --navy-deep:#0b1526;
+    --paper:#f6f3ec;
+    --paper-card:#fffdf9;
+    --gold:#b8862f;
+    --gold-bright:#d6a94a;
+    --ink:#1c2230;
+    --ink-soft:#4a5266;
+    --rule:#d9d2c1;
+    --tactical:#2f6f5e;
+    --behavioral:#8a4a2f;
+    --strategic:#2f4d8a;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Georgia","Iowan Old Style",serif;
+    line-height:1.5;
+  }
+  .sans{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;}
+
+  /* HEADER */
+  header{
+    background:linear-gradient(160deg,var(--navy) 0%,var(--navy-deep) 100%);
+    color:#f2ede1;
+    padding:56px 8vw 40px;
+    position:relative;
+    overflow:hidden;
+  }
+  header::after{
+    content:"";
+    position:absolute;
+    right:-60px; top:-60px;
+    width:280px; height:280px;
+    border:1px solid rgba(214,169,74,0.25);
+    border-radius:50%;
+  }
+  header::before{
+    content:"";
+    position:absolute;
+    right:20px; top:20px;
+    width:180px; height:180px;
+    border:1px solid rgba(214,169,74,0.18);
+    border-radius:50%;
+  }
+  .eyebrow{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    font-size:12px;
+    color:var(--gold-bright);
+    margin-bottom:14px;
+    font-weight:600;
+  }
+  h1{
+    font-size:44px;
+    margin:0 0 12px;
+    font-weight:400;
+    max-width:820px;
+    letter-spacing:-0.01em;
+  }
+  h1 em{
+    font-style:normal;
+    color:var(--gold-bright);
+  }
+  .subhead{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    font-size:15.5px;
+    color:#c7cbd8;
+    max-width:640px;
+    line-height:1.65;
+    margin-bottom:28px;
+  }
+  .meta-row{
+    display:flex;
+    gap:28px;
+    flex-wrap:wrap;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    font-size:12.5px;
+    color:#9aa2b8;
+  }
+  .meta-row span strong{
+    display:block;
+    color:var(--gold-bright);
+    font-size:11px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    margin-bottom:3px;
+  }
+
+  /* NAV TABS */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:var(--paper);
+    border-bottom:1px solid var(--rule);
+    display:flex;
+    justify-content:center;
+    gap:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    padding:0 8vw;
+    flex-wrap:wrap;
+  }
+  nav button{
+    background:none;
+    border:none;
+    cursor:pointer;
+    padding:16px 22px;
+    font-size:13.5px;
+    font-weight:600;
+    letter-spacing:0.03em;
+    color:var(--ink-soft);
+    border-bottom:3px solid transparent;
+    transition:all .15s ease;
+  }
+  nav button .tag-count{
+    font-weight:400;
+    color:#9aa0ac;
+    margin-left:4px;
+  }
+  nav button.active[data-sec="tactical"]{color:var(--tactical); border-bottom-color:var(--tactical);}
+  nav button.active[data-sec="behavioral"]{color:var(--behavioral); border-bottom-color:var(--behavioral);}
+  nav button.active[data-sec="strategic"]{color:var(--strategic); border-bottom-color:var(--strategic);}
+  nav button:hover{color:var(--ink);}
+
+  main{
+    max-width:900px;
+    margin:0 auto;
+    padding:44px 6vw 90px;
+  }
+
+  .section-intro{
+    display:none;
+    margin-bottom:34px;
+    padding-bottom:22px;
+    border-bottom:1px solid var(--rule);
+  }
+  .section-intro.active{display:block;}
+  .section-intro .label{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    text-transform:uppercase;
+    letter-spacing:0.18em;
+    font-size:11.5px;
+    font-weight:700;
+  }
+  .section-intro h2{
+    font-size:29px;
+    margin:8px 0 10px;
+    font-weight:400;
+  }
+  .section-intro p{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    color:var(--ink-soft);
+    font-size:14.5px;
+    max-width:640px;
+    margin:0;
+  }
+  #tactical-intro .label{color:var(--tactical);}
+  #behavioral-intro .label{color:var(--behavioral);}
+  #strategic-intro .label{color:var(--strategic);}
+
+  .qa-list{display:none; flex-direction:column; gap:18px;}
+  .qa-list.active{display:flex;}
+
+  .qa-card{
+    background:var(--paper-card);
+    border:1px solid var(--rule);
+    border-left:4px solid var(--tactical);
+    border-radius:2px;
+    padding:24px 26px;
+    position:relative;
+  }
+  .qa-list[data-sec="behavioral"] .qa-card{border-left-color:var(--behavioral);}
+  .qa-list[data-sec="strategic"] .qa-card{border-left-color:var(--strategic);}
+
+  .qa-index{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    font-size:11px;
+    letter-spacing:0.1em;
+    color:#a7ad9a;
+    text-transform:uppercase;
+    font-weight:700;
+    margin-bottom:8px;
+  }
+  .qa-list[data-sec="tactical"] .qa-index{color:var(--tactical);}
+  .qa-list[data-sec="behavioral"] .qa-index{color:var(--behavioral);}
+  .qa-list[data-sec="strategic"] .qa-index{color:var(--strategic);}
+
+  .q{
+    font-size:19px;
+    margin:0 0 12px;
+    font-weight:700;
+    color:var(--navy);
+    line-height:1.35;
+  }
+  .a-label{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:#9a8a5f;
+    margin-bottom:6px;
+  }
+  .a{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    font-size:14.5px;
+    color:var(--ink);
+    line-height:1.65;
+    margin:0;
+  }
+  .a strong{color:var(--navy);}
+
+  .tip{
+    margin-top:14px;
+    padding:10px 14px;
+    background:#f0ece0;
+    border-radius:3px;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    font-size:13px;
+    color:#6b5f3f;
+    border-left:3px solid var(--gold);
+  }
+  .tip strong{color:var(--navy);}
+
+  /* STAR reminder box */
+  .star-box{
+    background:var(--navy);
+    color:#eee8d8;
+    border-radius:4px;
+    padding:22px 26px;
+    margin-bottom:26px;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  }
+  .star-box h3{
+    margin:0 0 12px;
+    font-size:14px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--gold-bright);
+  }
+  .star-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+  }
+  .star-grid div{font-size:12.5px; line-height:1.5;}
+  .star-grid b{display:block; color:#fff; font-size:13px; margin-bottom:3px;}
+  @media (max-width:700px){
+    .star-grid{grid-template-columns:repeat(2,1fr);}
+    h1{font-size:32px;}
+    .section-intro h2{font-size:24px;}
+  }
+
+  footer{
+    text-align:center;
+    padding:36px 8vw 50px;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    font-size:12.5px;
+    color:#9aa0ac;
+    border-top:1px solid var(--rule);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Executive Interview Briefing</div>
+  <h1>Distinguished TPM &mdash; <em>Leadership Interview Prep</em></h1>
+  <div class="subhead">
+    A working brief for cross-functional leadership, influence, and stakeholder management questions &mdash;
+    organized as Walmart Global Tech's panel is likely to probe them: tactically, behaviorally, and strategically.
+  </div>
+  <div class="meta-row">
+    <span><strong>Focus</strong>Cross-Functional Leadership &middot; Influence &middot; Stakeholder Mgmt</span>
+    <span><strong>Level</strong>Distinguished TPM</span>
+    <span><strong>Format</strong>Tactical / Behavioral / Strategic</span>
+  </div>
+</header>
+
+<nav>
+  <button class="active" data-sec="tactical" onclick="showSection('tactical')">01 &nbsp;Tactical <span class="tag-count">(5)</span></button>
+  <button data-sec="behavioral" onclick="showSection('behavioral')">02 &nbsp;Behavioral <span class="tag-count">(5)</span></button>
+  <button data-sec="strategic" onclick="showSection('strategic')">03 &nbsp;Strategic <span class="tag-count">(5)</span></button>
+</nav>
+
+<main>
+
+  <!-- TACTICAL -->
+  <div class="section-intro active" id="tactical-intro">
+    <div class="label">Tactical</div>
+    <h2>Execution &amp; Day-to-Day Judgment</h2>
+    <p>These probe how you actually run the program day to day &mdash; dependency management, RACI clarity, reporting discipline, and how you handle stakeholders who slip. Keep answers concrete: name the mechanism, not just the philosophy.</p>
+  </div>
+
+  <div class="qa-list active" data-sec="tactical">
+
+    <div class="qa-card">
+      <div class="qa-index">Q1 &middot; Dependency Management</div>
+      <div class="q">How do you manage dependencies across 5+ workstreams with competing priorities?</div>
+      <div class="a-label">Suggested Response</div>
+      <p class="a">Say you run a <strong>single source of truth</strong> (a dependency map or RAID log) reviewed weekly, and that every dependency has a named owner, a date, and a "confidence" flag &mdash; not just a status. Explain that when two teams compete for the same resource, you don't referee alone: you bring the trade-off to whoever owns the business outcome and let data decide. Close with one real example where a dependency map caught a slip two weeks before it would have hit code freeze.</p>
+      <div class="tip"><strong>Tip:</strong> Mention a specific tool (Jira, ADO, a custom dashboard) &mdash; interviewers want to know you operationalize this, not just talk about it.</div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-index">Q2 &middot; Underperforming Stakeholder</div>
+      <div class="q">How do you handle a stakeholder who consistently misses deadlines?</div>
+      <div class="a-label">Suggested Response</div>
+      <p class="a">First, privately, find out <strong>why</strong> &mdash; capacity, unclear priority, or a hidden blocker &mdash; before assuming it's a will problem. Then reset expectations in writing with a smaller, checkable commitment instead of one big deadline. If the pattern continues, escalate the risk (not the person) to their manager, framed around program impact, not blame. Say you always give the person a chance to fix it before you escalate &mdash; that's what earns trust over 25 years.</p>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-index">Q3 &middot; RACI &amp; Org Design</div>
+      <div class="q">Walk me through how you'd structure a RACI for a cross-org launch.</div>
+      <div class="a-label">Suggested Response</div>
+      <p class="a">Explain that you build the RACI from the <strong>decision points</strong> in the launch, not the org chart &mdash; who decides go/no-go, who signs off on risk, who owns comms. Emphasize one Accountable owner per decision (never two), and that Responsible/Consulted/Informed gets reviewed at kickoff with every VP in the room so there's no ambiguity later. Add that you revisit it at each milestone, since ownership shifts as a program matures.</p>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-index">Q4 &middot; Reporting Discipline</div>
+      <div class="q">How do you tailor program health reporting for execs versus working teams?</div>
+      <div class="a-label">Suggested Response</div>
+      <p class="a">Say execs get a <strong>one-page RYG view</strong>: outcome, risk, decision needed &mdash; nothing they have to dig through. Working teams get the detail: burndown, blockers, owner-level status. The key line to say out loud: "the data underneath is the same, only the altitude changes." Mention you never let a red status surprise a VP &mdash; they hear about a risk from you before they see it on a slide.</p>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-index">Q5 &middot; De-risking Ambiguity</div>
+      <div class="q">What's your approach to de-risking a program with unclear requirements?</div>
+      <div class="a-label">Suggested Response</div>
+      <p class="a">Describe running a short discovery sprint to convert unknowns into a named risk list, then sequencing work so the riskiest, most-assumption-laden piece gets tested first &mdash; not last. Say you'd rather ship a thin, working slice early and learn, than plan for months against assumptions. Tie it back to a real example of an ambiguous requirement you converted into a testable hypothesis.</p>
+    </div>
+
+  </div>
+
+  <!-- BEHAVIORAL -->
+  <div class="section-intro" id="behavioral-intro">
+    <div class="label">Behavioral</div>
+    <h2>Judgment Under Real Pressure</h2>
+    <p>These want a specific story, not a philosophy. Use the STAR shape below, keep it to 90 seconds, and make sure the "result" includes what changed in your own approach afterward &mdash; that's what signals Distinguished-level self-awareness.</p>
+  </div>
+
+  <div class="qa-list" data-sec="behavioral">
+
+    <div class="star-box">
+      <h3>STAR Reminder</h3>
+      <div class="star-grid">
+        <div><b>Situation</b>One sentence, real stakes, real names/roles (anonymized).</div>
+        <div><b>Task</b>What specifically was on you to solve.</div>
+        <div><b>Action</b>What YOU did &mdash; first person, not "we."</div>
+        <div><b>Result</b>Outcome + what you'd do differently now.</div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-index">Q1 &middot; Influence Without Authority</div>
+      <div class="q">Tell me about a time you influenced a stakeholder's decision without formal authority.</div>
+      <div class="a-label">Suggested Response</div>
+      <p class="a">Pick a moment where a senior stakeholder was leaning a direction you believed was wrong. Show that you didn't push back with opinion &mdash; you brought data, a small prototype, or a customer signal that reframed the choice for them. Land the result on the business outcome, and note the relationship <strong>improved</strong> afterward because you made them look good, not wrong.</p>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-index">Q2 &middot; Conflict Between Senior Leaders</div>
+      <div class="q">Describe a conflict between two senior leaders on your program. How did you resolve it?</div>
+      <div class="a-label">Suggested Response</div>
+      <p class="a">Frame yourself as the person who moved the conversation from positions ("my team needs X") to shared outcomes ("what does the customer/business need"). Say you met each leader 1:1 first to understand the real interest behind their position, then brought a proposal that let both claim a win. Keep it neutral about who was "right" &mdash; the story is about how you created alignment, not who you sided with.</p>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-index">Q3 &middot; Delivering Bad News</div>
+      <div class="q">Tell me about a time you had to deliver bad news to leadership.</div>
+      <div class="a-label">Suggested Response</div>
+      <p class="a">Show that you led with the headline, not a buildup &mdash; "we will miss the date, here's why, here's the plan." Mention you brought options, not just the problem, and that you told them as soon as you knew, not when it became undeniable. The result should show trust was preserved or even strengthened because you were the one who surfaced it early.</p>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-index">Q4 &middot; Competing Priorities Across Functions</div>
+      <div class="q">Tell me about a time you aligned competing priorities across engineering, product, and business teams.</div>
+      <div class="a-label">Suggested Response</div>
+      <p class="a">Describe surfacing the trade-off explicitly &mdash; speed vs. scope vs. quality &mdash; instead of letting it stay implicit and become a silent source of friction. Say you brought all three functions into one room with a shared scorecard so the decision was made together, not imposed. End with how the shared framework became reusable for future conflicts, which is the mark of Distinguished-level impact.</p>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-index">Q5 &middot; A Stakeholder Relationship You Got Wrong</div>
+      <div class="q">Tell me about a time you didn't manage a stakeholder relationship well. What did you learn?</div>
+      <div class="a-label">Suggested Response</div>
+      <p class="a">Choose a genuine miss &mdash; e.g., you assumed alignment instead of confirming it, or under-communicated during a quiet phase and lost trust. Own it plainly, without over-apologizing. Say specifically what changed in your operating rhythm afterward (e.g., "I now do a monthly 1:1 with every VP stakeholder, win or no news"). This question tests self-awareness more than the mistake itself.</p>
+      <div class="tip"><strong>Tip:</strong> Never say "I don't really have one" &mdash; at Distinguished level, a thoughtful, owned failure story lands better than a flawless one.</div>
+    </div>
+
+  </div>
+
+  <!-- STRATEGIC -->
+  <div class="section-intro" id="strategic-intro">
+    <div class="label">Strategic</div>
+    <h2>Operating at Scale &amp; Shaping the System</h2>
+    <p>These test whether you think beyond your program to the org, the function, and the enterprise. Bring frameworks, but anchor every answer to a real decision you've made at this altitude before.</p>
+  </div>
+
+  <div class="qa-list" data-sec="strategic">
+
+    <div class="qa-card">
+      <div class="qa-index">Q1 &middot; Building the Function</div>
+      <div class="q">How would you approach standing up TPM process for a new business unit?</div>
+      <div class="a-label">Suggested Response</div>
+      <p class="a">Say you'd start light &mdash; observe how the org actually makes decisions today before imposing process &mdash; then introduce only the minimum rituals that remove real pain (a weekly sync, a shared risk log, a decision log). Emphasize that process should earn its place by visibly saving time, or teams will route around it. Mention scaling it only after it's proven in one team.</p>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-index">Q2 &middot; Escalation Judgment</div>
+      <div class="q">How do you decide what to escalate versus handle yourself?</div>
+      <div class="a-label">Suggested Response</div>
+      <p class="a">Give a simple test you actually use: escalate when it's <strong>irreversible, cross-org, or above your authority to trade off</strong> &mdash; otherwise, resolve it and inform. Note that over-escalating erodes your credibility as much as under-escalating erodes trust in you; the goal is leadership never being surprised, not leadership being pulled into everything.</p>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-index">Q3 &middot; Speed vs. Quality at Scale</div>
+      <div class="q">How do you balance speed and quality at Walmart's scale?</div>
+      <div class="a-label">Suggested Response</div>
+      <p class="a">Reframe it as not a universal trade-off but a <strong>per-decision</strong> one: some decisions are reversible ("two-way doors") where you move fast and course-correct, others are irreversible ("one-way doors") where you slow down and get more inputs. Give an example of correctly classifying a decision this way at scale, and how it saved time without adding risk.</p>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-index">Q4 &middot; Earning Trust From a Skeptical Org</div>
+      <div class="q">How would you build trust with a stakeholder organization that's skeptical of the TPM function?</div>
+      <div class="a-label">Suggested Response</div>
+      <p class="a">Say you'd earn it through small, visible wins before asking for process buy-in &mdash; unblock one real thing they care about first. Avoid leading with authority or title; lead with usefulness. Mention that skepticism is usually a scar from a past bad experience with PMO/TPM, so acknowledging that directly, rather than ignoring it, speeds up trust.</p>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-index">Q5 &middot; Aligning VP-Level Conflicting OKRs</div>
+      <div class="q">How do you drive alignment across VP-level stakeholders with conflicting OKRs?</div>
+      <div class="a-label">Suggested Response</div>
+      <p class="a">Describe going up a level to find the shared goal above the conflicting OKRs &mdash; usually a customer or company metric both VPs actually care about &mdash; and re-anchoring the conversation there. Say you'd bring a clear trade-off analysis (cost of each path, who bears it) rather than asking them to just "align," since vague asks rarely resolve real conflicts. Close with a real example where this reframing broke a stalemate.</p>
+    </div>
+
+  </div>
+
+</main>
+
+<footer>
+  Prepared as an interview working document &middot; adapt every "suggested response" into your own real examples before the interview.
+</footer>
+
+<script>
+  function showSection(sec){
+    document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active', b.dataset.sec===sec));
+    document.querySelectorAll('.section-intro').forEach(el=>el.classList.toggle('active', el.id===sec+'-intro'));
+    document.querySelectorAll('.qa-list').forEach(el=>el.classList.toggle('active', el.dataset.sec===sec));
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+</script>
+
+</body>
+</html>
